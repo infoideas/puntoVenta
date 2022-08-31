@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.LocalEmpleado" table="local_empleado" catalog="gestion" optimistic-lock="version">
+        <comment>Empleados del local o carnicer&#237;a</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="empleado" class="entidades.Empleado" fetch="select">
+            <column name="idEmpleado" not-null="true" />
+        </many-to-one>
+        <many-to-one name="localCarniceria" class="entidades.LocalCarniceria" fetch="select">
+            <column name="idLocal" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

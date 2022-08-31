@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.ListaPreciosLocal" table="lista_precios_local" catalog="gestion" optimistic-lock="version">
+        <comment>Lista de precios local</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="localCarniceria" class="entidades.LocalCarniceria" fetch="select">
+            <column name="idLocal" not-null="true" />
+        </many-to-one>
+        <property name="idUsuario" type="int">
+            <column name="idUsuario" not-null="true">
+                <comment>Usuario que carga la lista de precios</comment>
+            </column>
+        </property>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true">
+                <comment>Fecha de carga</comment>
+            </column>
+        </property>
+        <property name="fecIni" type="timestamp">
+            <column name="fec_ini" length="19" not-null="true">
+                <comment>Fecha de inicio</comment>
+            </column>
+        </property>
+        <property name="fecFin" type="timestamp">
+            <column name="fec_fin" length="19" not-null="true">
+                <comment>Fecha de fin</comment>
+            </column>
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="listaPreciosLocalDets" table="lista_precios_local_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idListaPrecios" not-null="true">
+                    <comment>Lista de precios del local</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.ListaPreciosLocalDet" />
+        </set>
+    </class>
+</hibernate-mapping>

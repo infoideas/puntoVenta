@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Venta" table="venta" catalog="gestion" optimistic-lock="version">
+        <comment>Pedidos</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="localCarniceria" class="entidades.LocalCarniceria" fetch="select">
+            <column name="idLocal" not-null="true">
+                <comment>Id. del Local</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="persona" class="entidades.Persona" fetch="select">
+            <column name="idCliente" not-null="true">
+                <comment>Cliente</comment>
+            </column>
+        </many-to-one>
+        <property name="idUsuario" type="int">
+            <column name="idUsuario" not-null="true">
+                <comment>Usuario que carg&#243; la venta</comment>
+            </column>
+        </property>
+        <property name="fecMov" type="timestamp">
+            <column name="fec_mov" length="19" not-null="true">
+                <comment>Fecha del pedido</comment>
+            </column>
+        </property>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true">
+                <comment>Fecha de carga del pedido</comment>
+            </column>
+        </property>
+        <property name="estado" type="char">
+            <column name="estado" length="1" not-null="true">
+                <comment>Estado del pedido: En preparaci&#243;n: P/Listo: L /Enviado: E/Devuelto: D/Facturado: F</comment>
+            </column>
+        </property>
+        <property name="valorTotal" type="big_decimal">
+            <column name="valor_total" precision="20" not-null="true">
+                <comment>Valor total con IVA sin descuentos</comment>
+            </column>
+        </property>
+        <property name="porcDesc" type="big_decimal">
+            <column name="porc_desc" precision="10" not-null="true">
+                <comment>Porcentaje de descuento sobre el total de la mesa</comment>
+            </column>
+        </property>
+        <property name="valorDesc" type="big_decimal">
+            <column name="valor_desc" precision="20" not-null="true">
+                <comment>Valor de descuento sobre el total de la mesa</comment>
+            </column>
+        </property>
+        <property name="valorFinal" type="big_decimal">
+            <column name="valor_final" precision="20" not-null="true">
+                <comment>Valor final neto con IVA incluido</comment>
+            </column>
+        </property>
+        <property name="porcIva" type="big_decimal">
+            <column name="porc_iva" precision="20" not-null="true">
+                <comment>Porc Iva</comment>
+            </column>
+        </property>
+        <property name="valorIva" type="big_decimal">
+            <column name="valor_iva" precision="20" not-null="true">
+                <comment>Valor de IVA</comment>
+            </column>
+        </property>
+        <property name="valorSiva" type="big_decimal">
+            <column name="valor_siva" precision="20" not-null="true">
+                <comment>Valor sin IVA</comment>
+            </column>
+        </property>
+        <property name="pagado" type="char">
+            <column name="pagado" length="1" not-null="true">
+                <comment>Est&#225; pagado: S&#237;: 1/No : 0</comment>
+            </column>
+        </property>
+        <property name="tipoComprobante" type="char">
+            <column name="tipoComprobante" length="1" not-null="true">
+                <comment>Venta: V/Factura: F</comment>
+            </column>
+        </property>
+        <property name="condIva" type="string">
+            <column name="cond_iva" length="5">
+                <comment>Cond. ante IVA</comment>
+            </column>
+        </property>
+        <property name="tipoFactura" type="string">
+            <column name="tipo_factura" length="5" />
+        </property>
+        <property name="puntoVenta" type="string">
+            <column name="punto_venta" length="5" />
+        </property>
+        <property name="numFactura" type="string">
+            <column name="num_factura" length="10" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones">
+                <comment>Direcci&#243;n de env&#237;o del pedido</comment>
+            </column>
+        </property>
+        <set name="ventaCcs" table="venta_cc" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idVenta" not-null="true" />
+            </key>
+            <one-to-many class="entidades.VentaCc" />
+        </set>
+        <set name="ventaDets" table="venta_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idVenta" not-null="true" />
+            </key>
+            <one-to-many class="entidades.VentaDet" />
+        </set>
+    </class>
+</hibernate-mapping>

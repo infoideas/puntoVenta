@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.PersonaDireccion" table="persona_direccion" catalog="gestion" optimistic-lock="version">
+        <comment>Direcciones de la persona. Usada para pedidos</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="localidad" class="entidades.Localidad" fetch="select">
+            <column name="idLocalidad">
+                <comment>Id de la localidad</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="persona" class="entidades.Persona" fetch="select">
+            <column name="idPersona" not-null="true">
+                <comment>Id. de la persona</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="provincia" class="entidades.Provincia" fetch="select">
+            <column name="idProvincia" not-null="true" />
+        </many-to-one>
+        <property name="cp" type="string">
+            <column name="cp" length="30" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" length="50" not-null="true" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" length="50" />
+        </property>
+    </class>
+</hibernate-mapping>

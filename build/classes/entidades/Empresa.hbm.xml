@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Empresa" table="empresa" catalog="gestion" optimistic-lock="version">
+        <comment>Datos de la empresa</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="pais" class="entidades.Pais" fetch="select">
+            <column name="idPais" not-null="true" />
+        </many-to-one>
+        <many-to-one name="provincia" class="entidades.Provincia" fetch="select">
+            <column name="idProvincia" not-null="true" />
+        </many-to-one>
+        <property name="nombreFantasia" type="string">
+            <column name="nombre_fantasia" length="100" not-null="true">
+                <comment>Nombre de la empresa</comment>
+            </column>
+        </property>
+        <property name="razonSocial" type="string">
+            <column name="razon_social" length="100" />
+        </property>
+        <property name="cuit" type="string">
+            <column name="cuit" length="30" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" length="100" />
+        </property>
+        <property name="telefonoFijo" type="string">
+            <column name="telefono_fijo" length="100" />
+        </property>
+        <property name="telefonoMovil" type="string">
+            <column name="telefono_movil" length="100" />
+        </property>
+        <property name="contacto" type="string">
+            <column name="contacto" length="100">
+                <comment>Persona para contacto con la empresa</comment>
+            </column>
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="100" />
+        </property>
+        <property name="estado" type="char">
+            <column name="estado" length="1" not-null="true">
+                <comment>Estado</comment>
+            </column>
+        </property>
+        <property name="sitioWeb" type="string">
+            <column name="sitioWeb" length="100">
+                <comment>Sitio Web de la empresa</comment>
+            </column>
+        </property>
+        <property name="logo" type="binary">
+            <column name="logo">
+                <comment>Logo de la empresa</comment>
+            </column>
+        </property>
+        <property name="emailSistemas" type="string">
+            <column name="emailSistemas" length="100">
+                <comment>Cuenta de mail para uso del sistema</comment>
+            </column>
+        </property>
+        <property name="claveEmail" type="string">
+            <column name="claveEmail" length="100">
+                <comment>Clave de la cuenta de correo del sistema</comment>
+            </column>
+        </property>
+        <property name="hostSmtp" type="string">
+            <column name="hostSMTP" length="100">
+                <comment>Nombre del host SMTP para env&#237;o de mail desde el sistema</comment>
+            </column>
+        </property>
+        <property name="puertoEmail" type="java.lang.Short">
+            <column name="puertoEmail">
+                <comment>Puerto usado por la cuenta de mail</comment>
+            </column>
+        </property>
+        <property name="startTls" type="string">
+            <column name="startTLS" length="30" />
+        </property>
+        <property name="auth" type="string">
+            <column name="auth" length="30" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+    </class>
+</hibernate-mapping>

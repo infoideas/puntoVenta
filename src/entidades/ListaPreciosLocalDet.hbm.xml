@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.ListaPreciosLocalDet" table="lista_precios_local_det" catalog="gestion" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="listaPreciosLocal" class="entidades.ListaPreciosLocal" fetch="select">
+            <column name="idListaPrecios" not-null="true">
+                <comment>Lista de precios del local</comment>
+            </column>
+        </many-to-one>
+        <property name="idProducto" type="int">
+            <column name="idProducto" not-null="true" />
+        </property>
+        <property name="precio" type="big_decimal">
+            <column name="precio" precision="20" scale="3" not-null="true">
+                <comment>Precio final con IVA</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

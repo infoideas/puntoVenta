@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Localidad" table="localidad" catalog="gestion" optimistic-lock="version" lazy="false">
+        <comment>Localidad</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="provincia" class="entidades.Provincia" fetch="select">
+            <column name="idProvincia" not-null="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="45" not-null="true">
+                <comment>Nombre de localidad</comment>
+            </column>
+        </property>
+        <property name="cp" type="string">
+            <column name="cp" length="30" />
+        </property>
+        <set name="personaDireccions" table="persona_direccion" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idLocalidad">
+                    <comment>Id de la localidad</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.PersonaDireccion" />
+        </set>
+        <set name="localCarnicerias" table="local_carniceria" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idLocalidad" not-null="true" />
+            </key>
+            <one-to-many class="entidades.LocalCarniceria" />
+        </set>
+        <set name="empleados" table="empleado" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idLocalidad" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Empleado" />
+        </set>
+    </class>
+</hibernate-mapping>
