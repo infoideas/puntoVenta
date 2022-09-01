@@ -147,7 +147,10 @@ public class Producto  implements java.io.Serializable {
         this.ventaDets = ventaDets;
     }
 
-
+    @Override
+    public String toString(){
+        return nombre;  
+    }  
 
 
 }
