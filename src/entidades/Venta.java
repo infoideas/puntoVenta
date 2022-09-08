@@ -12,7 +12,6 @@ import java.util.Set;
  */
 public class Venta  implements java.io.Serializable {
 
-
      private Integer id;
      private LocalCarniceria localCarniceria;
      private Persona persona;
@@ -40,7 +39,6 @@ public class Venta  implements java.io.Serializable {
     public Venta() {
     }
 
-	
     public Venta(LocalCarniceria localCarniceria, Persona persona, int idUsuario, Date fecMov, Date fecCarga, char estado, BigDecimal valorTotal, BigDecimal porcDesc, BigDecimal valorDesc, BigDecimal valorFinal, BigDecimal porcIva, BigDecimal valorIva, BigDecimal valorSiva, char pagado, char tipoComprobante) {
         this.localCarniceria = localCarniceria;
         this.persona = persona;

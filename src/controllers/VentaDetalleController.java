@@ -113,6 +113,8 @@ public class VentaDetalleController extends VBox implements Initializable {
     @FXML
     Button buEliminar;
     @FXML
+    Button buSalir;
+    @FXML
     GridPane gridAreas;
     @FXML
     GridPane gridRubros;
@@ -296,7 +298,13 @@ public class VentaDetalleController extends VBox implements Initializable {
            grabarVenta();
         });
         
-        // Poner focus en el nombre del producto a b
+        //Botón salir de la ventana
+        buSalir.setOnAction(event -> {
+            Stage stage= (Stage) buSalir.getScene().getWindow();
+            stage.close();
+        });
+        
+        // Poner focus en el nombre del producto
         Platform.runLater(() -> nombreProducto.requestFocus());
     }
     
@@ -321,13 +329,15 @@ public class VentaDetalleController extends VBox implements Initializable {
         //Tipo de comprobante
         ItemTipo item= new ItemTipo('V',"Venta");
         cbTipoCompro.setValue(item);
-                
+        registroSel.setLocalCarniceria(PuntoVenta.getLocalSel());
         registroSel.setIdUsuario(PuntoVenta.getUsuarioConectado().getId());
         registroSel.setValorTotal(BigDecimal.ZERO);
+        registroSel.setPorcIva(new BigDecimal(21));
+        registroSel.setValorIva(BigDecimal.ZERO);
+        registroSel.setValorSiva(BigDecimal.ZERO);
         registroSel.setPorcDesc(BigDecimal.ZERO);
         registroSel.setValorDesc(BigDecimal.ZERO);
         registroSel.setValorFinal(BigDecimal.ZERO);  
-
         detalleVenta=dataVenta.getItems();
         
         buGrabarVenta.setDisable(true);
@@ -394,7 +404,6 @@ public class VentaDetalleController extends VBox implements Initializable {
             finally {
                 session.close();
             }
-            
 
             detalleVenta.add(p);
             
@@ -875,26 +884,13 @@ public class VentaDetalleController extends VBox implements Initializable {
         session.beginTransaction();        
         if (wb_nuevo)
         {
-            //Abro la mesa
+            //Venta nueva
             registroSel.setFecCarga(lda_fec_carga);
             registroSel.setFecMov(lda_fec_carga);
             registroSel.setTipoComprobante(lc_tipo_compro);
+            registroSel.setCondIva("CF");
             registroSel.setPagado('0');
-            try{
-                session.saveOrUpdate(registroSel);
-            }
-            catch (HibernateException e){
-                session.getTransaction().rollback();
-                session.close();
-                alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeaderText(null);
-                alert.setTitle("Error");
-                alert.setContentText(e.getMessage());   
-                alert.show();
-                return ;
-            }
         }
-        
         registroSel.setPersona(personaSel);
         
         //Agrego los productos a la comanda
@@ -907,36 +903,15 @@ public class VentaDetalleController extends VBox implements Initializable {
         for (VentaDet d: detalleVenta) {
             registroSel.getVentaDets().add(d);
         }
-        //Actualizo nuevamente la vista por si hubo nuevas comandas
-        dataVenta.setItems(detalleVenta);
-        
+                
         //Actualizo los totales
         double ld_total=calculaTotal();
         registroSel.setValorTotal(new BigDecimal(ld_total));
         registroSel.setValorDesc(BigDecimal.ZERO);
         registroSel.setValorFinal(new BigDecimal(ld_total));
         
-        //Grabo la mesa 
-        try{
-            session.saveOrUpdate(registroSel);
-        }
-        catch (HibernateException e){
-            session.getTransaction().rollback();
-            session.close();
-            alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setTitle("Error");
-            alert.setContentText(e.getMessage());   
-            alert.show();
-            return ;
-        }
-       
-        
-        //Nro de pedido
-        nroVenta.setText(registroSel.getId().toString());
-
         //////////////////////
-        //Facturo el pedido
+        //Facturo la venta
         //////////////////////
         String lsNombreComprador="";
         String lsDirComprador="";
@@ -993,30 +968,18 @@ public class VentaDetalleController extends VBox implements Initializable {
         lsDocAsocL2 = "";
         lsDocAsocL3 = "";
         
-        Venta venta= new Venta();
-        venta.setPersona(registroSel.getPersona());
-        venta.setPorcIva(new BigDecimal(21));
-        venta.setFecCarga(lda_fec_carga);
-        venta.setFecMov(lda_fec_carga);
-        venta.setIdUsuario(PuntoVenta.getUsuarioConectado().getId());
-        venta.setTipoComprobante(lc_tipo_compro);
-        venta.setCondIva("CF");  //Cambiar
+        //Venta venta= new Venta();
         
-        venta.setValorSiva(new BigDecimal(ld_total));
-        venta.setPorcIva(BigDecimal.ZERO);
-        venta.setValorIva(BigDecimal.ZERO);
-        venta.setValorTotal(new BigDecimal(ld_total));
-                
+        
         List<VentaDet> listaItems= new ArrayList<VentaDet>();
         for (VentaDet d: detalleVenta){
             VentaDet ventaDet= new VentaDet();
-            ventaDet.setVenta(venta);
+            ventaDet.setVenta(registroSel);
             ventaDet.setProducto(d.getProducto());
             ventaDet.setCantidad(d.getCantidad());
             ventaDet.setUnidadMedida(d.getUnidadMedida());
             ventaDet.setPrecioUnitario(new BigDecimal(d.getPrecioUnitario().doubleValue() + (d.getValorAdicional()==null ? 0 : d.getValorAdicional().doubleValue())));
             ventaDet.setPrecioTotal(d.getPrecioTotal());
-            venta.getVentaDets().add(ventaDet);
             listaItems.add(ventaDet);
         }
                 
@@ -1031,14 +994,9 @@ public class VentaDetalleController extends VBox implements Initializable {
                              liTipIdComprador, lsNumIdComprador, liIvaComprador, lsDocAsocL1, lsDocAsocL2, lsDocAsocL3,lsLineaCompOrigen,listaItems);
             if (lb_ticket){
                 //Pongo los datos del ticket en la factura
-                venta.setPuntoVenta(PuntoVenta.getPuntoVentaCF());
-                venta.setNumFactura(impresion.getNumComprobante());
-                venta.setTipoFactura(impresion.getTipoComprobante());  //Tipo de factura
-                
-                //Pongo los datos del ticket en el pedido
                 registroSel.setPuntoVenta(PuntoVenta.getPuntoVentaCF());
                 registroSel.setNumFactura(impresion.getNumComprobante());
-                registroSel.setTipoFactura(impresion.getTipoComprobante());
+                registroSel.setTipoFactura(impresion.getTipoComprobante());  //Tipo de factura
                 impresion.cerrarPuerto();
             }
             else
@@ -1057,7 +1015,7 @@ public class VentaDetalleController extends VBox implements Initializable {
         }
         
         try{
-            session.saveOrUpdate(venta);
+            session.saveOrUpdate(registroSel);
             session.getTransaction().commit();
         }
         catch (HibernateException e){
@@ -1073,11 +1031,11 @@ public class VentaDetalleController extends VBox implements Initializable {
             session.close();
         }
         
-        
-                
         if (wb_nuevo ) wb_nuevo=false;   
+        //Nro de venta
+        nroVenta.setText(registroSel.getId().toString());
         if (lc_tipo_compro=='F'){
-            numCompro.setText(venta.getPuntoVenta() + "-"  + venta.getNumFactura());
+            numCompro.setText(registroSel.getPuntoVenta() + "-"  + registroSel.getNumFactura());
         }
         buGrabarVenta.setDisable(true); 
         buBuscarProductos.setDisable(true);

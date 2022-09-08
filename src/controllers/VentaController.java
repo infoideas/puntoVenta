@@ -119,7 +119,7 @@ public class VentaController extends VBox implements Initializable {
         buConsultar.setOnAction(event -> {
            Venta registroSel= (Venta) dataGrid.getSelectionModel().getSelectedItem();
            if (registroSel !=null)
-                editarRegistro("/vistasVentaDetalle.fxml",registroSel);
+                editarRegistro("/vistas/VentaDetalle.fxml",registroSel);
         });
         
         //Consular o editar registro
@@ -152,7 +152,7 @@ public class VentaController extends VBox implements Initializable {
         row.setOnMouseClicked(event -> {
         if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
             Venta registroSel = row.getItem();
-            editarRegistro("VentaDetalle.fxml",registroSel);
+            editarRegistro("/vistas/VentaDetalle.fxml",registroSel);
         }
         });
         return row ;
@@ -286,6 +286,7 @@ public class VentaController extends VBox implements Initializable {
             session.beginTransaction();
             p=(Venta) session.get(Venta.class,movSel.getId());
             Hibernate.initialize(p.getVentaDets());
+            Hibernate.initialize(p.getPersona().getDireccion());
             session.getTransaction().commit();
         }
         catch (HibernateException e){
@@ -330,7 +331,6 @@ public class VentaController extends VBox implements Initializable {
             alert.show();
             return;
         }
-       
     }
     
     public boolean eliminaRegistro(Object o) {

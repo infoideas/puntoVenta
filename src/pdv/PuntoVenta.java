@@ -7,6 +7,7 @@ package pdv;
 
 import controllers.LoginController;
 import entidades.Empresa;
+import entidades.LocalCarniceria;
 import entidades.Localidad;
 import entidades.Producto;
 import entidades.Provincia;
@@ -40,6 +41,7 @@ public class PuntoVenta extends Application {
     private static Localidad localidadEmpresa;
     private static String puntoVentaCF;
     private static int puertoCF;
+    private static LocalCarniceria localSel;
     private final static String tituloApp="Punto de Venta";
 
     public static UsuarioAdmin getUsuarioConectado() {
@@ -110,6 +112,16 @@ public class PuntoVenta extends Application {
         return tituloApp;
     }
 
+    public static LocalCarniceria getLocalSel() {
+        return localSel;
+    }
+
+    public static void setLocalSel(LocalCarniceria localSel) {
+        PuntoVenta.localSel = localSel;
+    }
+    
+    
+
     /**
      * @param args the command line arguments
      */
@@ -122,8 +134,13 @@ public class PuntoVenta extends Application {
     public void start(Stage primaryStage) {
         stage = primaryStage;
         BeanBase beanBase= new BeanBase();
+        //Empresa
         Empresa empresaSel=beanBase.obtenerEmpresa(Integer.valueOf(beanBase.getConfiguracion().getProperty("idEmpresa").trim())); 
         setEmpresaSel(empresaSel);
+        //Local
+        LocalCarniceria localSel=obtieneLocal(Integer.valueOf(beanBase.getConfiguracion().getProperty("idLocal").trim())); 
+        setLocalSel(localSel);
+        
         productoGenerico=obtieneProducto(1);
         unidadGenerica=obtieneUnidad(1);
         provinciaEmpresa=obtieneProvincia(Integer.valueOf(beanBase.getConfiguracion().getProperty("idProvincia").trim()));
@@ -254,5 +271,26 @@ public class PuntoVenta extends Application {
             }
             return unidad;
     }
+ 
+    //Obtiene Local
+    public LocalCarniceria obtieneLocal(int codLocal){
+            LocalCarniceria local = null;
+            Session session = null;
+            try{
+                session=HibernateUtil.getSessionFactory().openSession();
+                session.beginTransaction();
+                local=(LocalCarniceria) session.get(LocalCarniceria.class,codLocal);
+                session.getTransaction().commit();
+            }
+            catch (HibernateException e){
+                session.getTransaction().rollback();
+                return null;
+            }
+            finally {
+                session.close();
+            }
+            return local;
+    }
+    
     
 }
