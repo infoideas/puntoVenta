@@ -228,6 +228,15 @@ public class VentaDetalleController extends VBox implements Initializable {
         row.setOnMouseClicked(event -> {
         if (event.getClickCount() == 2 && (! row.isEmpty()) && wb_nuevo==true) {
             Producto producto = row.getItem();
+            
+            if (producto.getPrecioContado()==null){
+              Alert alert = new Alert(Alert.AlertType.WARNING);
+              alert.setTitle(PuntoVenta.getTituloApp());
+              alert.setContentText("Producto seleccionado no tiene precio cargado");
+              alert.show();            
+              return;
+            }
+            
             System.out.println(producto);
             
             //Fecha y hora de carga actual
@@ -371,7 +380,7 @@ public class VentaDetalleController extends VBox implements Initializable {
         cbTipoCompro.setValue(item);
         
         if (lc_tipo_compro=='F'){
-            numCompro.setText(registroSel.getPuntoVenta() + "-"  + registroSel.getNumFactura());
+            numCompro.setText(registroSel.getPuntoVenta() + "-"  + registroSel.getNumFactura() + "-" + registroSel.getTipoFactura());
         }
         
         nroVenta.setText(String.valueOf(registroSel.getId().intValue()));
@@ -417,12 +426,8 @@ public class VentaDetalleController extends VBox implements Initializable {
         DecimalFormat df = new DecimalFormat( "#,##0.##", new DecimalFormatSymbols(new Locale("es", "AR")));
         valorTotal.setText(df.format(registroSel.getValorFinal().doubleValue()));
         
-        //Si la venta está facturada bloqueo los botones
-        if (registroSel.getEstado()=='F'){
-            buGrabarVenta.setDisable(true);
-            
-            buBuscarProductos.setDisable(true);
-        }
+        buGrabarVenta.setDisable(true);
+        buBuscarProductos.setDisable(true);
         
     }
     
@@ -944,7 +949,7 @@ public class VentaDetalleController extends VBox implements Initializable {
                 return;
             }
                         
-            lsNombreComprador=p.getNombre();
+            lsNombreComprador=p.getNombreCompleto();
             lsDirComprador="";  //Agregar dirección
             if (lsDirComprador==null) lsDirComprador="";
             //Tipo de Id del comprador D: DNI, T : CUIT
@@ -1035,7 +1040,7 @@ public class VentaDetalleController extends VBox implements Initializable {
         //Nro de venta
         nroVenta.setText(registroSel.getId().toString());
         if (lc_tipo_compro=='F'){
-            numCompro.setText(registroSel.getPuntoVenta() + "-"  + registroSel.getNumFactura());
+            numCompro.setText(registroSel.getPuntoVenta() + "-"  + registroSel.getNumFactura() + "-" + registroSel.getTipoFactura() );
         }
         buGrabarVenta.setDisable(true); 
         buBuscarProductos.setDisable(true);

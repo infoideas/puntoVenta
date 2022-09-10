@@ -15,7 +15,7 @@
             </column>
         </many-to-one>
         <many-to-one name="persona" class="entidades.Persona" fetch="select">
-            <column name="idCliente" not-null="true">
+            <column name="idCliente" >
                 <comment>Cliente</comment>
             </column>
         </many-to-one>

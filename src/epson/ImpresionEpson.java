@@ -195,7 +195,7 @@ public class ImpresionEpson
             String lsNombreItem="";
             String lsDescripcionItem="";
             double ld_cantidad,ld_precioUnitario;
-            int li_tasaIva = 0;
+            double ld_tasaIva = 10.50;  //OJO 
             String ls_codInt = "CodigoInterno123";
             String ls_codIva = "7";  //Gravado
             
@@ -205,7 +205,7 @@ public class ImpresionEpson
             ld_cantidad=item.getCantidad().doubleValue();
             ld_precioUnitario=item.getPrecioUnitario().doubleValue();
             
-            agregaItemTicketFactura(lsNombreItem,lsDescripcionItem,ld_cantidad, ld_precioUnitario,li_tasaIva, 
+            agregaItemTicketFactura(lsNombreItem,lsDescripcionItem,ld_cantidad, ld_precioUnitario,ld_tasaIva, 
             ls_codInt,ls_codIva);
             
         }
@@ -246,7 +246,7 @@ public class ImpresionEpson
         
     }
     
-    public void agregaItemTicketFactura(String lsNombreItem,String lsDescripcionItem, double Cantidad, double PrecioUnitario, int TasaIva, 
+    public void agregaItemTicketFactura(String lsNombreItem,String lsDescripcionItem, double Cantidad, double PrecioUnitario, double TasaIva, 
             String lsCodInt, String lsCodIva)
     {
         String lsDescExtraL1 = "";
@@ -254,8 +254,8 @@ public class ImpresionEpson
         String lsDescExtraL3 = "";
         String lsDescExtraL4 = "";
         int liCantidad = 0;
-        int liPrecioUnitario = 0;
-        int liTasaIva = 0;
+        int ldPrecioUnitario = 0;
+        int ldTasaIva = 0;
         String lsDescripcionItemCompleta = lsDescripcionItem;
         int li_len = lsDescripcionItemCompleta.length();
         System.out.println(lsDescripcionItemCompleta);
@@ -289,10 +289,16 @@ public class ImpresionEpson
         }
         liCantidad = (int)(Cantidad * 10000D);
         String lsCantidad = String.valueOf(liCantidad);
-        liPrecioUnitario = (int)(PrecioUnitario * 10000D);
-        String lsPrecioUnitario = String.valueOf(liPrecioUnitario);
-        liTasaIva = TasaIva * 100;
-        String lsTasaIva = String.valueOf(liTasaIva);
+        
+        if (TasaIva > 0)
+            PrecioUnitario=PrecioUnitario/(1 + TasaIva/100);
+
+        ldTasaIva=(int) (TasaIva * 100);
+        
+        ldPrecioUnitario = (int)(PrecioUnitario * 10000D);
+        String lsPrecioUnitario = String.valueOf(ldPrecioUnitario);
+
+        String lsTasaIva = String.valueOf(ldTasaIva);
         String lsImpInt = "";
         String lsCoefII = "";
         String lsURMTX = "";
@@ -414,9 +420,18 @@ public class ImpresionEpson
                 lsCondIvaComprador="M";
                 break;   
             case 4 :
-                //Monotributista
+                //Exento
                 lsCondIvaComprador="E";
-                break;                   
+                break;    
+            case 5 :
+                //MonoTributista Social
+                lsCondIvaComprador="T";
+                break;    
+            case 6 :
+                //MonoTributista Trabajador Independiente Promovido
+                lsCondIvaComprador="P";
+                break;    
+                
             default: 
                 lsCondIvaComprador=null;
         }
