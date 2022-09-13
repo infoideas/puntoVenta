@@ -205,8 +205,11 @@ public class ImpresionEpson
             ld_cantidad=item.getCantidad().doubleValue();
             ld_precioUnitario=item.getPrecioUnitario().doubleValue();
             
-            agregaItemTicketFactura(lsNombreItem,lsDescripcionItem,ld_cantidad, ld_precioUnitario,ld_tasaIva, 
-            ls_codInt,ls_codIva);
+            if (!agregaItemTicketFactura(lsNombreItem,lsDescripcionItem,ld_cantidad, ld_precioUnitario,ld_tasaIva, 
+            ls_codInt,ls_codIva)) {
+                cerrarTicketFactura();
+                return false;
+            }
             
         }
         
@@ -246,7 +249,7 @@ public class ImpresionEpson
         
     }
     
-    public void agregaItemTicketFactura(String lsNombreItem,String lsDescripcionItem, double Cantidad, double PrecioUnitario, double TasaIva, 
+    public boolean agregaItemTicketFactura(String lsNombreItem,String lsDescripcionItem, double Cantidad, double PrecioUnitario, double TasaIva, 
             String lsCodInt, String lsCodIva)
     {
         String lsDescExtraL1 = "";
@@ -319,8 +322,10 @@ public class ImpresionEpson
         if(LastComError > 0)
         {
             System.out.println((new StringBuilder()).append("Error: ").append(LastComError).toString());
-            return;
+            return false;
         } 
+        else
+            return true;
     }
 
     public boolean subTotalTicketFactura()

@@ -69,6 +69,10 @@ public class VentaController extends VBox implements Initializable {
     @FXML
     private TableColumn<Venta,String> columnaCliente;
     @FXML
+    private TableColumn<Venta,String> columnaDescTipoComprobante;
+    @FXML
+    private TableColumn<Venta,String> columnaNumComprobante;
+    @FXML
     private TableColumn<Venta,String> columnaValor;
     @FXML
     DatePicker dpDesde;
@@ -84,6 +88,8 @@ public class VentaController extends VBox implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         columnaId.setCellValueFactory( new PropertyValueFactory<Venta,String>("id"));
         columnaCliente.setCellValueFactory( new PropertyValueFactory<Venta,String>("persona"));
+        columnaDescTipoComprobante.setCellValueFactory( new PropertyValueFactory<Venta,String>("descTipoComprobante"));      
+        columnaNumComprobante.setCellValueFactory( new PropertyValueFactory<Venta,String>("numComprobante"));  
         columnaFecha.setCellValueFactory( new PropertyValueFactory<Venta,Date>("fecMov"));
         columnaFecha.setCellFactory(column -> {
         TableCell<Venta,Date> cell = new TableCell<Venta, Date>() {

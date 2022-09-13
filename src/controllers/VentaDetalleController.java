@@ -252,27 +252,29 @@ public class VentaDetalleController extends VBox implements Initializable {
             else
                 ld_cantidad=1;
             
-            VentaDet d= new VentaDet();
-            d.setProducto(producto);
-            d.setVenta(registroSel);
-            d.setCantidad(new BigDecimal(ld_cantidad));
-            d.setPrecioUnitario(producto.getPrecioContado());
-            d.setValorAdicional(BigDecimal.ZERO);
-            d.setPrecioTotal(new BigDecimal(ld_cantidad*producto.getPrecioContado().doubleValue()));
-            d.setEstado('P'); //Pendiente
-            d.setUnidadMedida(producto.getUnidadMedida());
-            detalleVenta.add(d);
-            dataVenta.setItems(detalleVenta);
-            dataVenta.getSelectionModel().select(detalleVenta.size() - 1);
+            if (ld_cantidad >= 1){
+                VentaDet d= new VentaDet();
+                d.setProducto(producto);
+                d.setVenta(registroSel);
+                d.setCantidad(new BigDecimal(ld_cantidad));
+                d.setPrecioUnitario(producto.getPrecioContado());
+                d.setValorAdicional(BigDecimal.ZERO);
+                d.setPrecioTotal(new BigDecimal(ld_cantidad*producto.getPrecioContado().doubleValue()));
+                d.setEstado('P'); //Pendiente
+                d.setUnidadMedida(producto.getUnidadMedida());
+                detalleVenta.add(d);
+                dataVenta.setItems(detalleVenta);
+                dataVenta.getSelectionModel().select(detalleVenta.size() - 1);
             
-            double ld_total=0.00;
-            ld_total=calculaTotal();
-            DecimalFormat df = new DecimalFormat( "#,##0.##", new DecimalFormatSymbols(new Locale("es", "AR")));
-            valorTotal.setText(df.format(ld_total));
+                double ld_total=0.00;
+                ld_total=calculaTotal();
+                DecimalFormat df = new DecimalFormat( "#,##0.##", new DecimalFormatSymbols(new Locale("es", "AR")));    
+                valorTotal.setText(df.format(ld_total));
                        
-            if (buGrabarVenta.isDisabled())
-                buGrabarVenta.setDisable(false);
-            
+                if (buGrabarVenta.isDisabled())
+                    buGrabarVenta.setDisable(false);
+                
+            }
         }
         });
         return row ;
@@ -291,7 +293,11 @@ public class VentaDetalleController extends VBox implements Initializable {
                 if (action.get() == ButtonType.OK) {
                         int li_fila=dataVenta.getSelectionModel().getSelectedIndex();
                         detalleVenta.remove(li_fila);
-                        dataVenta.setItems(detalleVenta);                    
+                        dataVenta.setItems(detalleVenta);     
+                        double ld_total=0.00;
+                        ld_total=calculaTotal();
+                        DecimalFormat df = new DecimalFormat( "#,##0.##", new DecimalFormatSymbols(new Locale("es", "AR")));    
+                        valorTotal.setText(df.format(ld_total));                        
                         wb_mod=true;                    
                 }
            }
@@ -816,15 +822,15 @@ public class VentaDetalleController extends VBox implements Initializable {
         // Poner focus en cantidad al inicio
         Platform.runLater(() -> txtCantidad.requestFocus());
 
-        txtCantidad.textProperty().addListener(new ChangeListener<String>() {
-        @Override
-        public void changed(ObservableValue<? extends String> observable, String oldValue, 
-        String newValue) {
-            if (!newValue.matches("\\d*")) {
-                txtCantidad.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        }
-        });
+//        txtCantidad.textProperty().addListener(new ChangeListener<String>() {
+//        @Override
+//        public void changed(ObservableValue<? extends String> observable, String oldValue, 
+//        String newValue) {
+//            if (!newValue.matches("\\d*")) {
+//                txtCantidad.setText(newValue.replaceAll("[^\\d]", ""));
+//            }
+//        }
+//        });
          
         ButtonType buttonTypeOk = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeCancel = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -835,8 +841,8 @@ public class VentaDetalleController extends VBox implements Initializable {
             @Override
             public CantidadProducto call(ButtonType b) {
                 if (b == buttonTypeOk) {
-                    int li_cantidad;
-                    li_cantidad=(txtCantidad.getText().isEmpty() || txtCantidad.getText()==null ?  0 : Integer.parseInt(txtCantidad.getText()));
+                    double li_cantidad;
+                    li_cantidad=(txtCantidad.getText().isEmpty() || txtCantidad.getText()==null ?  0 : Double.parseDouble(txtCantidad.getText()));
                     return new CantidadProducto(li_cantidad);
                 }
                return null;
@@ -997,7 +1003,7 @@ public class VentaDetalleController extends VBox implements Initializable {
             impresion.abrirPuerto();
             boolean lb_ticket=impresion.imprimirTicketFactura(lsTipDoc,lsNombreComprador,lsDirComprador,
                              liTipIdComprador, lsNumIdComprador, liIvaComprador, lsDocAsocL1, lsDocAsocL2, lsDocAsocL3,lsLineaCompOrigen,listaItems);
-            if (lb_ticket){
+            if (lb_ticket && !impresion.getNumComprobante().isEmpty()){
                 //Pongo los datos del ticket en la factura
                 registroSel.setPuntoVenta(PuntoVenta.getPuntoVentaCF());
                 registroSel.setNumFactura(impresion.getNumComprobante());

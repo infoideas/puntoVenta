@@ -10,20 +10,20 @@ package controllers;
  * @author rafael
  */
 public class CantidadProducto {
-    private int cantidad;
+    private double cantidad;
 
     public CantidadProducto() {
     }
 
-    public CantidadProducto(int cantidad) {
+    public CantidadProducto(double cantidad) {
         setCantidad(cantidad);
     }
     
-    public int getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
     

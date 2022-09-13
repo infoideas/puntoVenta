@@ -58,9 +58,10 @@
         <columns>
           <TableColumn fx:id="columnaId" maxWidth="1500.0" prefWidth="48.0" text="Id" />
           <TableColumn fx:id="columnaFecha" maxWidth="2800.0" prefWidth="79.0" text="Fecha" />
+            <TableColumn fx:id="columnaDescTipoComprobante" prefWidth="75.0" text="Tipo" />
+            <TableColumn fx:id="columnaNumComprobante" prefWidth="75.0" text="Comprobante" />
             <TableColumn fx:id="columnaCliente" prefWidth="96.0" text="Cliente" />
             <TableColumn fx:id="columnaValor" prefWidth="166.0" text="Valor" />
-            <TableColumn fx:id="columnaDescEstado" maxWidth="2500.0" prefWidth="54.0" text="Estado" />
         </columns>
          <opaqueInsets>
             <Insets />

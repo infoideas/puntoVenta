@@ -28,6 +28,8 @@ public class Venta  implements java.io.Serializable {
      private BigDecimal valorSiva;
      private char pagado;
      private char tipoComprobante;
+     private String descTipoComprobante;
+     private String numComprobante;
      private String condIva;
      private String tipoFactura;
      private String puntoVenta;
@@ -243,8 +245,26 @@ public class Venta  implements java.io.Serializable {
         this.ventaDets = ventaDets;
     }
 
-    
+    public String getDescTipoComprobante(){
+        String ls_tipoCompro = null;
+        switch(tipoComprobante)
+        {
+            case 'V' :
+                ls_tipoCompro="Venta";
+                break;  
+            case 'F' :
+                ls_tipoCompro="Factura";
+                break;    
+        }
+        return ls_tipoCompro;
+    }
 
+    public String getNumComprobante(){
+        if (tipoComprobante=='F')
+            return puntoVenta.concat("-").concat(numFactura).concat("-").concat(tipoFactura);
+        else
+            return "";
+   }
 }
 
 
