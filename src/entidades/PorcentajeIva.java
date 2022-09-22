@@ -1,5 +1,5 @@
 package entidades;
-// Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1
+// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -10,23 +10,24 @@ import java.math.BigDecimal;
 public class PorcentajeIva  implements java.io.Serializable {
 
 
-     private Integer id;
+     private int id;
      private String nombre;
      private BigDecimal porcentaje;
 
     public PorcentajeIva() {
     }
 
-    public PorcentajeIva(String nombre, BigDecimal porcentaje) {
+    public PorcentajeIva(int id, String nombre, BigDecimal porcentaje) {
+       this.id = id;
        this.nombre = nombre;
        this.porcentaje = porcentaje;
     }
    
-    public Integer getId() {
+    public int getId() {
         return this.id;
     }
     
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
     public String getNombre() {

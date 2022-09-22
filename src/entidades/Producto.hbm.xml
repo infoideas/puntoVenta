@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1 -->
+<!-- Generated 21 sep. 2022 18:50:43 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="entidades.Producto" table="producto" catalog="gestion" optimistic-lock="version" lazy="false">
         <comment>Productos</comment>
@@ -29,10 +29,10 @@
             <column name="detalle" length="65535" />
         </property>
         <property name="precioContado" type="big_decimal">
-            <column name="precio_contado" precision="20" not-null="true" />
+            <column name="precio_contado" precision="20" />
         </property>
         <property name="precioLista" type="big_decimal">
-            <column name="precio_lista" precision="20" not-null="true" />
+            <column name="precio_lista" precision="20" />
         </property>
         <property name="idIva" type="java.lang.Short">
             <column name="idIVa" />
@@ -52,6 +52,18 @@
                 <comment>Determina si se imprime comanda para el producto</comment>
             </column>
         </property>
+        <set name="listaPreciosLocalDets" table="lista_precios_local_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProducto" not-null="true" />
+            </key>
+            <one-to-many class="entidades.ListaPreciosLocalDet" />
+        </set>
+        <set name="listaPreciosDets" table="lista_precios_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProducto" not-null="true" />
+            </key>
+            <one-to-many class="entidades.ListaPreciosDet" />
+        </set>
         <set name="ventaDets" table="venta_det" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="idProducto" not-null="true" />

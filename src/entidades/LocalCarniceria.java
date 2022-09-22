@@ -1,5 +1,5 @@
 package entidades;
-// Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1
+// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -26,6 +26,7 @@ public class LocalCarniceria  implements java.io.Serializable {
      private char estado;
      private Integer plantillaCobranzas;
      private String ccVentaLocal;
+     private Set<LocalRubro> localRubros = new HashSet<LocalRubro>(0);
      private Set<ListaPreciosLocal> listaPreciosLocals = new HashSet<ListaPreciosLocal>(0);
      private Set<LocalEmpleado> localEmpleados = new HashSet<LocalEmpleado>(0);
      private Set<Venta> ventas = new HashSet<Venta>(0);
@@ -42,7 +43,7 @@ public class LocalCarniceria  implements java.io.Serializable {
         this.direccion = direccion;
         this.estado = estado;
     }
-    public LocalCarniceria(Localidad localidad, Provincia provincia, int idClienteEstancia, String nombreComercial, Integer idUsuarioEncargado, String responsable, String direccion, String telefono, String email, String horarioMa, String horarioTa, char estado, Integer plantillaCobranzas, String ccVentaLocal, Set<ListaPreciosLocal> listaPreciosLocals, Set<LocalEmpleado> localEmpleados, Set<Venta> ventas) {
+    public LocalCarniceria(Localidad localidad, Provincia provincia, int idClienteEstancia, String nombreComercial, Integer idUsuarioEncargado, String responsable, String direccion, String telefono, String email, String horarioMa, String horarioTa, char estado, Integer plantillaCobranzas, String ccVentaLocal, Set<LocalRubro> localRubros, Set<ListaPreciosLocal> listaPreciosLocals, Set<LocalEmpleado> localEmpleados, Set<Venta> ventas) {
        this.localidad = localidad;
        this.provincia = provincia;
        this.idClienteEstancia = idClienteEstancia;
@@ -57,6 +58,7 @@ public class LocalCarniceria  implements java.io.Serializable {
        this.estado = estado;
        this.plantillaCobranzas = plantillaCobranzas;
        this.ccVentaLocal = ccVentaLocal;
+       this.localRubros = localRubros;
        this.listaPreciosLocals = listaPreciosLocals;
        this.localEmpleados = localEmpleados;
        this.ventas = ventas;
@@ -166,6 +168,13 @@ public class LocalCarniceria  implements java.io.Serializable {
     
     public void setCcVentaLocal(String ccVentaLocal) {
         this.ccVentaLocal = ccVentaLocal;
+    }
+    public Set<LocalRubro> getLocalRubros() {
+        return this.localRubros;
+    }
+    
+    public void setLocalRubros(Set<LocalRubro> localRubros) {
+        this.localRubros = localRubros;
     }
     public Set<ListaPreciosLocal> getListaPreciosLocals() {
         return this.listaPreciosLocals;

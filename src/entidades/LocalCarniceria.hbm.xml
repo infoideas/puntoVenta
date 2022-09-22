@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1 -->
+<!-- Generated 21 sep. 2022 18:50:43 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entidades.LocalCarniceria" table="local_carniceria" catalog="gestion" optimistic-lock="version"
-        lazy="false">
+    <class name="entidades.LocalCarniceria" table="local_carniceria" catalog="gestion" optimistic-lock="version">
         <comment>Local o sucursal de la carnicer&#237;a</comment>
         <id name="id" type="java.lang.Integer">
             <column name="id" />
@@ -68,6 +67,12 @@
                 <comment>Cuenta contable para ventas a local</comment>
             </column>
         </property>
+        <set name="localRubros" table="local_rubro" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idLocal" not-null="true" />
+            </key>
+            <one-to-many class="entidades.LocalRubro" />
+        </set>
         <set name="listaPreciosLocals" table="lista_precios_local" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="idLocal" not-null="true" />

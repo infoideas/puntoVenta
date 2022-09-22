@@ -1,5 +1,5 @@
 package entidades;
-// Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1
+// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -12,15 +12,15 @@ public class ListaPreciosLocalDet  implements java.io.Serializable {
 
      private Integer id;
      private ListaPreciosLocal listaPreciosLocal;
-     private int idProducto;
+     private Producto producto;
      private BigDecimal precio;
 
     public ListaPreciosLocalDet() {
     }
 
-    public ListaPreciosLocalDet(ListaPreciosLocal listaPreciosLocal, int idProducto, BigDecimal precio) {
+    public ListaPreciosLocalDet(ListaPreciosLocal listaPreciosLocal, Producto producto, BigDecimal precio) {
        this.listaPreciosLocal = listaPreciosLocal;
-       this.idProducto = idProducto;
+       this.producto = producto;
        this.precio = precio;
     }
    
@@ -38,12 +38,12 @@ public class ListaPreciosLocalDet  implements java.io.Serializable {
     public void setListaPreciosLocal(ListaPreciosLocal listaPreciosLocal) {
         this.listaPreciosLocal = listaPreciosLocal;
     }
-    public int getIdProducto() {
-        return this.idProducto;
+    public Producto getProducto() {
+        return this.producto;
     }
     
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
     public BigDecimal getPrecio() {
         return this.precio;

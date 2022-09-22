@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1 -->
+<!-- Generated 21 sep. 2022 18:50:43 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="entidades.VentaDet" table="venta_det" catalog="gestion" optimistic-lock="version">
         <comment>Detalle de venta</comment>

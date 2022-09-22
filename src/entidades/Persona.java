@@ -1,5 +1,5 @@
 package entidades;
-// Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1
+// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -20,8 +20,6 @@ public class Persona  implements java.io.Serializable {
      private String nombre;
      private String nombreFantasia;
      private String razonSocial;
-     private String nombreCompleto;
-     private String direccion;  
      private Set<PersonaDireccion> personaDireccions = new HashSet<PersonaDireccion>(0);
      private Set<Venta> ventas = new HashSet<Venta>(0);
 
@@ -147,5 +145,7 @@ public class Persona  implements java.io.Serializable {
 
 
 }
+
+
 
 

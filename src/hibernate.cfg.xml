@@ -51,11 +51,13 @@ Contributor(s):
     <mapping resource="entidades/Empleado.hbm.xml"/>
     <mapping resource="entidades/Marca.hbm.xml"/>
     <mapping resource="entidades/LocalEmpleado.hbm.xml"/>
+    <mapping resource="entidades/LocalRubro.hbm.xml"/>
     <mapping resource="entidades/Producto.hbm.xml"/>
     <mapping resource="entidades/CondIva.hbm.xml"/>
     <mapping resource="entidades/LocalCarniceria.hbm.xml"/>
     <mapping resource="entidades/VentaCc.hbm.xml"/>
     <mapping resource="entidades/Empresa.hbm.xml"/>
+    <mapping resource="entidades/ListaPrecios.hbm.xml"/>
     <mapping resource="entidades/Moneda.hbm.xml"/>
     <mapping resource="entidades/FormaPago.hbm.xml"/>
     <mapping resource="entidades/UnidadMedida.hbm.xml"/>
@@ -63,6 +65,7 @@ Contributor(s):
     <mapping resource="entidades/Tarjeta.hbm.xml"/>
     <mapping resource="entidades/SubRubro.hbm.xml"/>
     <mapping resource="entidades/Pais.hbm.xml"/>
+    <mapping resource="entidades/ListaPreciosDet.hbm.xml"/>
     <mapping resource="entidades/Venta.hbm.xml"/>
     <mapping resource="entidades/VentaDet.hbm.xml"/>
     <mapping resource="entidades/Provincia.hbm.xml"/>

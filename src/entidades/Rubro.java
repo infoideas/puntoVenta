@@ -1,5 +1,5 @@
 package entidades;
-// Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1
+// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -15,6 +15,7 @@ public class Rubro  implements java.io.Serializable {
      private AreaNegocio areaNegocio;
      private String nombre;
      private Set<Producto> productos = new HashSet<Producto>(0);
+     private Set<LocalRubro> localRubros = new HashSet<LocalRubro>(0);
      private Set<SubRubro> subRubros = new HashSet<SubRubro>(0);
 
     public Rubro() {
@@ -25,10 +26,11 @@ public class Rubro  implements java.io.Serializable {
         this.areaNegocio = areaNegocio;
         this.nombre = nombre;
     }
-    public Rubro(AreaNegocio areaNegocio, String nombre, Set<Producto> productos, Set<SubRubro> subRubros) {
+    public Rubro(AreaNegocio areaNegocio, String nombre, Set<Producto> productos, Set<LocalRubro> localRubros, Set<SubRubro> subRubros) {
        this.areaNegocio = areaNegocio;
        this.nombre = nombre;
        this.productos = productos;
+       this.localRubros = localRubros;
        this.subRubros = subRubros;
     }
    
@@ -60,6 +62,13 @@ public class Rubro  implements java.io.Serializable {
     public void setProductos(Set<Producto> productos) {
         this.productos = productos;
     }
+    public Set<LocalRubro> getLocalRubros() {
+        return this.localRubros;
+    }
+    
+    public void setLocalRubros(Set<LocalRubro> localRubros) {
+        this.localRubros = localRubros;
+    }
     public Set<SubRubro> getSubRubros() {
         return this.subRubros;
     }
@@ -68,11 +77,10 @@ public class Rubro  implements java.io.Serializable {
         this.subRubros = subRubros;
     }
 
-    @Override
+    @Override   
     public String toString(){
-        return nombre;  
+       return nombre;   
     }  
-
 
 
 }

@@ -292,7 +292,6 @@ public class VentaController extends VBox implements Initializable {
             session.beginTransaction();
             p=(Venta) session.get(Venta.class,movSel.getId());
             Hibernate.initialize(p.getVentaDets());
-            Hibernate.initialize(p.getPersona().getDireccion());
             session.getTransaction().commit();
         }
         catch (HibernateException e){

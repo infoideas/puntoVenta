@@ -134,9 +134,11 @@ public class PuntoVenta extends Application {
     public void start(Stage primaryStage) {
         stage = primaryStage;
         BeanBase beanBase= new BeanBase();
+        
         //Empresa
         Empresa empresaSel=beanBase.obtenerEmpresa(Integer.valueOf(beanBase.getConfiguracion().getProperty("idEmpresa").trim())); 
         setEmpresaSel(empresaSel);
+        
         //Local
         LocalCarniceria localSel=obtieneLocal(Integer.valueOf(beanBase.getConfiguracion().getProperty("idLocal").trim())); 
         setLocalSel(localSel);

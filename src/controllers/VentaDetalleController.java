@@ -24,6 +24,7 @@ import general.ItemTipo;
 import general.ItemTipoString;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -256,10 +257,14 @@ public class VentaDetalleController extends VBox implements Initializable {
                 VentaDet d= new VentaDet();
                 d.setProducto(producto);
                 d.setVenta(registroSel);
-                d.setCantidad(new BigDecimal(ld_cantidad));
+                BigDecimal cantidadOrig = new BigDecimal(ld_cantidad);
+                BigDecimal cantidadRedondeada = cantidadOrig.setScale(2,RoundingMode.HALF_UP);
+                d.setCantidad(cantidadRedondeada);
                 d.setPrecioUnitario(producto.getPrecioContado());
                 d.setValorAdicional(BigDecimal.ZERO);
-                d.setPrecioTotal(new BigDecimal(ld_cantidad*producto.getPrecioContado().doubleValue()));
+                BigDecimal precioTotalOrig = new BigDecimal(ld_cantidad*producto.getPrecioContado().doubleValue());
+                BigDecimal precioTotalRedondeada = precioTotalOrig.setScale(2,RoundingMode.HALF_UP);
+                d.setPrecioTotal(precioTotalRedondeada);
                 d.setEstado('P'); //Pendiente
                 d.setUnidadMedida(producto.getUnidadMedida());
                 detalleVenta.add(d);
@@ -277,8 +282,10 @@ public class VentaDetalleController extends VBox implements Initializable {
             }
         }
         });
+        
         return row ;
         });
+        
         
         //Eliminar producto de la venta
         buEliminar.setOnAction(event -> {
@@ -466,10 +473,22 @@ public class VentaDetalleController extends VBox implements Initializable {
         columnaRubroBuscado.setCellValueFactory( new PropertyValueFactory<Producto,String>("rubro"));
         columnaPrecioBuscado.setCellValueFactory( new PropertyValueFactory<Producto,String>("precioContado"));
         columnaPrecioBuscado.setStyle("-fx-alignment: CENTER-RIGHT;");
-        
+
+        Date lda_fec_carga = new Date();
         List<Producto> listaProductos=buscarProductos(idRubroSel,nombre);
         for (Producto producto: listaProductos) {
+            double ld_precio=0;
+            try {
+                //Obtengo el precio del producto
+                ld_precio=obtienePrecio(PuntoVenta.getLocalSel().getId(),producto.getId(),lda_fec_carga);
+            } catch (SQLException ex) {
+                
+            }
+            
             listaProductosBuscados.add(producto);
+            
+            
+            
         }
         dataProductosBuscados.setItems(listaProductosBuscados);
           
@@ -822,15 +841,16 @@ public class VentaDetalleController extends VBox implements Initializable {
         // Poner focus en cantidad al inicio
         Platform.runLater(() -> txtCantidad.requestFocus());
 
-//        txtCantidad.textProperty().addListener(new ChangeListener<String>() {
-//        @Override
-//        public void changed(ObservableValue<? extends String> observable, String oldValue, 
-//        String newValue) {
-//            if (!newValue.matches("\\d*")) {
-//                txtCantidad.setText(newValue.replaceAll("[^\\d]", ""));
-//            }
-//        }
-//        });
+        txtCantidad.textProperty().addListener(new ChangeListener<String>() {
+        @Override
+        public void changed(ObservableValue<? extends String> observable, String oldValue, 
+        String newValue) {
+            //if (!newValue.matches("\\d{5}[.]\\d{2}")) {    
+            if (!newValue.matches("[0-9]{1,8}[.][0-9]{1,2}")) {        
+                txtCantidad.setText(newValue.replaceAll("[0-9]{1,8}[.][0-9]{1,2}",""));
+            }
+        }
+        });
          
         ButtonType buttonTypeOk = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
         ButtonType buttonTypeCancel = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -841,8 +861,17 @@ public class VentaDetalleController extends VBox implements Initializable {
             @Override
             public CantidadProducto call(ButtonType b) {
                 if (b == buttonTypeOk) {
-                    double li_cantidad;
-                    li_cantidad=(txtCantidad.getText().isEmpty() || txtCantidad.getText()==null ?  0 : Double.parseDouble(txtCantidad.getText()));
+                    double li_cantidad=0;
+                    try{
+                        li_cantidad=(txtCantidad.getText().isEmpty() || txtCantidad.getText()==null ?  0 : Double.parseDouble(txtCantidad.getText()));
+                        }
+                    catch( NumberFormatException e){
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle(PuntoVenta.getTituloApp());
+                        alert.setContentText("Cantidad incorrecta!");
+                        alert.show();   
+                        return null;
+                    }
                     return new CantidadProducto(li_cantidad);
                 }
                return null;
@@ -1085,6 +1114,43 @@ public class VentaDetalleController extends VBox implements Initializable {
         return resultList;
     }
     
+    public double obtienePrecio(int idLocal,int idProducto,Date fecha) throws SQLException{
+        CallableStatement s=null;
+        ResultSet r=null;
+        double ld_precio=0;
+        
+        //Conectamos a la base
+        Conector conector = new Conector();  
+        Connection conexion = conector.connect("estancia");
+        
+        try {      
+             s=conexion.prepareCall("{call sp_get_precio_producto_local ( ? , ? , ? , ? )}"); 
+             s.setInt(1,idLocal); 
+             s.setInt(2,idProducto); 
+             s.setTimestamp(3,new java.sql.Timestamp(fecha.getTime()));
+             s.registerOutParameter(4,java.sql.Types.DOUBLE);
+             r=s.executeQuery();
+
+             //Obtengo el id y la fecha de fin del último balance
+             ld_precio=s.getDouble(4);             
+
+        }catch (SQLException e){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(PuntoVenta.getTituloApp());
+            alert.setContentText("Error al obtener precio del producto");
+            alert.show();          
+        }catch (Exception e){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(PuntoVenta.getTituloApp());
+            alert.setContentText("Error al obtener precio del producto");
+            alert.show();          
+        }finally {
+            if (r != null) {r.close();}
+            if (s != null) {s.close();}
+            if (conexion != null) conexion.close(); 
+        }
+        return ld_precio;
+    }
     
     
 }

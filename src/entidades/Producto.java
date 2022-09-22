@@ -1,5 +1,5 @@
 package entidades;
-// Generated 26 ago. 2022 21:12:34 by Hibernate Tools 4.3.1
+// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -24,23 +24,23 @@ public class Producto  implements java.io.Serializable {
      private char estado;
      private char elaborado;
      private char imprimirComanda;
+     private Set<ListaPreciosLocalDet> listaPreciosLocalDets = new HashSet<ListaPreciosLocalDet>(0);
+     private Set<ListaPreciosDet> listaPreciosDets = new HashSet<ListaPreciosDet>(0);
      private Set<VentaDet> ventaDets = new HashSet<VentaDet>(0);
 
     public Producto() {
     }
 
 	
-    public Producto(Rubro rubro, UnidadMedida unidadMedida, String nombre, BigDecimal precioContado, BigDecimal precioLista, char estado, char elaborado, char imprimirComanda) {
+    public Producto(Rubro rubro, UnidadMedida unidadMedida, String nombre, char estado, char elaborado, char imprimirComanda) {
         this.rubro = rubro;
         this.unidadMedida = unidadMedida;
         this.nombre = nombre;
-        this.precioContado = precioContado;
-        this.precioLista = precioLista;
         this.estado = estado;
         this.elaborado = elaborado;
         this.imprimirComanda = imprimirComanda;
     }
-    public Producto(Marca marca, Rubro rubro, UnidadMedida unidadMedida, String nombre, String detalle, BigDecimal precioContado, BigDecimal precioLista, Short idIva, char estado, char elaborado, char imprimirComanda, Set<VentaDet> ventaDets) {
+    public Producto(Marca marca, Rubro rubro, UnidadMedida unidadMedida, String nombre, String detalle, BigDecimal precioContado, BigDecimal precioLista, Short idIva, char estado, char elaborado, char imprimirComanda, Set<ListaPreciosLocalDet> listaPreciosLocalDets, Set<ListaPreciosDet> listaPreciosDets, Set<VentaDet> ventaDets) {
        this.marca = marca;
        this.rubro = rubro;
        this.unidadMedida = unidadMedida;
@@ -52,6 +52,8 @@ public class Producto  implements java.io.Serializable {
        this.estado = estado;
        this.elaborado = elaborado;
        this.imprimirComanda = imprimirComanda;
+       this.listaPreciosLocalDets = listaPreciosLocalDets;
+       this.listaPreciosDets = listaPreciosDets;
        this.ventaDets = ventaDets;
     }
    
@@ -139,6 +141,20 @@ public class Producto  implements java.io.Serializable {
     public void setImprimirComanda(char imprimirComanda) {
         this.imprimirComanda = imprimirComanda;
     }
+    public Set<ListaPreciosLocalDet> getListaPreciosLocalDets() {
+        return this.listaPreciosLocalDets;
+    }
+    
+    public void setListaPreciosLocalDets(Set<ListaPreciosLocalDet> listaPreciosLocalDets) {
+        this.listaPreciosLocalDets = listaPreciosLocalDets;
+    }
+    public Set<ListaPreciosDet> getListaPreciosDets() {
+        return this.listaPreciosDets;
+    }
+    
+    public void setListaPreciosDets(Set<ListaPreciosDet> listaPreciosDets) {
+        this.listaPreciosDets = listaPreciosDets;
+    }
     public Set<VentaDet> getVentaDets() {
         return this.ventaDets;
     }
@@ -147,10 +163,11 @@ public class Producto  implements java.io.Serializable {
         this.ventaDets = ventaDets;
     }
 
-    @Override
+    @Override   
     public String toString(){
-        return nombre;  
+       return nombre;   
     }  
+
 
 
 }
