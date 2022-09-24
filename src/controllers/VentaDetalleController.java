@@ -163,6 +163,7 @@ public class VentaDetalleController extends VBox implements Initializable {
     private int idAreaSel=0;
     private boolean wb_nuevo;
     private Persona personaSel;
+    private boolean wbVentaRapida;
     
     private ObservableList<VentaDet> detalleVenta = FXCollections.observableArrayList();
     private ObservableList<Producto> listaProductosBuscados = FXCollections.observableArrayList();
@@ -286,7 +287,6 @@ public class VentaDetalleController extends VBox implements Initializable {
         return row ;
         });
         
-        
         //Eliminar producto de la venta
         buEliminar.setOnAction(event -> {
            VentaDet pedidoDetSel= (VentaDet) dataVenta.getSelectionModel().getSelectedItem();
@@ -338,18 +338,30 @@ public class VentaDetalleController extends VBox implements Initializable {
         return ld_total;
     }
 
-    public void nuevaVenta(){
-        
+    public void nuevaVenta(boolean isVentaRapida){
         wb_nuevo=true;
+        wbVentaRapida=isVentaRapida;
         usuario.setText(PuntoVenta.getUsuarioConectado().getNombreCompletoUsuario());
         personaSel=null;
+        buGrabarVenta.setDisable(false); 
+        buBuscarProductos.setDisable(false);
+        buBuscarCliente.setDisable(false);
+        cbTipoCompro.setDisable(false);
+        buEliminar.setDisable(false);
         buImprimir.setDisable(true);
+        wb_mod=false;  
         
         //Venta nuevo 
         condIvaCliente.setText("Consumidor Final");
         
-        //Tipo de comprobante
+        ObservableList<ItemTipo> listaTiposCompro = FXCollections.observableArrayList();
         ItemTipo item= new ItemTipo('V',"Venta");
+        listaTiposCompro.add(item);
+        item= new ItemTipo('F',"Factura");
+        listaTiposCompro.add(item);
+        cbTipoCompro.setItems(listaTiposCompro);
+        
+        //Tipo de comprobante por default Factura
         cbTipoCompro.setValue(item);
         registroSel.setLocalCarniceria(PuntoVenta.getLocalSel());
         registroSel.setIdUsuario(PuntoVenta.getUsuarioConectado().getId());
@@ -360,11 +372,48 @@ public class VentaDetalleController extends VBox implements Initializable {
         registroSel.setPorcDesc(BigDecimal.ZERO);
         registroSel.setValorDesc(BigDecimal.ZERO);
         registroSel.setValorFinal(BigDecimal.ZERO);  
-        detalleVenta=dataVenta.getItems();
-        
+        detalleVenta.clear();
+        dataVenta.setItems(detalleVenta);     
         buGrabarVenta.setDisable(true);
-       
+        numCompro.setText("");
         
+        if (wbVentaRapida){
+            Producto producto=PuntoVenta.getProductoGenerico();
+            CantidadProducto cantidadPrecio=pedirPrecioTotal(1,producto.getNombre());
+            if (cantidadPrecio!=null){
+                double ld_cantidad=0,ld_precioTotal=0;
+                ld_cantidad=cantidadPrecio.getCantidad();
+                ld_precioTotal=cantidadPrecio.getPrecioTotal();
+                if (ld_cantidad >= 1 && ld_precioTotal > 0){
+                    VentaDet d= new VentaDet();
+                    d.setProducto(producto);
+                    d.setVenta(registroSel);
+                    BigDecimal cantidadOrig = new BigDecimal(ld_cantidad);
+                    BigDecimal cantidadRedondeada = cantidadOrig.setScale(2,RoundingMode.HALF_UP);
+                    d.setCantidad(cantidadRedondeada);
+                    d.setPrecioUnitario(new BigDecimal(ld_precioTotal));
+                    d.setValorAdicional(BigDecimal.ZERO);
+                    BigDecimal precioTotalOrig = new BigDecimal(ld_precioTotal);
+                    BigDecimal precioTotalRedondeada = precioTotalOrig.setScale(2,RoundingMode.HALF_UP);
+                    d.setPrecioTotal(precioTotalRedondeada);
+                    d.setEstado('P'); //Pendiente
+                    d.setUnidadMedida(producto.getUnidadMedida());
+                    detalleVenta.add(d);
+                    dataVenta.setItems(detalleVenta);
+                    dataVenta.getSelectionModel().select(detalleVenta.size() - 1);
+                    
+                    double ld_total=0.00;
+                    ld_total=calculaTotal();
+                    DecimalFormat df = new DecimalFormat( "#,##0.##", new DecimalFormatSymbols(new Locale("es", "AR")));    
+                    valorTotal.setText(df.format(ld_total));
+                       
+                    if (buGrabarVenta.isDisabled())
+                        buGrabarVenta.setDisable(false);
+                }
+            }
+        }
+        // Poner focus en el nombre del producto
+        Platform.runLater(() -> buGrabarVenta.requestFocus());
     }
     
     public void editaVenta(){
@@ -889,6 +938,91 @@ public class VentaDetalleController extends VBox implements Initializable {
         return li_cantidad;
     }
     
+    //Pide la cantidad de productos para agregar a la mesa
+    public CantidadProducto pedirPrecioTotal(int cantidadInicial,String nombreProducto){
+        double li_cantidad = 0;
+        Dialog<CantidadProducto> dialog = new Dialog<>();
+        dialog.setTitle("Cantidad");
+        dialog.setHeaderText(nombreProducto);
+         
+        Label label1 = new Label("Cantidad: ");
+        TextField txtCantidad = new TextField(String.valueOf(cantidadInicial));
+
+        Label label2 = new Label("Precio: ");
+        TextField txtPrecio = new TextField("0");
+        
+        GridPane grid = new GridPane();
+        grid.add(label1, 1, 1);
+        grid.add(txtCantidad, 2, 1);
+        grid.add(label2, 1, 2);
+        grid.add(txtPrecio, 2, 2);
+        dialog.getDialogPane().setContent(grid);
+    
+        // Poner focus en cantidad al inicio
+        Platform.runLater(() -> txtPrecio.requestFocus());
+
+        txtCantidad.textProperty().addListener(new ChangeListener<String>() {
+        @Override
+        public void changed(ObservableValue<? extends String> observable, String oldValue, 
+        String newValue) {
+            //if (!newValue.matches("\\d{5}[.]\\d{2}")) {    
+            if (!newValue.matches("[0-9]{1,8}[.][0-9]{1,2}")) {        
+                txtCantidad.setText(newValue.replaceAll("[0-9]{1,8}[.][0-9]{1,2}",""));
+            }
+        }
+        });
+         
+        txtPrecio.textProperty().addListener(new ChangeListener<String>() {
+        @Override
+        public void changed(ObservableValue<? extends String> observable, String oldValue, 
+        String newValue) {
+            //if (!newValue.matches("\\d{5}[.]\\d{2}")) {    
+            if (!newValue.matches("[0-9]{1,8}[.][0-9]{1,2}")) {        
+                txtPrecio.setText(newValue.replaceAll("[0-9]{1,8}[.][0-9]{1,2}",""));
+            }
+        }
+        });        
+        
+        ButtonType buttonTypeOk = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+        ButtonType buttonTypeCancel = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
+        dialog.getDialogPane().getButtonTypes().add(buttonTypeCancel);
+        
+        dialog.setResultConverter(new Callback<ButtonType, CantidadProducto>() {
+            @Override
+            public CantidadProducto call(ButtonType b) {
+                if (b == buttonTypeOk) {
+                    double li_cantidad=0;
+                    double ld_precio=0;
+                    try{
+                        li_cantidad=(txtCantidad.getText().isEmpty() || txtCantidad.getText()==null ?  0 : Double.parseDouble(txtCantidad.getText()));
+                        ld_precio=(txtPrecio.getText().isEmpty() || txtPrecio.getText()==null ?  0 : Double.parseDouble(txtPrecio.getText()));                        
+                        }
+                    catch( NumberFormatException e){
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle(PuntoVenta.getTituloApp());
+                        alert.setContentText("Cantidad incorrecta!");
+                        alert.show();   
+                        return null;
+                    }
+                    return new CantidadProducto(li_cantidad,ld_precio);
+                }
+               return null;
+            }
+        });
+         
+        CantidadProducto cantidad=null; 
+        Optional<CantidadProducto> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            cantidad = result.get();
+            li_cantidad=cantidad.getCantidad();
+        }
+        else
+            li_cantidad=0;
+        
+        return cantidad;
+    }
+    
     //Factura el pedido
     public void grabarVenta(){
         
@@ -1088,8 +1222,10 @@ public class VentaDetalleController extends VBox implements Initializable {
         alert.setHeaderText(null);
         alert.setTitle("Información");
         alert.setContentText("Venta grabado exitosamente!");
-        alert.show();     
-            
+        alert.showAndWait();     
+        
+        if (wbVentaRapida)
+            nuevaVenta(wbVentaRapida);
  
     }
     

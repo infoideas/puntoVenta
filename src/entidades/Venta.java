@@ -34,6 +34,8 @@ public class Venta  implements java.io.Serializable {
      private String puntoVenta;
      private String numFactura;
      private String observaciones;
+     private String descTipoComprobante;
+     private String numComprobante;
      private Set<VentaCc> ventaCcs = new HashSet<VentaCc>(0);
      private Set<VentaDet> ventaDets = new HashSet<VentaDet>(0);
 
@@ -244,7 +246,13 @@ public class Venta  implements java.io.Serializable {
         this.ventaDets = ventaDets;
     }
 
+    public String getDescTipoComprobante() {
+        return (tipoComprobante=='F' ? "Factura" : "Venta");
+    }
 
+    public String getNumComprobante() {
+        return (tipoComprobante=='F' ? puntoVenta + "-" + numFactura + "-" + tipoFactura : "");
+    }
 
 
 }

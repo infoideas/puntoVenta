@@ -255,7 +255,7 @@ public class VentaController extends VBox implements Initializable {
             //Controlador de la nueva ventana
             VentaDetalleController controller = (VentaDetalleController) firstPaneLoader.getController();
             controller.setRegistroSel(new Venta());
-            controller.nuevaVenta();
+            controller.nuevaVenta(false);
             
             Scene newScene = new Scene(newPane, 1024,700);
             Stage nuevoStage = new Stage();

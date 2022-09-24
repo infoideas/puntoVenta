@@ -11,12 +11,18 @@ package controllers;
  */
 public class CantidadProducto {
     private double cantidad;
+    private double precioTotal;
 
     public CantidadProducto() {
     }
 
     public CantidadProducto(double cantidad) {
         setCantidad(cantidad);
+    }
+
+    public CantidadProducto(double cantidad, double precioTotal) {
+        this.cantidad = cantidad;
+        this.precioTotal = precioTotal;
     }
     
     public double getCantidad() {
@@ -26,7 +32,13 @@ public class CantidadProducto {
     public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
-    
-    
+
+    public double getPrecioTotal() {
+        return precioTotal;
+    }
+
+    public void setPrecioTotal(double precioTotal) {
+        this.precioTotal = precioTotal;
+    }
     
 }

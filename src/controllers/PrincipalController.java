@@ -90,10 +90,12 @@ public class PrincipalController extends VBox implements Initializable {
       TreeItem root2 = new TreeItem(itemMenu2);
       itemMenu= new ItemMenu("IngresarVenta","Ingresar venta");
       TreeItem item21 = new TreeItem(itemMenu);
-      itemMenu= new ItemMenu("ConsultaVentas","Consulta de ventas");
+      itemMenu= new ItemMenu("IngresarVentaRapida","Ingresar venta rápida");
       TreeItem item22 = new TreeItem(itemMenu);
+      itemMenu= new ItemMenu("ConsultaVentas","Consulta de ventas");
+      TreeItem item23 = new TreeItem(itemMenu);
       //Adding elements to root2
-      root2.getChildren().addAll(item21,item22);
+      root2.getChildren().addAll(item21,item22,item23);
       
       ItemMenu itemMenu3= new ItemMenu("Cierre de jornada","Jornada");
       TreeItem root3 = new TreeItem(itemMenu3);
@@ -135,7 +137,10 @@ public class PrincipalController extends VBox implements Initializable {
                              //irPantallaPuntoVenta("ConsultaPuntoVenta.fxml");
                              break;                             
                             case "IngresarVenta":
-                             irNuevaVenta("/vistas/VentaDetalle.fxml");
+                             irNuevaVenta("/vistas/VentaDetalle.fxml",false);
+                             break;                             
+                            case "IngresarVentaRapida":
+                             irNuevaVenta("/vistas/VentaDetalle.fxml",true);
                              break;                             
                             case "CierreZ":
                              Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -287,7 +292,7 @@ public class PrincipalController extends VBox implements Initializable {
 //        nuevoStage.show();
 //    }
 //    
-    public void irNuevaVenta(String fxml) {
+    public void irNuevaVenta(String fxml,boolean isVentaRapida) {
         //Cargo nuevo stage
         FXMLLoader firstPaneLoader = new FXMLLoader(getClass().getResource(fxml));
         Parent newPane = null;
@@ -296,7 +301,7 @@ public class PrincipalController extends VBox implements Initializable {
             //Controlador de la nueva ventana
             VentaDetalleController controller = (VentaDetalleController) firstPaneLoader.getController();
             controller.setRegistroSel(new Venta());
-            controller.nuevaVenta();
+            controller.nuevaVenta(isVentaRapida);
             
             Scene newScene = new Scene(newPane, 1024,700);
             Stage nuevoStage = new Stage();
