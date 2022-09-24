@@ -1255,7 +1255,7 @@ public class VentaDetalleController extends VBox implements Initializable {
         ResultSet r=null;
         double ld_precio=0;
         
-        //Conectamos a la base
+        //Conectamos a la base de datos
         Conector conector = new Conector();  
         Connection conexion = conector.connect("estancia");
         
