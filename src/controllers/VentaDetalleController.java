@@ -144,9 +144,9 @@ public class VentaDetalleController extends VBox implements Initializable {
     @FXML
     private TableColumn<VentaDet,String> columnaProducto;
     @FXML
-    private TableColumn<VentaDet,String> columnaPrecioUnitario;
+    private TableColumn<VentaDet,BigDecimal> columnaPrecioUnitario;
     @FXML
-    private TableColumn<VentaDet,String> columnaPrecioTotal;
+    private TableColumn<VentaDet,BigDecimal> columnaPrecioTotal;
     
     @FXML
     TableView<Producto> dataProductosBuscados;
@@ -155,7 +155,7 @@ public class VentaDetalleController extends VBox implements Initializable {
     @FXML
     private TableColumn<Producto,String> columnaRubroBuscado;
     @FXML
-    private TableColumn<Producto,String> columnaPrecioBuscado;
+    private TableColumn<Producto,BigDecimal> columnaPrecioBuscado;
 
     private boolean wb_mod=false;
     private Venta registroSel= new Venta();
@@ -217,8 +217,42 @@ public class VentaDetalleController extends VBox implements Initializable {
         dataVenta.setEditable(true);
     
         columnaCantidad.setCellValueFactory( new PropertyValueFactory<VentaDet,String>("cantidad"));
-        columnaPrecioUnitario.setCellValueFactory( new PropertyValueFactory<VentaDet,String>("precioUnitario"));
-        columnaPrecioTotal.setCellValueFactory( new PropertyValueFactory<VentaDet,String>("precioTotal"));
+        columnaPrecioUnitario.setCellValueFactory( new PropertyValueFactory<VentaDet,BigDecimal>("precioUnitario"));
+        columnaPrecioUnitario.setCellFactory(column -> {
+        TableCell<VentaDet,BigDecimal> cell = new TableCell<VentaDet, BigDecimal>() {
+            DecimalFormat df = new DecimalFormat( "#,##0.#0", new DecimalFormatSymbols(new Locale("es", "AR")));    
+            @Override
+            protected void updateItem(BigDecimal item, boolean empty) {
+                super.updateItem(item, empty);
+                if(empty) {
+                    setText(null);
+                }
+                else {
+                    if (item!=null)
+                        this.setText(df.format(item));
+                }
+            }
+        };
+        return cell;
+        });
+        columnaPrecioTotal.setCellValueFactory( new PropertyValueFactory<VentaDet,BigDecimal>("precioTotal"));
+        columnaPrecioTotal.setCellFactory(column -> {
+        TableCell<VentaDet,BigDecimal> cell = new TableCell<VentaDet, BigDecimal>() {
+            DecimalFormat df = new DecimalFormat( "#,##0.#0", new DecimalFormatSymbols(new Locale("es", "AR")));    
+            @Override
+            protected void updateItem(BigDecimal item, boolean empty) {
+                super.updateItem(item, empty);
+                if(empty) {
+                    setText(null);
+                }
+                else {
+                    if (item!=null)
+                        this.setText(df.format(item));
+                }
+            }
+        };
+        return cell;
+        });
         
         columnaCantidad.setStyle( "-fx-alignment: CENTER-RIGHT;");
         columnaPrecioUnitario.setStyle("-fx-alignment: CENTER-RIGHT;");
@@ -254,14 +288,14 @@ public class VentaDetalleController extends VBox implements Initializable {
             else
                 ld_cantidad=1;
             
-            if (ld_cantidad >= 1){
+            if (ld_cantidad > 0){
                 VentaDet d= new VentaDet();
                 d.setProducto(producto);
                 d.setVenta(registroSel);
                 BigDecimal cantidadOrig = new BigDecimal(ld_cantidad);
                 BigDecimal cantidadRedondeada = cantidadOrig.setScale(2,RoundingMode.HALF_UP);
                 d.setCantidad(cantidadRedondeada);
-                d.setPrecioUnitario(producto.getPrecioContado());
+                d.setPrecioUnitario(producto.getPrecioContado().setScale(2,RoundingMode.HALF_UP));
                 d.setValorAdicional(BigDecimal.ZERO);
                 BigDecimal precioTotalOrig = new BigDecimal(ld_cantidad*producto.getPrecioContado().doubleValue());
                 BigDecimal precioTotalRedondeada = precioTotalOrig.setScale(2,RoundingMode.HALF_UP);
@@ -274,7 +308,7 @@ public class VentaDetalleController extends VBox implements Initializable {
             
                 double ld_total=0.00;
                 ld_total=calculaTotal();
-                DecimalFormat df = new DecimalFormat( "#,##0.##", new DecimalFormatSymbols(new Locale("es", "AR")));    
+                DecimalFormat df = new DecimalFormat( "#,##0.#0", new DecimalFormatSymbols(new Locale("es", "AR")));    
                 valorTotal.setText(df.format(ld_total));
                        
                 if (buGrabarVenta.isDisabled())
@@ -509,6 +543,7 @@ public class VentaDetalleController extends VBox implements Initializable {
         return ls_estado;
     }
     
+    //Carga lista de productos
     public void cargaListaProductos(){
         listaProductosBuscados.clear();
         String nombre;
@@ -520,7 +555,24 @@ public class VentaDetalleController extends VBox implements Initializable {
         
         columnaProductoBuscado.setCellValueFactory( new PropertyValueFactory<Producto,String>("nombre"));
         columnaRubroBuscado.setCellValueFactory( new PropertyValueFactory<Producto,String>("rubro"));
-        columnaPrecioBuscado.setCellValueFactory( new PropertyValueFactory<Producto,String>("precioContado"));
+        columnaPrecioBuscado.setCellValueFactory( new PropertyValueFactory<Producto,BigDecimal>("precioContado"));
+        columnaPrecioBuscado.setCellFactory(column -> {
+        TableCell<Producto,BigDecimal> cell = new TableCell<Producto, BigDecimal>() {
+            DecimalFormat df = new DecimalFormat( "#,##0.#0", new DecimalFormatSymbols(new Locale("es", "AR")));    
+            @Override
+            protected void updateItem(BigDecimal item, boolean empty) {
+                super.updateItem(item, empty);
+                if(empty) {
+                    setText(null);
+                }
+                else {
+                    if (item!=null)
+                        this.setText(df.format(item));
+                }
+            }
+        };
+        return cell;
+        });
         columnaPrecioBuscado.setStyle("-fx-alignment: CENTER-RIGHT;");
 
         Date lda_fec_carga = new Date();
@@ -531,12 +583,14 @@ public class VentaDetalleController extends VBox implements Initializable {
                 //Obtengo el precio del producto
                 ld_precio=obtienePrecio(PuntoVenta.getLocalSel().getId(),producto.getId(),lda_fec_carga);
             } catch (SQLException ex) {
-                
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText(null);
+                alert.setTitle(PuntoVenta.getTituloApp());
+                alert.setContentText("Error al consultar precio: " + ex.getMessage());
+                alert.show();
             }
-            
+            producto.setPrecioContado((new BigDecimal(ld_precio)).setScale(2,RoundingMode.HALF_UP));
             listaProductosBuscados.add(producto);
-            
-            
             
         }
         dataProductosBuscados.setItems(listaProductosBuscados);
@@ -576,7 +630,6 @@ public class VentaDetalleController extends VBox implements Initializable {
                     q.setParameter("nombreProducto",nombreProducto.toUpperCase());
                 }
             }
-                
             
             resultList = q.list();
             session.getTransaction().commit();
@@ -1250,6 +1303,7 @@ public class VentaDetalleController extends VBox implements Initializable {
         return resultList;
     }
     
+    //Obtiene precio de acuerdo al local y la fecha
     public double obtienePrecio(int idLocal,int idProducto,Date fecha) throws SQLException{
         CallableStatement s=null;
         ResultSet r=null;
@@ -1257,7 +1311,7 @@ public class VentaDetalleController extends VBox implements Initializable {
         
         //Conectamos a la base de datos
         Conector conector = new Conector();  
-        Connection conexion = conector.connect("estancia");
+        Connection conexion = conector.connect("gestion");
         
         try {      
              s=conexion.prepareCall("{call sp_get_precio_producto_local ( ? , ? , ? , ? )}"); 
