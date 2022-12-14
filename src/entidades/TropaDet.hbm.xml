@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.TropaDet" table="tropa_det" catalog="estancia" optimistic-lock="version">
+        <comment>Detalle de tropa</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="categoria" class="entidades.Categoria" fetch="select">
+            <column name="idCategoria" not-null="true">
+                <comment>Categor&#237;a</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="tropa" class="entidades.Tropa" fetch="select">
+            <column name="idTropa" not-null="true">
+                <comment>Id de la tropa</comment>
+            </column>
+        </many-to-one>
+        <property name="cabezasVivas" type="int">
+            <column name="cabezasVivas" not-null="true">
+                <comment>Cabezas vivas</comment>
+            </column>
+        </property>
+        <property name="cabezasDte" type="int">
+            <column name="cabezasDte" not-null="true">
+                <comment>Cabezas seg&#250;n Dte</comment>
+            </column>
+        </property>
+        <property name="kilosVivos" type="big_decimal">
+            <column name="kilosVivos" precision="20" not-null="true">
+                <comment>Kilos vivos</comment>
+            </column>
+        </property>
+        <property name="decomisos" type="int">
+            <column name="decomisos" not-null="true">
+                <comment>Cabezas decomisadas</comment>
+            </column>
+        </property>
+        <property name="mediasReces" type="short">
+            <column name="mediasReces" not-null="true">
+                <comment>Cabezas vivas / 2</comment>
+            </column>
+        </property>
+        <property name="cabezasFaenadas" type="int">
+            <column name="cabezasFaenadas" not-null="true">
+                <comment>Cabezas faenadas</comment>
+            </column>
+        </property>
+        <property name="cabezasMuertas" type="int">
+            <column name="cabezasMuertas" not-null="true">
+                <comment>Cabezas muertas</comment>
+            </column>
+        </property>
+        <property name="kilosFaenados" type="big_decimal">
+            <column name="kilosFaenados" precision="20" not-null="true">
+                <comment>Kilos faenados</comment>
+            </column>
+        </property>
+        <property name="kilosDecomisados" type="big_decimal">
+            <column name="kilosDecomisados" precision="20" not-null="true">
+                <comment>Kilos decomisados</comment>
+            </column>
+        </property>
+        <property name="rendimiento" type="big_decimal">
+            <column name="rendimiento" precision="20" scale="4" not-null="true">
+                <comment>Kilos faenados/Kilos vivos</comment>
+            </column>
+        </property>
+        <property name="precioKiloVivo" type="big_decimal">
+            <column name="precioKiloVivo" precision="20" scale="4" not-null="true">
+                <comment>Precio del kilo vivo</comment>
+            </column>
+        </property>
+        <property name="importeKiloVivo" type="big_decimal">
+            <column name="importeKiloVivo" precision="20" not-null="true">
+                <comment>Importe de kilos vivos: kilos vivos * precio del kilo vivo</comment>
+            </column>
+        </property>
+        <property name="precioKiloFaenado" type="big_decimal">
+            <column name="precioKiloFaenado" precision="20" scale="4" not-null="true">
+                <comment>Precio del kilo faenado</comment>
+            </column>
+        </property>
+        <property name="importeFaena" type="big_decimal">
+            <column name="importeFaena" precision="20" not-null="true">
+                <comment>Importe de faena: Kilos faenados*precio kilo faenado + Kilos decomisados*precio kilo faenado</comment>
+            </column>
+        </property>
+        <property name="porcIngBrutos" type="big_decimal">
+            <column name="porcIngBrutos" precision="10" not-null="true">
+                <comment>Porcentaje de ingresos brutos</comment>
+            </column>
+        </property>
+        <property name="valorIngBrutos" type="big_decimal">
+            <column name="valorIngBrutos" precision="20" not-null="true">
+                <comment>Valor de ingresos brutos: ( importe de kilos vivos * porc. ing. brutos )/100</comment>
+            </column>
+        </property>
+        <property name="pagoCuentaIva" type="big_decimal">
+            <column name="pagoCuentaIva" precision="20" not-null="true">
+                <comment>Valor del pago a cuenta de IVA</comment>
+            </column>
+        </property>
+        <property name="porcComision" type="big_decimal">
+            <column name="porcComision" precision="10" not-null="true">
+                <comment>Porcentaje de comisi&#243;n al consignatario</comment>
+            </column>
+        </property>
+        <property name="importeComision" type="big_decimal">
+            <column name="importeComision" precision="20" not-null="true">
+                <comment>Importe de la comisi&#243;n al consignatario: (Importe de kilos vivos * porc. comisi&#243;n)/100.00</comment>
+            </column>
+        </property>
+        <property name="importeCostoTotal" type="big_decimal">
+            <column name="importeCostoTotal" precision="20" not-null="true">
+                <comment>Importe de costo total: importe de kilos vivos + importe de faena + valor ing. brutos + pago a cuenta Iva + flete + importe de comisi&#243;n</comment>
+            </column>
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+    </class>
+</hibernate-mapping>

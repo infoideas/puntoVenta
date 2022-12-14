@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 8 oct. 2022 10:23:07 by Hibernate Tools 4.3.1
 
 
 
@@ -9,7 +9,7 @@ package entidades;
 public class PersonaDireccion  implements java.io.Serializable {
 
 
-     private Integer id;
+     private int id;
      private Localidad localidad;
      private Persona persona;
      private Provincia provincia;
@@ -21,12 +21,14 @@ public class PersonaDireccion  implements java.io.Serializable {
     }
 
 	
-    public PersonaDireccion(Persona persona, Provincia provincia, String direccion) {
+    public PersonaDireccion(int id, Persona persona, Provincia provincia, String direccion) {
+        this.id = id;
         this.persona = persona;
         this.provincia = provincia;
         this.direccion = direccion;
     }
-    public PersonaDireccion(Localidad localidad, Persona persona, Provincia provincia, String cp, String direccion, String telefono) {
+    public PersonaDireccion(int id, Localidad localidad, Persona persona, Provincia provincia, String cp, String direccion, String telefono) {
+       this.id = id;
        this.localidad = localidad;
        this.persona = persona;
        this.provincia = provincia;
@@ -35,11 +37,11 @@ public class PersonaDireccion  implements java.io.Serializable {
        this.telefono = telefono;
     }
    
-    public Integer getId() {
+    public int getId() {
         return this.id;
     }
     
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
     public Localidad getLocalidad() {

@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 oct. 2022 10:23:08 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.VentaEstancia" table="venta_estancia" catalog="estancia" optimistic-lock="version">
+        <comment>Venta de estancia</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="cliente" class="entidades.Cliente" fetch="select">
+            <column name="idCliente">
+                <comment>Cliente de la carnicer&#237;a</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="localCarniceria" class="entidades.LocalCarniceria" fetch="select">
+            <column name="idLocal">
+                <comment>Local al cual se hace la venta</comment>
+            </column>
+        </many-to-one>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true">
+                <comment>Fecha de carga de la venta</comment>
+            </column>
+        </property>
+        <property name="fecMov" type="timestamp">
+            <column name="fec_mov" length="19" not-null="true">
+                <comment>Fecha de la venta</comment>
+            </column>
+        </property>
+        <property name="idUsuario" type="int">
+            <column name="idUsuario" not-null="true">
+                <comment>Usuario que carga la venta</comment>
+            </column>
+        </property>
+        <property name="tipoCompro" type="string">
+            <column name="tipo_compro" length="5">
+                <comment>Tipo de comprobante: Venta/Factura/Anulaci&#243;n/Devoluci&#243;n</comment>
+            </column>
+        </property>
+        <property name="puntoVenta" type="string">
+            <column name="punto_venta" length="5">
+                <comment>Punto de venta del comprobante</comment>
+            </column>
+        </property>
+        <property name="numFact" type="string">
+            <column name="num_fact" length="10">
+                <comment>N&#250;mero de ticket/factura</comment>
+            </column>
+        </property>
+        <property name="tipoFact" type="string">
+            <column name="tipo_fact" length="5" />
+        </property>
+        <property name="subtotalSinIva" type="big_decimal">
+            <column name="subtotal_sin_iva" precision="20" not-null="true">
+                <comment>Subtotal de la venta sin IVA</comment>
+            </column>
+        </property>
+        <property name="porcIva" type="big_decimal">
+            <column name="porc_iva" precision="20">
+                <comment>Porcentaje de IVA</comment>
+            </column>
+        </property>
+        <property name="valorIva" type="big_decimal">
+            <column name="valor_iva" precision="20" not-null="true">
+                <comment>Valor del IVA</comment>
+            </column>
+        </property>
+        <property name="valorTotal" type="big_decimal">
+            <column name="valor_total" precision="20" not-null="true">
+                <comment>Total de la venta</comment>
+            </column>
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="ventaEstanciaDets" table="venta_estancia_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idVenta" not-null="true" />
+            </key>
+            <one-to-many class="entidades.VentaEstanciaDet" />
+        </set>
+        <set name="ventaEstanciaRemitos" table="venta_estancia_remito" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idVenta" not-null="true" />
+            </key>
+            <one-to-many class="entidades.VentaEstanciaRemito" />
+        </set>
+    </class>
+</hibernate-mapping>

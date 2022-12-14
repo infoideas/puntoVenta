@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Deposito" table="deposito" catalog="estancia" optimistic-lock="version" lazy="false">
+        <comment>Dep&#243;sito: Establecimiento/Frigor&#237;ficos/Locales</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="localidad" class="entidades.Localidad" fetch="select">
+            <column name="idLocalidad" not-null="true">
+                <comment>Localidad de ubicaci&#243;n</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="provincia" class="entidades.Provincia" fetch="select">
+            <column name="idProvincia" not-null="true">
+                <comment>Provincia de ubicaci&#243;n</comment>
+            </column>
+        </many-to-one>
+        <property name="tipo" type="char">
+            <column name="tipo" length="1" not-null="true">
+                <comment>Tipo de establecimiento: Establecimiento/Frigor&#237;fico/Local</comment>
+            </column>
+        </property>
+        <property name="cuit" type="string">
+            <column name="cuit" length="15">
+                <comment>CUIT</comment>
+            </column>
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" not-null="true">
+                <comment>Nombre del establecimiento</comment>
+            </column>
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" not-null="true">
+                <comment>Direcci&#243;n</comment>
+            </column>
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" length="100">
+                <comment>Tel&#233;fono de contacto</comment>
+            </column>
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="100">
+                <comment>Email</comment>
+            </column>
+        </property>
+        <property name="tipoCobroFaena" type="char">
+            <column name="tipoCobroFaena" length="1" not-null="true">
+                <comment>Como cobra la faena: Kilos: K / Cabezas: C</comment>
+            </column>
+        </property>
+        <property name="precioUnidad" type="big_decimal">
+            <column name="precioUnidad" precision="20" scale="4" not-null="true">
+                <comment>Precio cobrado por cada unidad (kilo o cabeza)</comment>
+            </column>
+        </property>
+        <property name="ccCostoTropa" type="string">
+            <column name="cc_costo_tropa">
+                <comment>Número de cuenta contable asociada al asiento de costo de tropa</comment>
+            </column>
+        </property>
+        <set name="tropas" table="tropa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idDeposito">
+                    <comment>Id del dep&#243;sito</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Tropa" />
+        </set>
+    </class>
+</hibernate-mapping>

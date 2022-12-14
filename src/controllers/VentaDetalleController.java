@@ -164,6 +164,7 @@ public class VentaDetalleController extends VBox implements Initializable {
     private boolean wb_nuevo;
     private Persona personaSel;
     private boolean wbVentaRapida;
+    private final char ESTADO_FACTURADO='F';
     
     private ObservableList<VentaDet> detalleVenta = FXCollections.observableArrayList();
     private ObservableList<Producto> listaProductosBuscados = FXCollections.observableArrayList();
@@ -220,7 +221,7 @@ public class VentaDetalleController extends VBox implements Initializable {
         columnaPrecioUnitario.setCellValueFactory( new PropertyValueFactory<VentaDet,BigDecimal>("precioUnitario"));
         columnaPrecioUnitario.setCellFactory(column -> {
         TableCell<VentaDet,BigDecimal> cell = new TableCell<VentaDet, BigDecimal>() {
-            DecimalFormat df = new DecimalFormat( "#,##0.#0", new DecimalFormatSymbols(new Locale("es", "AR")));    
+            DecimalFormat df = new DecimalFormat( "#,##0.##", new DecimalFormatSymbols(new Locale("es", "AR")));    
             @Override
             protected void updateItem(BigDecimal item, boolean empty) {
                 super.updateItem(item, empty);
@@ -238,7 +239,7 @@ public class VentaDetalleController extends VBox implements Initializable {
         columnaPrecioTotal.setCellValueFactory( new PropertyValueFactory<VentaDet,BigDecimal>("precioTotal"));
         columnaPrecioTotal.setCellFactory(column -> {
         TableCell<VentaDet,BigDecimal> cell = new TableCell<VentaDet, BigDecimal>() {
-            DecimalFormat df = new DecimalFormat( "#,##0.#0", new DecimalFormatSymbols(new Locale("es", "AR")));    
+            DecimalFormat df = new DecimalFormat( "#,##0.##", new DecimalFormatSymbols(new Locale("es", "AR")));    
             @Override
             protected void updateItem(BigDecimal item, boolean empty) {
                 super.updateItem(item, empty);
@@ -301,14 +302,14 @@ public class VentaDetalleController extends VBox implements Initializable {
                 BigDecimal precioTotalRedondeada = precioTotalOrig.setScale(2,RoundingMode.HALF_UP);
                 d.setPrecioTotal(precioTotalRedondeada);
                 d.setEstado('P'); //Pendiente
-                d.setUnidadMedida(producto.getUnidadMedida());
+                d.setUnidad(producto.getUnidad());
                 detalleVenta.add(d);
                 dataVenta.setItems(detalleVenta);
                 dataVenta.getSelectionModel().select(detalleVenta.size() - 1);
             
                 double ld_total=0.00;
                 ld_total=calculaTotal();
-                DecimalFormat df = new DecimalFormat( "#,##0.#0", new DecimalFormatSymbols(new Locale("es", "AR")));    
+                DecimalFormat df = new DecimalFormat( "#,##0.##", new DecimalFormatSymbols(new Locale("es", "AR")));    
                 valorTotal.setText(df.format(ld_total));
                        
                 if (buGrabarVenta.isDisabled())
@@ -374,6 +375,7 @@ public class VentaDetalleController extends VBox implements Initializable {
 
     public void nuevaVenta(boolean isVentaRapida){
         wb_nuevo=true;
+        setRegistroSel(new Venta());
         wbVentaRapida=isVentaRapida;
         usuario.setText(PuntoVenta.getUsuarioConectado().getNombreCompletoUsuario());
         personaSel=null;
@@ -406,6 +408,7 @@ public class VentaDetalleController extends VBox implements Initializable {
         registroSel.setPorcDesc(BigDecimal.ZERO);
         registroSel.setValorDesc(BigDecimal.ZERO);
         registroSel.setValorFinal(BigDecimal.ZERO);  
+        registroSel.setEstado(ESTADO_FACTURADO);
         detalleVenta.clear();
         dataVenta.setItems(detalleVenta);     
         buGrabarVenta.setDisable(true);
@@ -431,7 +434,7 @@ public class VentaDetalleController extends VBox implements Initializable {
                     BigDecimal precioTotalRedondeada = precioTotalOrig.setScale(2,RoundingMode.HALF_UP);
                     d.setPrecioTotal(precioTotalRedondeada);
                     d.setEstado('P'); //Pendiente
-                    d.setUnidadMedida(producto.getUnidadMedida());
+                    d.setUnidad(producto.getUnidad());
                     detalleVenta.add(d);
                     dataVenta.setItems(detalleVenta);
                     dataVenta.getSelectionModel().select(detalleVenta.size() - 1);
@@ -558,7 +561,7 @@ public class VentaDetalleController extends VBox implements Initializable {
         columnaPrecioBuscado.setCellValueFactory( new PropertyValueFactory<Producto,BigDecimal>("precioContado"));
         columnaPrecioBuscado.setCellFactory(column -> {
         TableCell<Producto,BigDecimal> cell = new TableCell<Producto, BigDecimal>() {
-            DecimalFormat df = new DecimalFormat( "#,##0.#0", new DecimalFormatSymbols(new Locale("es", "AR")));    
+            DecimalFormat df = new DecimalFormat( "#,##0.##", new DecimalFormatSymbols(new Locale("es", "AR")));    
             @Override
             protected void updateItem(BigDecimal item, boolean empty) {
                 super.updateItem(item, empty);
@@ -644,8 +647,6 @@ public class VentaDetalleController extends VBox implements Initializable {
         
     }
     
-
-    
     //Carga el grid de áreas de negocio
     public void cargarAreas(){
         gridAreas.getChildren().clear();
@@ -694,12 +695,6 @@ public class VentaDetalleController extends VBox implements Initializable {
                                 // Poner focus en campo para nombre de producto
                                 Platform.runLater(() -> nombreProducto.requestFocus());
                                 
-//                                Button rubroButton = (Button) event.getTarget();
-//                                String ls_texto=rubroButton.getText();
-//                                //Marco el rubro seleccionado
-//                                labelRubroSel.setText(ls_texto);
-//                                idRubroSel=Integer.valueOf(rubroButton.getId()).intValue();
-//                                cargaListaProductos();
                             }
                         });
                         
@@ -1172,7 +1167,7 @@ public class VentaDetalleController extends VBox implements Initializable {
             }
                         
             lsNombreComprador=p.getNombreCompleto();
-            lsDirComprador="";  //Agregar dirección
+            lsDirComprador=p.getDireccion();  //Agregar dirección
             if (lsDirComprador==null) lsDirComprador="";
             //Tipo de Id del comprador D: DNI, T : CUIT
             liTipIdComprador = p.getTipoid().getId().intValue();
@@ -1204,7 +1199,7 @@ public class VentaDetalleController extends VBox implements Initializable {
             ventaDet.setVenta(registroSel);
             ventaDet.setProducto(d.getProducto());
             ventaDet.setCantidad(d.getCantidad());
-            ventaDet.setUnidadMedida(d.getUnidadMedida());
+            ventaDet.setUnidad(d.getUnidad());
             ventaDet.setPrecioUnitario(new BigDecimal(d.getPrecioUnitario().doubleValue() + (d.getValorAdicional()==null ? 0 : d.getValorAdicional().doubleValue())));
             ventaDet.setPrecioTotal(d.getPrecioTotal());
             listaItems.add(ventaDet);
@@ -1217,12 +1212,12 @@ public class VentaDetalleController extends VBox implements Initializable {
             impresion.setPuerto(PuntoVenta.getPuertoCF());
             impresion.inicializaControlador();
             impresion.abrirPuerto();
-            boolean lb_ticket=impresion.imprimirTicketFactura(lsTipDoc,lsNombreComprador,lsDirComprador,
+            boolean lb_ticket=impresion.imprimirTicketFactura('F',lsNombreComprador,lsDirComprador,
                              liTipIdComprador, lsNumIdComprador, liIvaComprador, lsDocAsocL1, lsDocAsocL2, lsDocAsocL3,lsLineaCompOrigen,listaItems);
             if (lb_ticket && !impresion.getNumComprobante().isEmpty()){
                 //Pongo los datos del ticket en la factura
-                registroSel.setPuntoVenta(PuntoVenta.getPuntoVentaCF());
-                registroSel.setNumFactura(impresion.getNumComprobante());
+                registroSel.setPuntoVenta(String.format("%04d",Integer.parseInt(PuntoVenta.getPuntoVentaCF())));
+                registroSel.setNumFactura(String.format("%08d",Integer.parseInt(impresion.getNumComprobante())));
                 registroSel.setTipoFactura(impresion.getTipoComprobante());  //Tipo de factura
                 impresion.cerrarPuerto();
             }
@@ -1311,14 +1306,14 @@ public class VentaDetalleController extends VBox implements Initializable {
         
         //Conectamos a la base de datos
         Conector conector = new Conector();  
-        Connection conexion = conector.connect("gestion");
+        Connection conexion = conector.connect("estancia");
         
         try {      
              s=conexion.prepareCall("{call sp_get_precio_producto_local ( ? , ? , ? , ? )}"); 
              s.setInt(1,idLocal); 
              s.setInt(2,idProducto); 
              s.setTimestamp(3,new java.sql.Timestamp(fecha.getTime()));
-             s.registerOutParameter(4,java.sql.Types.DOUBLE);
+             s.registerOutParameter(4,java.sql.Types.DECIMAL);
              r=s.executeQuery();
 
              //Obtengo el id y la fecha de fin del último balance

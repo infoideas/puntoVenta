@@ -11,7 +11,7 @@ import entidades.LocalCarniceria;
 import entidades.Localidad;
 import entidades.Producto;
 import entidades.Provincia;
-import entidades.UnidadMedida;
+import entidades.Unidad;
 import general.BeanBase;
 import general.HibernateUtil;
 import general.UsuarioAdmin;
@@ -36,7 +36,7 @@ public class PuntoVenta extends Application {
     private static UsuarioAdmin usuarioConectado;
     private static Empresa empresaSel;
     private static Producto productoGenerico;
-    private static UnidadMedida unidadGenerica;
+    private static Unidad unidadGenerica;
     private static Provincia provinciaEmpresa;
     private static Localidad localidadEmpresa;
     private static String puntoVentaCF;
@@ -68,11 +68,11 @@ public class PuntoVenta extends Application {
         PuntoVenta.productoGenerico = productoGenerico;
     }
 
-    public static UnidadMedida getUnidadGenerica() {
+    public static Unidad getUnidadGenerica() {
         return unidadGenerica;
     }
 
-    public static void setUnidadGenerica(UnidadMedida unidadGenerica) {
+    public static void setUnidadGenerica(Unidad unidadGenerica) {
         PuntoVenta.unidadGenerica = unidadGenerica;
     }
 
@@ -255,13 +255,13 @@ public class PuntoVenta extends Application {
     }
     
     //Obtiene unidad de medida
-    public UnidadMedida obtieneUnidad(int codUnidad){
-            UnidadMedida unidad = null;
+    public Unidad obtieneUnidad(int codUnidad){
+            Unidad unidad = null;
             Session session = null;
             try{
                 session=HibernateUtil.getSessionFactory().openSession();
                 session.beginTransaction();
-                unidad=(UnidadMedida) session.get(UnidadMedida.class,codUnidad);
+                unidad=(Unidad) session.get(Unidad.class,codUnidad);
                 session.getTransaction().commit();
             }
             catch (HibernateException e){

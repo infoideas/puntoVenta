@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.CostoFleteAnimales" table="costo_flete_animales" catalog="estancia" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="cliente" class="entidades.Cliente" fetch="select">
+            <column name="idCliente" not-null="true">
+                <comment>Id. del cliente</comment>
+            </column>
+        </many-to-one>
+        <property name="tipoJaula" type="char">
+            <column name="tipoJaula" length="1" not-null="true">
+                <comment>Tipo de jaul usada: Simple: S / Doble : D</comment>
+            </column>
+        </property>
+        <property name="costoxKm" type="big_decimal">
+            <column name="costoxKm" precision="20" not-null="true">
+                <comment>Costo por kil&#243;metro</comment>
+            </column>
+        </property>
+        <property name="kmArranque" type="big_decimal">
+            <column name="kmArranque" precision="20" not-null="true">
+                <comment>Cantidad de km a partir de la que no se cobra arranque</comment>
+            </column>
+        </property>
+        <property name="costoArranque" type="big_decimal">
+            <column name="costoArranque" precision="20" not-null="true">
+                <comment>Costo m&#237;nimo</comment>
+            </column>
+        </property>
+        <property name="costoSeguro" type="big_decimal">
+            <column name="costoSeguro" precision="20" not-null="true">
+                <comment>Seguro</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

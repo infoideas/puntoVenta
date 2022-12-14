@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21 sep. 2022 18:50:43 by Hibernate Tools 4.3.1 -->
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entidades.Tipoid" table="tipoid" catalog="gestion" optimistic-lock="version">
+    <class name="entidades.Tipoid" table="tipoid" catalog="estancia" optimistic-lock="version" lazy="false">
         <comment>Tipos de identificaci&#243;n</comment>
         <id name="id" type="java.lang.Short">
             <column name="id" />
@@ -12,13 +12,41 @@
         <property name="nombre" type="string">
             <column name="nombre" length="100" not-null="true" />
         </property>
-        <set name="personas" table="persona" inverse="true" lazy="true" fetch="select">
+        <set name="repartidors" table="repartidor" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="idTipoId">
-                    <comment>Tipo de identificaci&#243;n</comment>
+                <column name="tipoId">
+                    <comment>Tipo de identificaci&#243;n: DNI: 0, CUIT: 1</comment>
                 </column>
             </key>
-            <one-to-many class="entidades.Persona" />
+            <one-to-many class="entidades.Repartidor" />
+        </set>
+        <set name="clientes" table="cliente" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tipoId" />
+            </key>
+            <one-to-many class="entidades.Cliente" />
+        </set>
+        <set name="productors" table="productor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tipoId" not-null="true">
+                    <comment>Tipo de identificaci&#243;n: DNI: 0, CUIT: 1</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Productor" />
+        </set>
+        <set name="chofers" table="chofer" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tipoId" />
+            </key>
+            <one-to-many class="entidades.Chofer" />
+        </set>
+        <set name="comisionistas" table="comisionista" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tipoId">
+                    <comment>Tipo de identificaci&#243;n: DNI: 0, CUIT: 1</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Comisionista" />
         </set>
     </class>
 </hibernate-mapping>

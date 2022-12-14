@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Compra" table="compra" catalog="estancia" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="idProveedor" type="int">
+            <column name="idProveedor" not-null="true">
+                <comment>Proveedor</comment>
+            </column>
+        </property>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true">
+                <comment>Fecha de carga</comment>
+            </column>
+        </property>
+        <property name="fecMov" type="timestamp">
+            <column name="fec_mov" length="19" not-null="true">
+                <comment>Fecha de la compra</comment>
+            </column>
+        </property>
+        <property name="tipoCompro" type="string">
+            <column name="tipo_compro" length="5">
+                <comment>Tipo de comprobante: Factura/Recibo/Otro</comment>
+            </column>
+        </property>
+        <property name="numFact" type="string">
+            <column name="num_fact" length="10">
+                <comment>N&#250;mero de factura</comment>
+            </column>
+        </property>
+        <property name="tipoFact" type="string">
+            <column name="tipo_fact" length="5">
+                <comment>Tipo de factura: /A/B/C</comment>
+            </column>
+        </property>
+        <property name="totalSinIva" type="big_decimal">
+            <column name="total_sin_iva" precision="20" not-null="true" />
+        </property>
+        <property name="valorIva" type="big_decimal">
+            <column name="valor_iva" precision="20" not-null="true" />
+        </property>
+        <property name="total" type="big_decimal">
+            <column name="total" precision="20" not-null="true" />
+        </property>
+        <set name="compraDets" table="compra_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idCompra" not-null="true" />
+            </key>
+            <one-to-many class="entidades.CompraDet" />
+        </set>
+    </class>
+</hibernate-mapping>

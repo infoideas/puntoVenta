@@ -137,7 +137,8 @@ public class ImpresionEpson
         
     }
     
-    public boolean imprimirTicketFactura(String tipDoc, String nombreComprador,String dirComp,
+    //Imprimir Ticket Factura
+    public boolean imprimirTicketFactura(char tipoComprobante, String nombreComprador,String dirComp,
             int tipIdComprador,String numIdComprador,int ivaComprador,
             String docAsocL1, String docAsocL2, String docAsocL3,String lineaCompOrigen,List<VentaDet> listaItems)
     {
@@ -173,10 +174,11 @@ public class ImpresionEpson
             {
                 lsDirCompL2 = dirComp;
             }
-            lsDirCompL3 = "";
+            lsDirCompL3 = " ";
         } else
         {
             lsDirCompL1 = dirComp;
+            if (lsDirCompL1.isEmpty())  lsDirCompL1=" ";
             lsDirCompL2 = " ";
             lsDirCompL3 = " ";
         }
@@ -186,7 +188,7 @@ public class ImpresionEpson
         String lsIvaComprador=obtieneCondIva(ivaComprador);
         
         //Abro el comprobante
-        if (abrirTicketFactura(tipDoc,lsNombreCompradorL1,lsNombreCompradorL2,lsDirCompL1,lsDirCompL2,lsDirCompL3, 
+        if (abrirTicketFactura(lsNombreCompradorL1,lsNombreCompradorL2,lsDirCompL1,lsDirCompL2,lsDirCompL3, 
             lsTipIdComprador,numIdComprador,lsIvaComprador,
             docAsocL1,docAsocL2,docAsocL3,lineaCompOrigen)==false) return false;
         
@@ -205,7 +207,7 @@ public class ImpresionEpson
             ld_cantidad=item.getCantidad().doubleValue();
             ld_precioUnitario=item.getPrecioUnitario().doubleValue();
             
-            if (!agregaItemTicketFactura(lsNombreItem,lsDescripcionItem,ld_cantidad, ld_precioUnitario,ld_tasaIva, 
+            if (!agregaItemTicketFactura(tipoComprobante,lsNombreItem,lsDescripcionItem,ld_cantidad, ld_precioUnitario,ld_tasaIva, 
             ls_codInt,ls_codIva)) {
                 cerrarTicketFactura();
                 return false;
@@ -223,8 +225,96 @@ public class ImpresionEpson
             return false;
     }
     
-    //Abre comprobante
-    public boolean abrirTicketFactura(String lsTipDoc, String lsNombreCompradorL1, String lsNombreCompradorL2, 
+    //Imprimir Ticket de Nota Crédito
+    public boolean imprimirTicketNotaCredito(char tipoComprobante, String nombreComprador,String dirComp,
+            int tipIdComprador,String numIdComprador,int ivaComprador,
+            String docAsocL1, String docAsocL2, String docAsocL3,String lineaCompOrigen,List<VentaDet> listaItems)
+    {
+        //Separo el nombre del comprador
+        int li_len = nombreComprador.length();
+        String lsNombreCompradorL1=" ";
+        String lsNombreCompradorL2=" ";
+        if(li_len > 29)
+        {
+            lsNombreCompradorL1 = nombreComprador.substring(0, 29);
+            lsNombreCompradorL2 = nombreComprador.substring(30);
+        } else
+        {
+            lsNombreCompradorL1 = nombreComprador;
+        }
+        
+        //Separo la dirección del comprador
+        li_len = dirComp.length();
+        String lsDirCompL1=" ";
+        String lsDirCompL2=" ";
+        String lsDirCompL3=" ";
+        
+        if(li_len > 29)
+        {
+            lsDirCompL1 = dirComp.substring(0, 29);
+            dirComp = dirComp.substring(30);
+            System.out.println(dirComp);
+            if(dirComp.length() > 29)
+            {
+                lsDirCompL2 = dirComp.substring(0, 29);
+                lsDirCompL3 = dirComp.substring(30);
+            } else
+            {
+                lsDirCompL2 = dirComp;
+            }
+            lsDirCompL3 = " ";
+        } else
+        {
+            lsDirCompL1 = dirComp;
+            if (lsDirCompL1.isEmpty())  lsDirCompL1=" ";
+            lsDirCompL2 = " ";
+            lsDirCompL3 = " ";
+        }
+        
+        //Obtiene los valores usados por epson
+        String lsTipIdComprador=obtieneTipoId(tipIdComprador);
+        String lsIvaComprador=obtieneCondIva(ivaComprador);
+        
+        //Abro el comprobante
+        if (abrirTicketNotaCrédito(lsNombreCompradorL1,lsNombreCompradorL2,lsDirCompL1,lsDirCompL2,lsDirCompL3, 
+            lsTipIdComprador,numIdComprador,lsIvaComprador,
+            docAsocL1,docAsocL2,docAsocL3,lineaCompOrigen)==false) return false;
+        
+        //Agrego los items del comprobante
+        for(VentaDet item : listaItems){
+            String lsNombreItem="";
+            String lsDescripcionItem="";
+            double ld_cantidad,ld_precioUnitario;
+            double ld_tasaIva = 10.50;  //OJO 
+            String ls_codInt = "CodigoInterno123";
+            String ls_codIva = "7";  //Gravado
+            
+            lsNombreItem=item.getProducto().getNombre();
+            lsDescripcionItem="";//item.getProducto().getDetalle();
+            if (lsDescripcionItem==null) lsDescripcionItem="";
+            ld_cantidad=item.getCantidad().doubleValue();
+            ld_precioUnitario=item.getPrecioUnitario().doubleValue();
+            
+            if (!agregaItemTicketFactura(tipoComprobante,lsNombreItem,lsDescripcionItem,ld_cantidad, ld_precioUnitario,ld_tasaIva, 
+            ls_codInt,ls_codIva)) {
+                cerrarTicketNotaCredito();
+                return false;
+            }
+            
+        }
+        
+        //Imprimo sub total
+        subTotalTicketNotaCredito();
+        
+        //Cierro el ticket factura
+        if (cerrarTicketNotaCredito())
+            return true;
+        else
+            return false;
+    }
+    
+    //Abre comprobante de Ticket-Factura
+    public boolean abrirTicketFactura(String lsNombreCompradorL1, String lsNombreCompradorL2, 
             String lsDirCompL1, String lsDirCompL2, String lsDirCompL3, 
             String lsTipIdComprador,String lsNumIdComprador,String lsIvaComprador,
             String lsDocAsocL1, String lsDocAsocL2, String lsDocAsocL3,String lsLineaCompOrigen)
@@ -244,12 +334,42 @@ public class ImpresionEpson
         } 
         else
             return true;
-        
-            
-        
     }
     
-    public boolean agregaItemTicketFactura(String lsNombreItem,String lsDescripcionItem, double Cantidad, double PrecioUnitario, double TasaIva, 
+    //Abre comprobante de Nota de Crédito
+    public boolean abrirTicketNotaCrédito(String lsNombreCompradorL1, String lsNombreCompradorL2, 
+            String lsDirCompL1, String lsDirCompL2, String lsDirCompL3, 
+            String lsTipIdComprador,String lsNumIdComprador,String lsIvaComprador,
+            String lsDocAsocL1, String lsDocAsocL2, String lsDocAsocL3,String lsLineaCompOrigen)
+    {
+        int LastComError = 0;
+        lsComando = "0D01";
+        lsExt = "0000";
+        //lsLineaCompOrigen="081-0005-0007777";
+        System.out.println(lsLineaCompOrigen);
+        lsCampos = (new StringBuilder()).append(lsNombreCompradorL1).append("|").append(lsNombreCompradorL2).
+                                         append("|").append(lsDirCompL1).append("|").append(lsDirCompL2).
+                                         append("|").append(lsDirCompL3).append("|").
+                                         append(lsTipIdComprador).append("|").append(lsNumIdComprador).append("|").
+                                         append(lsIvaComprador).
+                                         append("|").append(lsDocAsocL1).append("|").append(lsDocAsocL2).append("|").append(lsDocAsocL3).
+                                         append("|").append(lsLineaCompOrigen).toString();
+        lsComandoCompleto = (new StringBuilder()).append(lsComando).append("|").append(lsExt).append("|").append(lsCampos).toString();
+        EpsonFiscalDriver.SendCommandComplete(lsComandoCompleto);
+        System.out.println("Comando abrir ticket Nota de Crédito: " + lsComandoCompleto );
+        LastComError = EpsonFiscalDriver.getLastError();
+        if(LastComError > 0)
+        {
+            System.out.println((new StringBuilder()).append("Error: ").append(LastComError).toString());
+            return false;
+        } 
+        else
+            return true;
+        
+    }
+
+    //Agrega Item para Factura o Nota de Crédito
+    public boolean agregaItemTicketFactura(char tipoComprobante,String lsNombreItem,String lsDescripcionItem, double Cantidad, double PrecioUnitario, double TasaIva, 
             String lsCodInt, String lsCodIva)
     {
         String lsDescExtraL1 = "";
@@ -307,8 +427,19 @@ public class ImpresionEpson
         String lsURMTX = "";
         String lsCodItemMTX = "";
         String lsCodUM = "07";
-        lsComando = "0B02";
-        lsExt = "0000";
+        
+        //Seteo el comando de acuerdo al comprobante
+        if (tipoComprobante=='F'){
+            //Ticket Factura
+            lsComando = "0B02";
+            lsExt = "0000";
+        }
+        else{
+            //Nota de crédito
+            lsComando = "0D02";
+            lsExt = "0000";
+        }
+        
         lsCampos = (new StringBuilder()).append(lsDescExtraL1).append("|").
                 append(lsDescExtraL2).append("|").append(lsDescExtraL3).append("|").append(lsDescExtraL4).
                 append("|").append(lsNombreItem).append("|").append(lsCantidad).append("|").
@@ -316,6 +447,7 @@ public class ImpresionEpson
                 append("|").append(lsCoefII).append("|").append(lsURMTX).append("|").append(lsCodItemMTX).
                 append("|").append(lsCodInt).append("|").append(lsCodUM).append("|").append(lsCodIva).toString();
         lsComandoCompleto = (new StringBuilder()).append(lsComando).append("|").append(lsExt).append("|").append(lsCampos).toString();
+        System.out.println("Comando imprimir item: " + lsComandoCompleto );
         EpsonFiscalDriver.SendCommandComplete(lsComandoCompleto);
         int LastComError = 0;
         LastComError = EpsonFiscalDriver.getLastError();
@@ -328,6 +460,7 @@ public class ImpresionEpson
             return true;
     }
 
+    //SubTotal Ticket Factura
     public boolean subTotalTicketFactura()
     {
         lsComando = "0B03";
@@ -345,11 +478,70 @@ public class ImpresionEpson
             return true;
     }
     
+    //SubTotal Ticket Nota de Crédito
+    public boolean subTotalTicketNotaCredito()
+    {
+        lsComando = "0D03";
+        lsExt = "0000";
+        lsComandoCompleto = (new StringBuilder()).append(lsComando).append("|").append(lsExt).toString();
+        EpsonFiscalDriver.SendCommandComplete(lsComandoCompleto);
+        int LastComError = 0;
+        LastComError = EpsonFiscalDriver.getLastError();
+        if(LastComError > 0)
+        {
+            System.out.println((new StringBuilder()).append("Error: ").append(LastComError).toString());
+            return false;
+        } 
+        else
+            return true;
+    }
+    
+    //Cerrar Ticket Factura
     public boolean cerrarTicketFactura()
     {
         lsComando = "0B06";
         lsExt = "0013";
         lsCampos = "|||||";
+        lsComandoCompleto = (new StringBuilder()).append(lsComando).append("|").append(lsExt).append("|").append(lsCampos).toString();
+        EpsonFiscalDriver.SendCommandComplete(lsComandoCompleto);
+        System.out.println("Comando cierre: " + lsComandoCompleto);
+        int LastComError = 0;
+        LastComError = EpsonFiscalDriver.getLastError();
+        if(LastComError > 0)
+        {   //Error
+            System.out.println((new StringBuilder()).append("Error: ").append(LastComError).toString());
+            return false;
+        } 
+        else
+            {
+            //Proceso Ok
+            CounterField = EpsonFiscalDriver.getExtraFieldCount();
+            System.out.println((new StringBuilder()).append("getExtraFieldCount: ").append(CounterField).toString());
+            
+            //Obtengo el número de comprobante del controlador fiscal
+            EpsonFiscalDriver.GetExtraField(1, BufferOut, 51200, SizeBufferOut);
+            byte bExtraField1[] = Arrays.copyOfRange(BufferOut, 0, SizeBufferOut[0]);
+            String ls_numComprobante = new String(bExtraField1);
+            System.out.println("Comprobante: " + ls_numComprobante);
+            setNumComprobante(ls_numComprobante);
+            
+            //Obtengo el tipo de comprobante del controlador fiscal
+            EpsonFiscalDriver.GetExtraField(2, BufferOut, 51200, SizeBufferOut);
+            byte bExtraField2[] = Arrays.copyOfRange(BufferOut, 0, SizeBufferOut[0]);
+            String ls_tipoComprobante = new String(bExtraField2);
+            System.out.println("Tipo de comprobante: " + ls_tipoComprobante);
+            setTipoComprobante(ls_tipoComprobante);
+            return true;
+        }
+        
+    }
+
+    //Cerrar Ticket Nota de Crédito
+    public boolean cerrarTicketNotaCredito()
+    {
+        lsComando = "0D06";
+        lsExt = "0003";
+        lsCampos = "||||||";
         lsComandoCompleto = (new StringBuilder()).append(lsComando).append("|").append(lsExt).append("|").append(lsCampos).toString();
         EpsonFiscalDriver.SendCommandComplete(lsComandoCompleto);
         System.out.println("Comando cierre: " + lsComandoCompleto);

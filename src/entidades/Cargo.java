@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 26 ene. 2022 14:40:07 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import java.util.Set;
 public class Cargo  implements java.io.Serializable {
 
 
-     private short id;
+     private Short id;
      private String nombre;
      private Set<Empleado> empleados = new HashSet<Empleado>(0);
 
@@ -19,21 +19,19 @@ public class Cargo  implements java.io.Serializable {
     }
 
 	
-    public Cargo(short id, String nombre) {
-        this.id = id;
+    public Cargo(String nombre) {
         this.nombre = nombre;
     }
-    public Cargo(short id, String nombre, Set<Empleado> empleados) {
-       this.id = id;
+    public Cargo(String nombre, Set<Empleado> empleados) {
        this.nombre = nombre;
        this.empleados = empleados;
     }
    
-    public short getId() {
+    public Short getId() {
         return this.id;
     }
     
-    public void setId(short id) {
+    public void setId(Short id) {
         this.id = id;
     }
     public String getNombre() {

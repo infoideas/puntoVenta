@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21 sep. 2022 18:50:43 by Hibernate Tools 4.3.1 -->
+<!-- Generated 8 oct. 2022 10:23:08 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entidades.PersonaDireccion" table="persona_direccion" catalog="gestion" optimistic-lock="version">
+    <class name="entidades.PersonaDireccion" table="persona_direccion" catalog="estancia" optimistic-lock="version">
         <comment>Direcciones de la persona. Usada para pedidos</comment>
-        <id name="id" type="java.lang.Integer">
+        <id name="id" type="int">
             <column name="id" />
-            <generator class="identity" />
+            <generator class="assigned" />
         </id>
         <many-to-one name="localidad" class="entidades.Localidad" fetch="select">
             <column name="idLocalidad">

@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 oct. 2022 10:23:08 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.RemitoVenta" table="remito_venta" catalog="estancia" optimistic-lock="version">
+        <comment>Remito de venta</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="cliente" class="entidades.Cliente" fetch="select">
+            <column name="idCliente" not-null="true">
+                <comment>Cliente</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="localCarniceria" class="entidades.LocalCarniceria" fetch="select">
+            <column name="idLocal" />
+        </many-to-one>
+        <property name="tipoMov" type="string">
+            <column name="tipoMov" length="2" not-null="true">
+                <comment>Remito: RE/Anulaci&#243;n de remito: AN</comment>
+            </column>
+        </property>
+        <property name="idUsuario" type="int">
+            <column name="idUsuario" not-null="true">
+                <comment>Usuario</comment>
+            </column>
+        </property>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true" />
+        </property>
+        <property name="fecMov" type="timestamp">
+            <column name="fec_mov" length="19" not-null="true" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <property name="estado" type="char">
+            <column name="estado" length="1" not-null="true">
+                <comment>Pendiente: 0/ Procesado: 1/Anulado: 2</comment>
+            </column>
+        </property>
+        <set name="remitoVentaDets" table="remito_venta_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idRemito" not-null="true">
+                    <comment>Remito</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.RemitoVentaDet" />
+        </set>
+        <set name="ventaEstanciaRemitos" table="venta_estancia_remito" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idRemito" not-null="true" unique="true">
+                    <comment>Id. del remito relacionado</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.VentaEstanciaRemito" />
+        </set>
+    </class>
+</hibernate-mapping>

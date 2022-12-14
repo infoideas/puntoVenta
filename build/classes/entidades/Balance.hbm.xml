@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 24 mar. 2022 12:52:02 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Balance" table="balance" catalog="estancia" optimistic-lock="version">
+        <comment>Balance del local</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="localCarniceria" class="entidades.LocalCarniceria" fetch="select">
+            <column name="idLocal" not-null="true">
+                <comment>Local</comment>
+            </column>
+        </many-to-one>
+        <property name="idUsuario" type="int">
+            <column name="idUsuario" not-null="true">
+                <comment>Usuario que carga el balance</comment>
+            </column>
+        </property>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true">
+                <comment>Fecha de carga del balance</comment>
+            </column>
+        </property>
+        <property name="fecIni" type="timestamp">
+            <column name="fec_ini" length="19" not-null="true">
+                <comment>Fecha de inicio</comment>
+            </column>
+        </property>
+        <property name="fecFin" type="timestamp">
+            <column name="fec_fin" length="19" not-null="true">
+                <comment>Fecha de fin</comment>
+            </column>
+        </property>
+        <property name="valorCobradoEfectivo" type="big_decimal">
+            <column name="valor_cobrado_efectivo" precision="20" not-null="true">
+                <comment>Total cobrado o vendido en efectivo</comment>
+            </column>
+        </property>
+        <property name="valorCobrado" type="big_decimal">
+            <column name="valor_cobrado" precision="20" not-null="true">
+                <comment>Total cobrado o vendido en todas las formas de pago</comment>
+            </column>
+        </property>
+        <property name="valorRemanente" type="big_decimal">
+            <column name="valor_remanente" precision="20" not-null="true">
+                <comment>Remanente total valorizado</comment>
+            </column>
+        </property>
+        <property name="valorGastos" type="big_decimal">
+            <column name="valor_gastos" precision="20" not-null="true">
+                <comment>Valor total de los gastos</comment>
+            </column>
+        </property>
+        <property name="valorEfectivoCaja" type="big_decimal">
+            <column name="valor_efectivo_caja" precision="20" not-null="true">
+                <comment>Efectivo en caja al final del balance</comment>
+            </column>
+        </property>
+        <property name="valorPorCobrar" type="big_decimal">
+            <column name="valor_por_cobrar" precision="20" not-null="true">
+                <comment>Valor por cobrar o fiado al final del balance</comment>
+            </column>
+        </property>
+        <property name="estado" type="char">
+            <column name="estado" length="1" not-null="true">
+                <comment>Estado: Pendiente: P/Finalizado: F/Aprobado: A</comment>
+            </column>
+        </property>
+        <set name="balancePorCobrars" table="balance_por_cobrar" inverse="true" lazy="true" fetch="select" 
+            cascade="all-delete-orphan" order-by="fecha">
+            <key>
+                <column name="idBalance" not-null="true" />
+            </key>
+            <one-to-many class="entidades.BalancePorCobrar" />
+        </set>
+        <set name="balanceGastoPersonals" table="balance_gasto_personal" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan" order-by="fecha">
+            <key>
+                <column name="idBalance" not-null="true" />
+            </key>
+            <one-to-many class="entidades.BalanceGastoPersonal" />
+        </set>
+        <set name="balanceIngresos" table="balance_ingreso" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan">
+            <key>
+                <column name="idBalance" not-null="true" />
+            </key>
+            <one-to-many class="entidades.BalanceIngreso" />
+        </set>
+        <set name="balanceGastoVarios" table="balance_gasto_vario" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan" order-by="fecha">
+            <key>
+                <column name="idBalance" not-null="true" />
+            </key>
+            <one-to-many class="entidades.BalanceGastoVario" />
+        </set>
+        <set name="balanceCobranzas" table="balance_cobranza" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan" order-by="fecha, turno">
+            <key>
+                <column name="idBalance" not-null="true" />
+            </key>
+            <one-to-many class="entidades.BalanceCobranza" />
+        </set>
+        <set name="balanceEfectivos" table="balance_efectivo" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan" order-by="fecha, turno">
+            <key>
+                <column name="idBalance" not-null="true" />
+            </key>
+            <one-to-many class="entidades.BalanceEfectivo" />
+        </set>
+        <set name="balanceDifPesadas" table="balance_dif_pesada" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan" order-by="fecha, turno">
+            <key>
+                <column name="idBalance" not-null="true" />
+            </key>
+            <one-to-many class="entidades.BalanceDifPesada" />
+        </set>
+        <set name="balanceGastoExtras" table="balance_gasto_extra" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan" order-by="fecha">
+            <key>
+                <column name="idBalance" not-null="true" />
+            </key>
+            <one-to-many class="entidades.BalanceGastoExtra" />
+        </set>
+        <set name="balanceInvInis" table="balance_inv_ini" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan">
+            <key>
+                <column name="idBalance" not-null="true" />
+            </key>
+            <one-to-many class="entidades.BalanceInvIni" />
+        </set>
+        <set name="balanceRemanentes" table="balance_remanente" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan">
+            <key>
+                <column name="idBalance" not-null="true" />
+            </key>
+            <one-to-many class="entidades.BalanceRemanente" />
+        </set>
+    </class>
+</hibernate-mapping>

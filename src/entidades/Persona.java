@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 8 oct. 2022 10:23:07 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -20,8 +20,8 @@ public class Persona  implements java.io.Serializable {
      private String nombre;
      private String nombreFantasia;
      private String razonSocial;
-     private Set<PersonaDireccion> personaDireccions = new HashSet<PersonaDireccion>(0);
      private Set<Venta> ventas = new HashSet<Venta>(0);
+     private Set<PersonaDireccion> personaDireccions = new HashSet<PersonaDireccion>(0);
 
     public Persona() {
     }
@@ -31,7 +31,7 @@ public class Persona  implements java.io.Serializable {
         this.condIva = condIva;
         this.tipo = tipo;
     }
-    public Persona(CondIva condIva, Tipoid tipoid, char tipo, String numIdentificacion, String apellido, String nombre, String nombreFantasia, String razonSocial, Set<PersonaDireccion> personaDireccions, Set<Venta> ventas) {
+    public Persona(CondIva condIva, Tipoid tipoid, char tipo, String numIdentificacion, String apellido, String nombre, String nombreFantasia, String razonSocial, Set<Venta> ventas, Set<PersonaDireccion> personaDireccions) {
        this.condIva = condIva;
        this.tipoid = tipoid;
        this.tipo = tipo;
@@ -40,8 +40,8 @@ public class Persona  implements java.io.Serializable {
        this.nombre = nombre;
        this.nombreFantasia = nombreFantasia;
        this.razonSocial = razonSocial;
-       this.personaDireccions = personaDireccions;
        this.ventas = ventas;
+       this.personaDireccions = personaDireccions;
     }
    
     public Integer getId() {
@@ -107,13 +107,6 @@ public class Persona  implements java.io.Serializable {
     public void setRazonSocial(String razonSocial) {
         this.razonSocial = razonSocial;
     }
-    public Set<PersonaDireccion> getPersonaDireccions() {
-        return this.personaDireccions;
-    }
-    
-    public void setPersonaDireccions(Set<PersonaDireccion> personaDireccions) {
-        this.personaDireccions = personaDireccions;
-    }
     public Set<Venta> getVentas() {
         return this.ventas;
     }
@@ -121,6 +114,14 @@ public class Persona  implements java.io.Serializable {
     public void setVentas(Set<Venta> ventas) {
         this.ventas = ventas;
     }
+    public Set<PersonaDireccion> getPersonaDireccions() {
+        return this.personaDireccions;
+    }
+    
+    public void setPersonaDireccions(Set<PersonaDireccion> personaDireccions) {
+        this.personaDireccions = personaDireccions;
+    }
+
 
     public String getNombreCompleto(){
         return (tipo == 'P' ? apellido + " " + nombre : nombreFantasia);
@@ -128,7 +129,8 @@ public class Persona  implements java.io.Serializable {
 
     public String getDireccion() {
         if (personaDireccions.size() > 0){
-            PersonaDireccion dir=(PersonaDireccion) personaDireccions.iterator().next();
+            PersonaDireccion dir=personaDireccions.stream().findFirst().get();
+            //PersonaDireccion dir=(PersonaDireccion) personaDireccions.iterator().next();
             return dir.getDireccion().concat(" - ").concat(dir.getTelefono()==null ? "" : dir.getTelefono() );
         }
         else
@@ -143,9 +145,6 @@ public class Persona  implements java.io.Serializable {
             return nombreFantasia;            
     }  
 
-
 }
-
-
 
 

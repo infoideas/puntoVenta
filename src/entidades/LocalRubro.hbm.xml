@@ -1,18 +1,19 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21 sep. 2022 18:50:43 by Hibernate Tools 4.3.1 -->
+<!-- Generated 21 ene. 2022 15:27:08 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entidades.LocalRubro" table="local_rubro" catalog="gestion" optimistic-lock="version">
+    <class name="entidades.LocalRubro" table="local_rubro" catalog="estancia" optimistic-lock="version" >
+        <comment>Rubros del local o carnicer&#237;a</comment>
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
         </id>
-        <many-to-one name="localCarniceria" class="entidades.LocalCarniceria" fetch="select">
-            <column name="idLocal" not-null="true" />
-        </many-to-one>
         <many-to-one name="rubro" class="entidades.Rubro" fetch="select">
             <column name="idRubro" not-null="true" />
+        </many-to-one>
+        <many-to-one name="localCarniceria" class="entidades.LocalCarniceria" fetch="select">
+            <column name="idLocal" not-null="true" />
         </many-to-one>
     </class>
 </hibernate-mapping>

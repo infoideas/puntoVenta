@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21 sep. 2022 18:50:43 by Hibernate Tools 4.3.1 -->
+<!-- Generated 4 abr. 2022 15:58:55 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entidades.ListaPreciosLocal" table="lista_precios_local" catalog="gestion" optimistic-lock="version">
+    <class name="entidades.ListaPreciosLocal" table="lista_precios_local" catalog="estancia" optimistic-lock="version"
+        lazy="false">
         <comment>Lista de precios local</comment>
         <id name="id" type="java.lang.Integer">
             <column name="id" />
@@ -35,7 +36,8 @@
         <property name="observaciones" type="string">
             <column name="observaciones" />
         </property>
-        <set name="listaPreciosLocalDets" table="lista_precios_local_det" inverse="true" lazy="true" fetch="select">
+        <set name="listaPreciosLocalDets" table="lista_precios_local_det" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan">
             <key>
                 <column name="idListaPrecios" not-null="true">
                     <comment>Lista de precios del local</comment>

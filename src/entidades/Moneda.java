@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 10/07/2021 10:15:57 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -15,6 +15,7 @@ public class Moneda  implements java.io.Serializable {
      private String nombre;
      private String simbolo;
      private Set<Pais> paises = new HashSet<Pais>(0);
+     private Set<CuentaBanco> cuentaBancos = new HashSet<CuentaBanco>(0);
 
     public Moneda() {
     }
@@ -24,10 +25,11 @@ public class Moneda  implements java.io.Serializable {
         this.nombre = nombre;
         this.simbolo = simbolo;
     }
-    public Moneda(String nombre, String simbolo, Set<Pais> paises) {
+    public Moneda(String nombre, String simbolo, Set<Pais> paises, Set<CuentaBanco> cuentaBancos) {
        this.nombre = nombre;
        this.simbolo = simbolo;
        this.paises = paises;
+       this.cuentaBancos = cuentaBancos;
     }
    
     public Integer getId() {
@@ -57,6 +59,13 @@ public class Moneda  implements java.io.Serializable {
     
     public void setPaises(Set<Pais> paises) {
         this.paises = paises;
+    }
+    public Set<CuentaBanco> getCuentaBancos() {
+        return this.cuentaBancos;
+    }
+    
+    public void setCuentaBancos(Set<CuentaBanco> cuentaBancos) {
+        this.cuentaBancos = cuentaBancos;
     }
 
 

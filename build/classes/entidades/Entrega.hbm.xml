@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Entrega" table="entrega" catalog="estancia" optimistic-lock="version">
+        <comment>Entrega a local de carnicer&#237;a</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="localCarniceria" class="entidades.LocalCarniceria" fetch="select">
+            <column name="idLocal" not-null="true">
+                <comment>Id del local donde se entrega la carne</comment>
+            </column>
+        </many-to-one>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true">
+                <comment>Fecha de carga en el sistema</comment>
+            </column>
+        </property>
+        <property name="idUsuarioEntrega" type="int">
+            <column name="idUsuarioEntrega" not-null="true">
+                <comment>Id. del usuario que hace la entrega</comment>
+            </column>
+        </property>
+        <property name="fecEnt" type="timestamp">
+            <column name="fec_ent" length="19" not-null="true">
+                <comment>Fecha de entrega</comment>
+            </column>
+        </property>
+        <property name="idUsuarioRecibe" type="java.lang.Integer">
+            <column name="idUsuarioRecibe">
+                <comment>Id. del usuario que recibe y aprueba el reparto</comment>
+            </column>
+        </property>
+        <property name="fecRec" type="timestamp">
+            <column name="fec_rec" length="19">
+                <comment>Fecha de recepci&#243;n</comment>
+            </column>
+        </property>
+        <property name="estado" type="char">
+            <column name="estado" length="1" not-null="true">
+                <comment>Estado de la entrega: Pendiente: P /Aprobado : A/Rechazado : R</comment>
+            </column>
+        </property>
+        <property name="totalKilos" type="big_decimal">
+            <column name="totalKilos" precision="20" not-null="true">
+                <comment>Total de kilos entregados</comment>
+            </column>
+        </property>
+        <property name="valorFlete" type="big_decimal">
+            <column name="valorFlete" precision="20" not-null="true">
+                <comment>Costo del flete de entrega</comment>
+            </column>
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="entregaDets" table="entrega_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEntrega" not-null="true" />
+            </key>
+            <one-to-many class="entidades.EntregaDet" />
+        </set>
+    </class>
+</hibernate-mapping>

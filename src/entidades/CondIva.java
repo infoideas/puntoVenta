@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 8 oct. 2022 10:23:07 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -13,7 +13,11 @@ public class CondIva  implements java.io.Serializable {
 
      private Short id;
      private String nombre;
+     private Set<Proveedor> proveedors = new HashSet<Proveedor>(0);
+     private Set<Cliente> clientes = new HashSet<Cliente>(0);
      private Set<Persona> personas = new HashSet<Persona>(0);
+     private Set<Productor> productors = new HashSet<Productor>(0);
+     private Set<Comisionista> comisionistas = new HashSet<Comisionista>(0);
 
     public CondIva() {
     }
@@ -22,9 +26,13 @@ public class CondIva  implements java.io.Serializable {
     public CondIva(String nombre) {
         this.nombre = nombre;
     }
-    public CondIva(String nombre, Set<Persona> personas) {
+    public CondIva(String nombre, Set<Proveedor> proveedors, Set<Cliente> clientes, Set<Persona> personas, Set<Productor> productors, Set<Comisionista> comisionistas) {
        this.nombre = nombre;
+       this.proveedors = proveedors;
+       this.clientes = clientes;
        this.personas = personas;
+       this.productors = productors;
+       this.comisionistas = comisionistas;
     }
    
     public Short getId() {
@@ -41,6 +49,20 @@ public class CondIva  implements java.io.Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+    public Set<Proveedor> getProveedors() {
+        return this.proveedors;
+    }
+    
+    public void setProveedors(Set<Proveedor> proveedors) {
+        this.proveedors = proveedors;
+    }
+    public Set<Cliente> getClientes() {
+        return this.clientes;
+    }
+    
+    public void setClientes(Set<Cliente> clientes) {
+        this.clientes = clientes;
+    }
     public Set<Persona> getPersonas() {
         return this.personas;
     }
@@ -48,6 +70,25 @@ public class CondIva  implements java.io.Serializable {
     public void setPersonas(Set<Persona> personas) {
         this.personas = personas;
     }
+    public Set<Productor> getProductors() {
+        return this.productors;
+    }
+    
+    public void setProductors(Set<Productor> productors) {
+        this.productors = productors;
+    }
+    public Set<Comisionista> getComisionistas() {
+        return this.comisionistas;
+    }
+    
+    public void setComisionistas(Set<Comisionista> comisionistas) {
+        this.comisionistas = comisionistas;
+    }
+
+    @Override   
+    public String toString(){
+       return nombre;   
+    }  
 
 
 

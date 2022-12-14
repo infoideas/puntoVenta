@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 oct. 2022 10:23:08 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Unidad" table="unidad" catalog="estancia" optimistic-lock="version">
+        <comment>Unidades de medida</comment>
+        <id name="id" type="java.lang.Short">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" length="100" not-null="true" />
+        </property>
+        <set name="balanceIngresos" table="balance_ingreso" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idUnidad" not-null="true">
+                    <comment>Unidad de medida</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.BalanceIngreso" />
+        </set>
+        <set name="gastos" table="gasto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idUnidad" not-null="true">
+                    <comment>Unidad de medida del gasto</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Gasto" />
+        </set>
+        <set name="remitoVentaDets" table="remito_venta_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idUnidad" not-null="true" />
+            </key>
+            <one-to-many class="entidades.RemitoVentaDet" />
+        </set>
+        <set name="ventaEstanciaDets" table="venta_estancia_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idUnidad" not-null="true">
+                    <comment>Unidad vendida</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.VentaEstanciaDet" />
+        </set>
+        <set name="movStockDets" table="mov_stock_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idUnidad" not-null="true">
+                    <comment>Unidad</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.MovStockDet" />
+        </set>
+        <set name="balanceRemanentes" table="balance_remanente" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idUnidad" not-null="true" />
+            </key>
+            <one-to-many class="entidades.BalanceRemanente" />
+        </set>
+        <set name="ventaDets" table="venta_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idUnidad" not-null="true">
+                    <comment>Unidad de medida</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.VentaDet" />
+        </set>
+        <set name="balanceInvInis" table="balance_inv_ini" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idUnidad" not-null="true">
+                    <comment>Unidad de medida</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.BalanceInvIni" />
+        </set>
+        <set name="productos" table="producto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idUnidad" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Producto" />
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21 sep. 2022 18:50:43 by Hibernate Tools 4.3.1 -->
+<!-- Generated 8 oct. 2022 10:23:08 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entidades.PorcentajeIva" table="porcentaje_iva" catalog="gestion" optimistic-lock="version">
+    <class name="entidades.PorcentajeIva" table="porcentaje_iva" catalog="estancia" optimistic-lock="version">
         <comment>Tabla de IVAS</comment>
-        <id name="id" type="int">
+        <id name="id" type="java.lang.Short">
             <column name="id" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="nombre" type="string">
             <column name="nombre" length="100" not-null="true" />
@@ -17,5 +17,11 @@
                 <comment>Porcentaje de IVA</comment>
             </column>
         </property>
+        <set name="productos" table="producto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idIva" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Producto" />
+        </set>
     </class>
 </hibernate-mapping>

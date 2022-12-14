@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Gasto" table="gasto" catalog="estancia" optimistic-lock="version" lazy="false">
+        <comment>Gastos de fletes relacionados con la liquidaci&#243;n</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="tipoGasto" class="entidades.TipoGasto" fetch="select">
+            <column name="tipoGasto" not-null="true">
+                <comment>Tipo de gasto</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="unidad" class="entidades.Unidad" fetch="select">
+            <column name="idUnidad" not-null="true">
+                <comment>Unidad de medida del gasto</comment>
+            </column>
+        </many-to-one>
+        <property name="idUsuario" type="int">
+            <column name="idUsuario" not-null="true">
+                <comment>Usuario que carga el gasto</comment>
+            </column>
+        </property>
+        <property name="fecMov" type="timestamp">
+            <column name="fec_mov" length="19" not-null="true">
+                <comment>Fecha del gasto</comment>
+            </column>
+        </property>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true">
+                <comment>Fecha de carga del gasto</comment>
+            </column>
+        </property>
+        <property name="cantidad" type="big_decimal">
+            <column name="cantidad" precision="20" not-null="true">
+                <comment>Cantidad de unidades del gasto</comment>
+            </column>
+        </property>
+        <property name="valorGravado" type="big_decimal">
+            <column name="valorGravado" precision="20" not-null="true">
+                <comment>Valor gravado</comment>
+            </column>
+        </property>
+        <property name="porcIva" type="big_decimal">
+            <column name="porcIva" precision="20" not-null="true">
+                <comment>Porcentaje de Iva</comment>
+            </column>
+        </property>
+        <property name="valorIva" type="big_decimal">
+            <column name="valorIva" precision="20" not-null="true">
+                <comment>Valor de IVA</comment>
+            </column>
+        </property>
+        <property name="valorNoGravado" type="big_decimal">
+            <column name="valorNoGravado" precision="20" not-null="true">
+                <comment>Valor no gravado</comment>
+            </column>
+        </property>
+        <property name="valorTotal" type="big_decimal">
+            <column name="valorTotal" precision="20" not-null="true">
+                <comment>Valor total</comment>
+            </column>
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <property name="procesado" type="char">
+            <column name="procesado" length="1" not-null="true" />
+        </property>
+        <set name="liquidacionGastos" table="liquidacion_gasto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idGasto" not-null="true" unique="true">
+                    <comment>Id del Gasto relacionado</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.LiquidacionGasto" />
+        </set>
+    </class>
+</hibernate-mapping>

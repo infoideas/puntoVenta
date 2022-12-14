@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 10/07/2021 10:15:57 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -13,7 +13,11 @@ public class Tipoid  implements java.io.Serializable {
 
      private Short id;
      private String nombre;
-     private Set<Persona> personas = new HashSet<Persona>(0);
+     private Set<Repartidor> repartidors = new HashSet<Repartidor>(0);
+     private Set<Cliente> clientes = new HashSet<Cliente>(0);
+     private Set<Productor> productors = new HashSet<Productor>(0);
+     private Set<Chofer> chofers = new HashSet<Chofer>(0);
+     private Set<Comisionista> comisionistas = new HashSet<Comisionista>(0);
 
     public Tipoid() {
     }
@@ -22,9 +26,13 @@ public class Tipoid  implements java.io.Serializable {
     public Tipoid(String nombre) {
         this.nombre = nombre;
     }
-    public Tipoid(String nombre, Set<Persona> personas) {
+    public Tipoid(String nombre, Set<Repartidor> repartidors, Set<Cliente> clientes, Set<Productor> productors, Set<Chofer> chofers, Set<Comisionista> comisionistas) {
        this.nombre = nombre;
-       this.personas = personas;
+       this.repartidors = repartidors;
+       this.clientes = clientes;
+       this.productors = productors;
+       this.chofers = chofers;
+       this.comisionistas = comisionistas;
     }
    
     public Short getId() {
@@ -41,13 +49,46 @@ public class Tipoid  implements java.io.Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public Set<Persona> getPersonas() {
-        return this.personas;
+    public Set<Repartidor> getRepartidors() {
+        return this.repartidors;
     }
     
-    public void setPersonas(Set<Persona> personas) {
-        this.personas = personas;
+    public void setRepartidors(Set<Repartidor> repartidors) {
+        this.repartidors = repartidors;
     }
+    public Set<Cliente> getClientes() {
+        return this.clientes;
+    }
+    
+    public void setClientes(Set<Cliente> clientes) {
+        this.clientes = clientes;
+    }
+    public Set<Productor> getProductors() {
+        return this.productors;
+    }
+    
+    public void setProductors(Set<Productor> productors) {
+        this.productors = productors;
+    }
+    public Set<Chofer> getChofers() {
+        return this.chofers;
+    }
+    
+    public void setChofers(Set<Chofer> chofers) {
+        this.chofers = chofers;
+    }
+    public Set<Comisionista> getComisionistas() {
+        return this.comisionistas;
+    }
+    
+    public void setComisionistas(Set<Comisionista> comisionistas) {
+        this.comisionistas = comisionistas;
+    }
+
+    @Override   
+    public String toString(){
+       return nombre;   
+    }  
 
 
 

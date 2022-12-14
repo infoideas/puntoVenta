@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.CuentaBanco" table="cuenta_banco" catalog="estancia" optimistic-lock="version"
+        lazy="false">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="banco" class="entidades.Banco" fetch="select">
+            <column name="idBanco" not-null="true">
+                <comment>Banco de la cuenta</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="moneda" class="entidades.Moneda" fetch="select">
+            <column name="moneda" not-null="true">
+                <comment>Moneda de la cuenta</comment>
+            </column>
+        </many-to-one>
+        <property name="tipoCuenta" type="char">
+            <column name="tipoCuenta" length="1" not-null="true">
+                <comment>Tipo de cuenta: AHORRO: A/ CORRIENTE : C</comment>
+            </column>
+        </property>
+        <property name="numeroCuenta" type="string">
+            <column name="numeroCuenta" length="60" not-null="true">
+                <comment>N&#250;mero de la cuenta del banco</comment>
+            </column>
+        </property>
+        <property name="estado" type="char">
+            <column name="estado" length="1" not-null="true" />
+        </property>
+        <set name="tropaPagoCivas" table="tropa_pago_civa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idCuenta" not-null="true">
+                    <comment>Cuenta con la que se pag&#243;</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.TropaPagoCiva" />
+        </set>
+    </class>
+</hibernate-mapping>

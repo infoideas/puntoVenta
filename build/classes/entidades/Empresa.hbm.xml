@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21 sep. 2022 18:50:43 by Hibernate Tools 4.3.1 -->
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entidades.Empresa" table="empresa" catalog="gestion" optimistic-lock="version">
+    <class name="entidades.Empresa" table="empresa" catalog="estancia" optimistic-lock="version" lazy="false">
         <comment>Datos de la empresa</comment>
         <id name="id" type="java.lang.Integer">
             <column name="id" />
@@ -22,6 +22,9 @@
         </property>
         <property name="razonSocial" type="string">
             <column name="razon_social" length="100" />
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
         </property>
         <property name="cuit" type="string">
             <column name="cuit" length="30" />
@@ -53,9 +56,64 @@
                 <comment>Sitio Web de la empresa</comment>
             </column>
         </property>
+        <property name="sitioNoticias" type="string">
+            <column name="sitioNoticias" length="100">
+                <comment>Sitio de noticias de la empresa</comment>
+            </column>
+        </property>
+        <property name="textoPromociones" type="string">
+            <column name="textoPromociones" length="4000">
+                <comment>Texto gen&#233;rico que aparece en todas las promociones o cupones de descuento</comment>
+            </column>
+        </property>
+        <property name="validarEmail" type="char">
+            <column name="validarEmail" length="1" not-null="true">
+                <comment>Bandera para validar o no el mail del usuario</comment>
+            </column>
+        </property>
         <property name="logo" type="binary">
             <column name="logo">
                 <comment>Logo de la empresa</comment>
+            </column>
+        </property>
+        <property name="mpPublicKey" type="string">
+            <column name="mp_public_key">
+                <comment>Public Key de mercado pago</comment>
+            </column>
+        </property>
+        <property name="mpAccessToken" type="string">
+            <column name="mp_access_token">
+                <comment>Access token de mercado pago</comment>
+            </column>
+        </property>
+        <property name="porcViajesSimples" type="big_decimal">
+            <column name="porcViajesSimples" precision="20" not-null="true">
+                <comment>Porcentaje de viajes simples para fletes</comment>
+            </column>
+        </property>
+        <property name="porcViajesDobles" type="big_decimal">
+            <column name="porcViajesDobles" precision="20" not-null="true">
+                <comment>Porcentaje de viajes dobles para fletes</comment>
+            </column>
+        </property>
+        <property name="pagoCuentaIva" type="big_decimal">
+            <column name="pagoCuentaIva" precision="20" not-null="true">
+                <comment>Pago a cuenta de Iva por cabeza</comment>
+            </column>
+        </property>
+        <property name="porcIngBrutos" type="big_decimal">
+            <column name="porcIngBrutos" precision="20" not-null="true">
+                <comment>Porcentaje de Ingresos Brutos que se aplica a las tropas</comment>
+            </column>
+        </property>
+        <property name="costoFleteEntrega" type="big_decimal">
+            <column name="costoFleteEntrega" precision="20" not-null="true">
+                <comment>Costo del flete de entrega por 1/2 res</comment>
+            </column>
+        </property>
+        <property name="porcIvaVentas" type="big_decimal">
+            <column name="porc_iva_ventas" precision="20" not-null="true">
+                <comment>Porcentaje de IVA cobrado a los clientes</comment>
             </column>
         </property>
         <property name="emailSistemas" type="string">
@@ -84,8 +142,35 @@
         <property name="auth" type="string">
             <column name="auth" length="30" />
         </property>
-        <property name="observaciones" type="string">
-            <column name="observaciones" />
+        <property name="ccCostoTropa" type="string">
+            <column name="cc_costo_tropa">
+                <comment>Cuenta contable usada para el costo de tropa</comment>
+            </column>
+        </property>
+        <property name="ccIngBrutos" type="string">
+            <column name="cc_ing_brutos">
+                <comment>Cuenta contable usada para ingresos brutos en tropas</comment>
+            </column>
+        </property>
+        <property name="ccPagoVep" type="string">
+            <column name="cc_pago_vep">
+                <comment>Cuenta contable usada para el pago de vep en tropas</comment>
+            </column>
+        </property>
+        <property name="ccVentaCarne" type="string">
+            <column name="cc_venta_carne">
+                <comment>Cuenta contable usada para venta de carne</comment>
+            </column>
+        </property>
+        <property name="ccCostoMercVendida" type="string">
+            <column name="cc_costo_merc_vendida">
+                <comment>Cuenta contable usada para costo de mercadería vendida</comment>
+            </column>
+        </property>
+        <property name="ccTropasCamara" type="string">
+            <column name="cc_tropas_camara">
+                <comment>Cuenta contable usada para tropas en cámara</comment>
+            </column>
         </property>
     </class>
 </hibernate-mapping>

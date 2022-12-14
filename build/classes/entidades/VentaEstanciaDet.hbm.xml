@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 oct. 2022 10:23:08 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.VentaEstanciaDet" table="venta_estancia_det" catalog="estancia" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="producto" class="entidades.Producto" fetch="select">
+            <column name="idProducto" not-null="true">
+                <comment>Producto vendido</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="tropa" class="entidades.Tropa" fetch="select">
+            <column name="idTropa" />
+        </many-to-one>
+        <many-to-one name="unidad" class="entidades.Unidad" fetch="select">
+            <column name="idUnidad" not-null="true">
+                <comment>Unidad vendida</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="ventaEstancia" class="entidades.VentaEstancia" fetch="select">
+            <column name="idVenta" not-null="true" />
+        </many-to-one>
+        <property name="precio" type="big_decimal">
+            <column name="precio" precision="20" not-null="true">
+                <comment>Precio</comment>
+            </column>
+        </property>
+        <property name="porcDesc" type="big_decimal">
+            <column name="porc_desc" precision="20" not-null="true" />
+        </property>
+        <property name="valorDesc" type="big_decimal">
+            <column name="valor_desc" precision="20" not-null="true" />
+        </property>
+        <property name="precioFinal" type="big_decimal">
+            <column name="precio_final" precision="20" not-null="true">
+                <comment>Precio final individual despu&#233;s de descuentos/recargos</comment>
+            </column>
+        </property>
+        <property name="cantidad" type="big_decimal">
+            <column name="cantidad" precision="20" not-null="true">
+                <comment>Cantidad de kilos</comment>
+            </column>
+        </property>
+        <property name="valorFinal" type="big_decimal">
+            <column name="valor_final" precision="20" not-null="true">
+                <comment>Valor de la cantidad de productos</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

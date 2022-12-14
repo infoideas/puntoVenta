@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 3 ene. 2022 16:12:27 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.TipoGasto" table="tipo_gasto" catalog="estancia" optimistic-lock="version"
+        lazy="false">
+        <comment>Tipos de gasto</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" length="100" not-null="true" />
+        </property>
+        <property name="alicuotaIva" type="big_decimal">
+            <column name="alicuotaIva" precision="20">
+                <comment>Tasa de Iva usada para el tipo de gasto</comment>
+            </column>
+        </property>
+        <set name="gastos" table="gasto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tipoGasto" not-null="true">
+                    <comment>Tipo de gasto</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Gasto" />
+        </set>
+        <set name="balanceGastoVarios" table="balance_gasto_vario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idTipoGasto" not-null="true">
+                    <comment>Tipo o concepto del gasto</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.BalanceGastoVario" />
+        </set>
+        <set name="unidadNegocioGastos" table="unidad_negocio_gasto" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idGasto" not-null="true">
+                    <comment>Tipo de gasto</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.UnidadNegocioGasto" />
+        </set>
+        <set name="balanceGastoExtras" table="balance_gasto_extra" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idTipoGasto" not-null="true">
+                    <comment>Tipo o concepto del gasto</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.BalanceGastoExtra" />
+        </set>
+        <set name="balanceGastoPersonals" table="balance_gasto_personal" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idTipoGasto" not-null="true">
+                    <comment>Tipo o concepto del gasto</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.BalanceGastoPersonal" />
+        </set>
+    </class>
+</hibernate-mapping>

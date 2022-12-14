@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 8 oct. 2022 10:23:07 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -12,7 +12,7 @@ public class VentaDet  implements java.io.Serializable {
 
      private Integer id;
      private Producto producto;
-     private UnidadMedida unidadMedida;
+     private Unidad unidad;
      private Venta venta;
      private BigDecimal cantidad;
      private BigDecimal precioUnitario;
@@ -25,9 +25,9 @@ public class VentaDet  implements java.io.Serializable {
     }
 
 	
-    public VentaDet(Producto producto, UnidadMedida unidadMedida, Venta venta, BigDecimal cantidad, BigDecimal precioUnitario, BigDecimal valorAdicional, BigDecimal precioTotal, char estado) {
+    public VentaDet(Producto producto, Unidad unidad, Venta venta, BigDecimal cantidad, BigDecimal precioUnitario, BigDecimal valorAdicional, BigDecimal precioTotal, char estado) {
         this.producto = producto;
-        this.unidadMedida = unidadMedida;
+        this.unidad = unidad;
         this.venta = venta;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
@@ -35,9 +35,9 @@ public class VentaDet  implements java.io.Serializable {
         this.precioTotal = precioTotal;
         this.estado = estado;
     }
-    public VentaDet(Producto producto, UnidadMedida unidadMedida, Venta venta, BigDecimal cantidad, BigDecimal precioUnitario, BigDecimal valorAdicional, BigDecimal precioTotal, char estado, String observacion) {
+    public VentaDet(Producto producto, Unidad unidad, Venta venta, BigDecimal cantidad, BigDecimal precioUnitario, BigDecimal valorAdicional, BigDecimal precioTotal, char estado, String observacion) {
        this.producto = producto;
-       this.unidadMedida = unidadMedida;
+       this.unidad = unidad;
        this.venta = venta;
        this.cantidad = cantidad;
        this.precioUnitario = precioUnitario;
@@ -61,12 +61,12 @@ public class VentaDet  implements java.io.Serializable {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-    public UnidadMedida getUnidadMedida() {
-        return this.unidadMedida;
+    public Unidad getUnidad() {
+        return this.unidad;
     }
     
-    public void setUnidadMedida(UnidadMedida unidadMedida) {
-        this.unidadMedida = unidadMedida;
+    public void setUnidad(Unidad unidad) {
+        this.unidad = unidad;
     }
     public Venta getVenta() {
         return this.venta;

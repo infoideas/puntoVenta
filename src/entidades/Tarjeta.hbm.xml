@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21 sep. 2022 18:50:43 by Hibernate Tools 4.3.1 -->
+<!-- Generated 8 oct. 2022 10:23:08 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entidades.Tarjeta" table="tarjeta" catalog="gestion" optimistic-lock="version">
+    <class name="entidades.Tarjeta" table="tarjeta" catalog="estancia" optimistic-lock="version">
         <comment>Tarjetas de cr&#233;dito y/o d&#233;bito</comment>
-        <id name="id" type="int">
+        <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="nombre" type="string">
             <column name="nombre" length="50" not-null="true" />

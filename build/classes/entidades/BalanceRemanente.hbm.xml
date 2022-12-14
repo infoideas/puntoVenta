@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 3 ene. 2022 16:12:27 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.BalanceRemanente" table="balance_remanente" catalog="estancia" optimistic-lock="version">
+        <comment>Detalle de remanente de productos</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="balance" class="entidades.Balance" fetch="select">
+            <column name="idBalance" not-null="true" />
+        </many-to-one>
+        <many-to-one name="producto" class="entidades.Producto" fetch="select">
+            <column name="idProducto" not-null="true" />
+        </many-to-one>
+        <many-to-one name="unidad" class="entidades.Unidad" fetch="select">
+            <column name="idUnidad" not-null="true" />
+        </many-to-one>
+        <property name="cantidad" type="big_decimal">
+            <column name="cantidad" precision="20" not-null="true" />
+        </property>
+        <property name="precioUnitario" type="big_decimal">
+            <column name="precio_unitario" precision="20" not-null="true">
+                <comment>Precio por unidad promedio del producto</comment>
+            </column>
+        </property>
+        <property name="precioTotal" type="big_decimal">
+            <column name="precio_total" precision="20" not-null="true">
+                <comment>Precio total</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

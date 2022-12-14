@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 26 ene. 2022 14:40:07 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -14,9 +14,16 @@ public class Localidad  implements java.io.Serializable {
      private Integer id;
      private Provincia provincia;
      private String nombre;
-     private String cp;
-     private Set<PersonaDireccion> personaDireccions = new HashSet<PersonaDireccion>(0);
+     private Set<Repartidor> repartidors = new HashSet<Repartidor>(0);
+     private Set<DireccionUsuarioCliente> direccionUsuarioClientes = new HashSet<DireccionUsuarioCliente>(0);
      private Set<LocalCarniceria> localCarnicerias = new HashSet<LocalCarniceria>(0);
+     private Set<Deposito> depositos = new HashSet<Deposito>(0);
+     private Set<Cliente> clientes = new HashSet<Cliente>(0);
+     private Set<Comisionista> comisionistas = new HashSet<Comisionista>(0);
+     private Set<Productor> productors = new HashSet<Productor>(0);
+     private Set<Proveedor> proveedors = new HashSet<Proveedor>(0);
+     private Set<Viaje> viajesForIdOrigen = new HashSet<Viaje>(0);
+     private Set<Viaje> viajesForIdDestino = new HashSet<Viaje>(0);
      private Set<Empleado> empleados = new HashSet<Empleado>(0);
 
     public Localidad() {
@@ -27,12 +34,19 @@ public class Localidad  implements java.io.Serializable {
         this.provincia = provincia;
         this.nombre = nombre;
     }
-    public Localidad(Provincia provincia, String nombre, String cp, Set<PersonaDireccion> personaDireccions, Set<LocalCarniceria> localCarnicerias, Set<Empleado> empleados) {
+    public Localidad(Provincia provincia, String nombre, Set<Repartidor> repartidors, Set<DireccionUsuarioCliente> direccionUsuarioClientes, Set<LocalCarniceria> localCarnicerias, Set<Deposito> depositos, Set<Cliente> clientes, Set<Comisionista> comisionistas, Set<Productor> productors, Set<Proveedor> proveedors, Set<Viaje> viajesForIdOrigen, Set<Viaje> viajesForIdDestino, Set<Empleado> empleados) {
        this.provincia = provincia;
        this.nombre = nombre;
-       this.cp = cp;
-       this.personaDireccions = personaDireccions;
+       this.repartidors = repartidors;
+       this.direccionUsuarioClientes = direccionUsuarioClientes;
        this.localCarnicerias = localCarnicerias;
+       this.depositos = depositos;
+       this.clientes = clientes;
+       this.comisionistas = comisionistas;
+       this.productors = productors;
+       this.proveedors = proveedors;
+       this.viajesForIdOrigen = viajesForIdOrigen;
+       this.viajesForIdDestino = viajesForIdDestino;
        this.empleados = empleados;
     }
    
@@ -57,19 +71,19 @@ public class Localidad  implements java.io.Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public String getCp() {
-        return this.cp;
+    public Set<Repartidor> getRepartidors() {
+        return this.repartidors;
     }
     
-    public void setCp(String cp) {
-        this.cp = cp;
+    public void setRepartidors(Set<Repartidor> repartidors) {
+        this.repartidors = repartidors;
     }
-    public Set<PersonaDireccion> getPersonaDireccions() {
-        return this.personaDireccions;
+    public Set<DireccionUsuarioCliente> getDireccionUsuarioClientes() {
+        return this.direccionUsuarioClientes;
     }
     
-    public void setPersonaDireccions(Set<PersonaDireccion> personaDireccions) {
-        this.personaDireccions = personaDireccions;
+    public void setDireccionUsuarioClientes(Set<DireccionUsuarioCliente> direccionUsuarioClientes) {
+        this.direccionUsuarioClientes = direccionUsuarioClientes;
     }
     public Set<LocalCarniceria> getLocalCarnicerias() {
         return this.localCarnicerias;
@@ -78,6 +92,55 @@ public class Localidad  implements java.io.Serializable {
     public void setLocalCarnicerias(Set<LocalCarniceria> localCarnicerias) {
         this.localCarnicerias = localCarnicerias;
     }
+    public Set<Deposito> getDepositos() {
+        return this.depositos;
+    }
+    
+    public void setDepositos(Set<Deposito> depositos) {
+        this.depositos = depositos;
+    }
+    public Set<Cliente> getClientes() {
+        return this.clientes;
+    }
+    
+    public void setClientes(Set<Cliente> clientes) {
+        this.clientes = clientes;
+    }
+    public Set<Comisionista> getComisionistas() {
+        return this.comisionistas;
+    }
+    
+    public void setComisionistas(Set<Comisionista> comisionistas) {
+        this.comisionistas = comisionistas;
+    }
+    public Set<Productor> getProductors() {
+        return this.productors;
+    }
+    
+    public void setProductors(Set<Productor> productors) {
+        this.productors = productors;
+    }
+    public Set<Proveedor> getProveedors() {
+        return this.proveedors;
+    }
+    
+    public void setProveedors(Set<Proveedor> proveedors) {
+        this.proveedors = proveedors;
+    }
+    public Set<Viaje> getViajesForIdOrigen() {
+        return this.viajesForIdOrigen;
+    }
+    
+    public void setViajesForIdOrigen(Set<Viaje> viajesForIdOrigen) {
+        this.viajesForIdOrigen = viajesForIdOrigen;
+    }
+    public Set<Viaje> getViajesForIdDestino() {
+        return this.viajesForIdDestino;
+    }
+    
+    public void setViajesForIdDestino(Set<Viaje> viajesForIdDestino) {
+        this.viajesForIdDestino = viajesForIdDestino;
+    }
     public Set<Empleado> getEmpleados() {
         return this.empleados;
     }
@@ -85,6 +148,11 @@ public class Localidad  implements java.io.Serializable {
     public void setEmpleados(Set<Empleado> empleados) {
         this.empleados = empleados;
     }
+
+    @Override   
+    public String toString(){
+       return nombre;   
+    }  
 
 
 

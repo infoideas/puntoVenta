@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 01/09/2020 16:20:21 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.CostoFleteGranos" table="costo_flete_granos" catalog="estancia" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="cliente" class="entidades.Cliente" fetch="select">
+            <column name="idCliente" not-null="true">
+                <comment>Id. del cliente</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="tipoGrano" class="entidades.TipoGrano" fetch="select">
+            <column name="idGrano" not-null="true">
+                <comment>Id. del grano</comment>
+            </column>
+        </many-to-one>
+        <property name="costoxTon" type="big_decimal">
+            <column name="costoxTon" precision="20" not-null="true">
+                <comment>Costo x tonelada</comment>
+            </column>
+        </property>
+        <property name="porcIva" type="big_decimal">
+            <column name="porcIva" precision="20" not-null="true">
+                <comment>Porcentaje de Iva</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 oct. 2022 10:23:08 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.RemitoVentaDet" table="remito_venta_det" catalog="estancia" optimistic-lock="version">
+        <comment>Detalle de remito de venta</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="inventarioTropa" class="entidades.InventarioTropa" fetch="select">
+            <column name="idGarronInv">
+                <comment>Id del garr&#243;n entregado del inventario disponible de la tropa</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="producto" class="entidades.Producto" fetch="select">
+            <column name="idProducto" not-null="true" />
+        </many-to-one>
+        <many-to-one name="remitoVenta" class="entidades.RemitoVenta" fetch="select">
+            <column name="idRemito" not-null="true">
+                <comment>Remito</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="unidad" class="entidades.Unidad" fetch="select">
+            <column name="idUnidad" not-null="true" />
+        </many-to-one>
+        <property name="cantidad" type="big_decimal">
+            <column name="cantidad" precision="20" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

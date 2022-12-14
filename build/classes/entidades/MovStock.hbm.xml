@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.MovStock" table="mov_stock" catalog="estancia" optimistic-lock="version">
+        <comment>Movimiento de inventario de las carnicer&#237;as</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="tipoMov" type="char">
+            <column name="tipoMov" length="1" not-null="true">
+                <comment>Tipo de movimiento: Ingreso: I / Egreso: E</comment>
+            </column>
+        </property>
+        <property name="fecMov" type="timestamp">
+            <column name="fec_mov" length="19" not-null="true">
+                <comment>Fecha del movimiento</comment>
+            </column>
+        </property>
+        <property name="idUsuario" type="int">
+            <column name="idUsuario" not-null="true">
+                <comment>Id. del usuario que genero el movimiento</comment>
+            </column>
+        </property>
+        <property name="idComprobanteRel" type="java.lang.Integer">
+            <column name="idComprobanteRel">
+                <comment>Id. del comprobante que origin&#243; el movimiento de stock</comment>
+            </column>
+        </property>
+        <property name="tipoComprobanteRel" type="java.lang.Character">
+            <column name="tipoComprobanteRel" length="1">
+                <comment>Tipo de comprobante relacionado= R: Remito</comment>
+            </column>
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <set name="movStockDets" table="mov_stock_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idMov" not-null="true">
+                    <comment>Id. del movimiento de inventario relacionado</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.MovStockDet" />
+        </set>
+    </class>
+</hibernate-mapping>

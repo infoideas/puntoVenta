@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.TropaViaje" table="tropa_viaje" catalog="estancia" optimistic-lock="version">
+        <comment>Viajes relacionados con la tropa</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="tropa" class="entidades.Tropa" fetch="select">
+            <column name="idTropa" not-null="true" />
+        </many-to-one>
+        <many-to-one name="viaje" class="entidades.Viaje" fetch="select">
+            <column name="idViaje" not-null="true" />
+        </many-to-one>
+        <property name="porcAfectado" type="big_decimal">
+            <column name="porcAfectado" precision="10" not-null="true">
+                <comment>Porcentaje de afectaci&#243;n del viaje a la tropa</comment>
+            </column>
+        </property>
+        <property name="valorAfectado" type="big_decimal">
+            <column name="valorAfectado" precision="10" not-null="true">
+                <comment>Valor afectado del total del viaje a la tropa</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

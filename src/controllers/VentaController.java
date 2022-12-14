@@ -6,9 +6,11 @@
 package controllers;
 
 import entidades.Venta;
+import entidades.VentaDet;
 import general.Conector;
 import general.HibernateUtil;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -53,6 +55,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import java.time.Instant;
 import java.util.Calendar;
+import java.util.Iterator;
 import pdv.PuntoVenta;
 
 /**
@@ -82,7 +85,7 @@ public class VentaController extends VBox implements Initializable {
     private ObservableList<Venta> listaData = FXCollections.observableArrayList();
     
     @FXML
-    Button buBuscar,buNuevo,buConsultar,buEliminar,buSalir;
+    Button buBuscar,buNuevo,buConsultar,buAnular,buSalir;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -129,21 +132,10 @@ public class VentaController extends VBox implements Initializable {
         });
         
         //Consular o editar registro
-        buEliminar.setOnAction(event -> {
-           Venta registroSel= (Venta) dataGrid.getSelectionModel().getSelectedItem();
-           if (registroSel !=null){
-               Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-               alert.setTitle("Confirmación");
-               alert.setContentText("¿Está seguro de eliminar el registro seleccionado?");
-               Optional<ButtonType> action = alert.showAndWait();
-               if (action.get() == ButtonType.OK) {
-                   if ( eliminaRegistro(registroSel)){
-                       int li_fila_sel=dataGrid.getSelectionModel().getSelectedIndex();
-                       listaData.remove(li_fila_sel);
-                       dataGrid.setItems(listaData);
-                   }    
-               }
-           }
+        buAnular.setOnAction(event -> {
+            Venta registroSel= (Venta) dataGrid.getSelectionModel().getSelectedItem();
+            if (registroSel !=null)
+                anulaVenta("/vistas/VentaAnulacion.fxml",registroSel);
         });
         
         //Botón salir de la ventana
@@ -254,7 +246,6 @@ public class VentaController extends VBox implements Initializable {
             newPane = firstPaneLoader.load();
             //Controlador de la nueva ventana
             VentaDetalleController controller = (VentaDetalleController) firstPaneLoader.getController();
-            controller.setRegistroSel(new Venta());
             controller.nuevaVenta(false);
             
             Scene newScene = new Scene(newPane, 1024,700);
@@ -292,6 +283,7 @@ public class VentaController extends VBox implements Initializable {
             session.beginTransaction();
             p=(Venta) session.get(Venta.class,movSel.getId());
             Hibernate.initialize(p.getVentaDets());
+            if (p.getPersona()!=null) Hibernate.initialize(p.getPersona().getDireccion());
             session.getTransaction().commit();
         }
         catch (HibernateException e){
@@ -316,6 +308,64 @@ public class VentaController extends VBox implements Initializable {
             Stage nuevoStage = new Stage();
             nuevoStage.setScene(newScene);
             nuevoStage.setTitle("Edita venta");
+            nuevoStage.setResizable(true);
+            nuevoStage.show();
+        
+        } catch (IOException ex) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setTitle("Error");
+            alert.setContentText("No se pudo cargar la ventana: " + ex.getMessage());
+            alert.show();
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            return;
+        } catch (Exception ex) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setTitle("Error");
+            alert.setContentText("No se pudo cargar la ventana: " + ex.getMessage());
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+            alert.show();
+            return;
+        }
+    }
+    
+    public void anulaVenta(String fxml,Venta movSel) {
+        //Cargo nuevo stage
+        FXMLLoader firstPaneLoader = new FXMLLoader(getClass().getResource(fxml));
+        Parent newPane = null;
+        try {
+            Venta p;
+            Session session=HibernateUtil.getSessionFactory().openSession();
+            try{
+                session.beginTransaction();
+                p=(Venta) session.get(Venta.class,movSel.getId());
+                Hibernate.initialize(p.getVentaDets());
+                if (p.getPersona()!=null) Hibernate.initialize(p.getPersona().getDireccion());
+                session.getTransaction().commit();
+            }
+            catch (HibernateException e){
+                session.getTransaction().rollback();
+                return;
+           }
+           finally {
+                session.close();
+           }
+            
+            Venta ventaAnulada= new Venta();
+           
+            newPane = firstPaneLoader.load();
+            //Controlador de la nueva ventana
+            VentaAnulacionController controller = (VentaAnulacionController) firstPaneLoader.getController();
+            controller.setRegistroSel(ventaAnulada);
+            controller.setPersonaSel(p.getPersona());
+            controller.setVentaAnulada(p);
+            controller.nuevaAnulacion();
+            
+            Scene newScene = new Scene(newPane,800,700);
+            Stage nuevoStage = new Stage();
+            nuevoStage.setScene(newScene);
+            nuevoStage.setTitle("Anular venta");
             nuevoStage.setResizable(true);
             nuevoStage.show();
         

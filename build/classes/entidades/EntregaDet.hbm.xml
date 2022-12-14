@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.EntregaDet" table="entrega_det" catalog="estancia" optimistic-lock="version" >
+        <comment>Detalle de la entrega</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="entrega" class="entidades.Entrega" fetch="select">
+            <column name="idEntrega" not-null="true" />
+        </many-to-one>
+        <many-to-one name="inventarioTropa" class="entidades.InventarioTropa" fetch="select">
+            <column name="idGarronInv" not-null="true">
+                <comment>Id del garr&#243;n entregado del inventario disponible de la tropa</comment>
+            </column>
+        </many-to-one>
+        <property name="tipo" type="string">
+            <column name="tipo" length="2" not-null="true">
+                <comment>Tipo= Garr&#243;n izquierdo : GI / Garr&#243;n derecho : GD/ Pierna: PI / Delantero: DE/Rueda: RU</comment>
+            </column>
+        </property>
+        <property name="kilos" type="big_decimal">
+            <column name="kilos" precision="20" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

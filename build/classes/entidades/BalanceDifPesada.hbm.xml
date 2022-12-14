@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 24 mar. 2022 12:52:02 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.BalanceDifPesada" table="balance_dif_pesada" catalog="estancia" optimistic-lock="version">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="balance" class="entidades.Balance" fetch="select">
+            <column name="idBalance" not-null="true" />
+        </many-to-one>
+        <many-to-one name="cliente" class="entidades.Cliente" fetch="select">
+            <column name="idCliente" not-null="true">
+                <comment>Cliente</comment>
+            </column>
+        </many-to-one>
+        <property name="fecha" type="timestamp">
+            <column name="fecha" length="19" not-null="true">
+                <comment>Fecha de pesada</comment>
+            </column>
+        </property>
+        <property name="turno" type="char">
+            <column name="turno" length="1" not-null="true">
+                <comment>Turno: Ma&#241;ana: M/Tarde: T</comment>
+            </column>
+        </property>
+        <property name="valor" type="big_decimal">
+            <column name="valor" precision="20" scale="3" not-null="true">
+                <comment>Valor en dinero de la diferencia</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

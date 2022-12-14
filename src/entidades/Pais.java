@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 10/07/2021 10:15:57 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -14,8 +14,8 @@ public class Pais  implements java.io.Serializable {
      private Integer id;
      private Moneda moneda;
      private String nombre;
-     private Set<Empleado> empleados = new HashSet<Empleado>(0);
      private Set<Empresa> empresas = new HashSet<Empresa>(0);
+     private Set<Empleado> empleados = new HashSet<Empleado>(0);
 
     public Pais() {
     }
@@ -25,10 +25,9 @@ public class Pais  implements java.io.Serializable {
         this.moneda = moneda;
         this.nombre = nombre;
     }
-    public Pais(Moneda moneda, String nombre, Set<Empleado> empleados, Set<Empresa> empresas) {
+    public Pais(Moneda moneda, String nombre, Set<Empresa> empresas) {
        this.moneda = moneda;
        this.nombre = nombre;
-       this.empleados = empleados;
        this.empresas = empresas;
     }
    
@@ -53,19 +52,20 @@ public class Pais  implements java.io.Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public Set<Empleado> getEmpleados() {
-        return this.empleados;
-    }
-    
-    public void setEmpleados(Set<Empleado> empleados) {
-        this.empleados = empleados;
-    }
     public Set<Empresa> getEmpresas() {
         return this.empresas;
     }
     
     public void setEmpresas(Set<Empresa> empresas) {
         this.empresas = empresas;
+    }
+
+    public Set<Empleado> getEmpleados() {
+        return empleados;
+    }
+
+    public void setEmpleados(Set<Empleado> empleados) {
+        this.empleados = empleados;
     }
 
 

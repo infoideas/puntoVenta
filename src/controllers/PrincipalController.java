@@ -222,76 +222,6 @@ public class PrincipalController extends VBox implements Initializable {
         nuevoStage.show();
     }
     
-    
-    
-//    public void irPuntoVentaPendientes(String fxml) {
-//        //Cargo nuevo stage
-//        FXMLLoader firstPaneLoader = new FXMLLoader(getClass().getResource(fxml));
-//        //Controlador de la nueva ventana
-//        PedidoPendienteController pedidosController = (PedidoPendienteController) firstPaneLoader.getController();
-//        
-//        Parent newPane = null;
-//        try {
-//            newPane = firstPaneLoader.load();
-//        } catch (IOException ex) {
-//            System.out.println(ex.getMessage());                        
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//            alert.setHeaderText(null);
-//            alert.setTitle("Error");
-//            alert.setContentText("No se pudo cargar la ventana");
-//            alert.show();
-//            return;
-//        } catch (Exception ex) {
-//            System.out.println(ex.getMessage());            
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//            alert.setHeaderText(null);
-//            alert.setTitle("Error");
-//            alert.setContentText("No se pudo cargar la ventana");
-//            alert.show();
-//            return;
-//        }
-//        
-//        Scene newScene = new Scene(newPane, 1024,700);
-//        Stage nuevoStage = new Stage();
-//        nuevoStage.setScene(newScene);
-//        nuevoStage.setTitle("PuntoVenta pendientes");
-//        nuevoStage.show();
-//    }
-//    
-//    public void irPantallaPuntoVenta(String fxml) {
-//        //Cargo nuevo stage
-//        FXMLLoader firstPaneLoader = new FXMLLoader(getClass().getResource(fxml));
-//        //Controlador de la nueva ventana
-//        PedidoController pedidosController = (PedidoController) firstPaneLoader.getController();
-//        
-//        Parent newPane = null;
-//        try {
-//            newPane = firstPaneLoader.load();
-//        } catch (IOException ex) {
-//            System.out.println(ex.getMessage());                        
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//            alert.setHeaderText(null);
-//            alert.setTitle("Error");
-//            alert.setContentText("No se pudo cargar la ventana");
-//            alert.show();
-//            return;
-//        } catch (Exception ex) {
-//            System.out.println(ex.getMessage());            
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//            alert.setHeaderText(null);
-//            alert.setTitle("Error");
-//            alert.setContentText("No se pudo cargar la ventana");
-//            alert.show();
-//            return;
-//        }
-//        
-//        Scene newScene = new Scene(newPane, 1024,700);
-//        Stage nuevoStage = new Stage();
-//        nuevoStage.setScene(newScene);
-//        nuevoStage.setTitle("Consulta de pedidos");
-//        nuevoStage.show();
-//    }
-//    
     public void irNuevaVenta(String fxml,boolean isVentaRapida) {
         //Cargo nuevo stage
         FXMLLoader firstPaneLoader = new FXMLLoader(getClass().getResource(fxml));
@@ -300,7 +230,6 @@ public class PrincipalController extends VBox implements Initializable {
             newPane = firstPaneLoader.load();
             //Controlador de la nueva ventana
             VentaDetalleController controller = (VentaDetalleController) firstPaneLoader.getController();
-            controller.setRegistroSel(new Venta());
             controller.nuevaVenta(isVentaRapida);
             
             Scene newScene = new Scene(newPane, 1024,700);

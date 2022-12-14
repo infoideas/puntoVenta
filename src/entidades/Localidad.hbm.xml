@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21 sep. 2022 18:50:43 by Hibernate Tools 4.3.1 -->
+<!-- Generated 26 ene. 2022 14:40:09 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entidades.Localidad" table="localidad" catalog="gestion" optimistic-lock="version">
-        <comment>Localidad</comment>
+    <class name="entidades.Localidad" table="localidad" catalog="estancia" optimistic-lock="version" lazy="false">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
@@ -13,26 +12,75 @@
             <column name="idProvincia" not-null="true" />
         </many-to-one>
         <property name="nombre" type="string">
-            <column name="nombre" length="45" not-null="true">
-                <comment>Nombre de localidad</comment>
-            </column>
+            <column name="nombre" length="100" not-null="true" />
         </property>
-        <property name="cp" type="string">
-            <column name="cp" length="30" />
-        </property>
-        <set name="personaDireccions" table="persona_direccion" inverse="true" lazy="true" fetch="select">
+        <set name="repartidors" table="repartidor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idLoc" />
+            </key>
+            <one-to-many class="entidades.Repartidor" />
+        </set>
+        <set name="direccionUsuarioClientes" table="direccion_usuario_cliente" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="idLocalidad">
                     <comment>Id de la localidad</comment>
                 </column>
             </key>
-            <one-to-many class="entidades.PersonaDireccion" />
+            <one-to-many class="entidades.DireccionUsuarioCliente" />
         </set>
         <set name="localCarnicerias" table="local_carniceria" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="idLocalidad" not-null="true" />
             </key>
             <one-to-many class="entidades.LocalCarniceria" />
+        </set>
+        <set name="depositos" table="deposito" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idLocalidad" not-null="true">
+                    <comment>Localidad de ubicaci&#243;n</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Deposito" />
+        </set>
+        <set name="clientes" table="cliente" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idLocalidad" />
+            </key>
+            <one-to-many class="entidades.Cliente" />
+        </set>
+        <set name="comisionistas" table="comisionista" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idLocalidad" />
+            </key>
+            <one-to-many class="entidades.Comisionista" />
+        </set>
+        <set name="productors" table="productor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idLocalidad" />
+            </key>
+            <one-to-many class="entidades.Productor" />
+        </set>
+        <set name="proveedors" table="proveedor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idLocalidad" />
+            </key>
+            <one-to-many class="entidades.Proveedor" />
+        </set>
+        <set name="viajesForIdOrigen" table="viaje" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idOrigen" not-null="true">
+                    <comment>Localidad de origen del viaje</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Viaje" />
+        </set>
+        <set name="viajesForIdDestino" table="viaje" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idDestino" not-null="true">
+                    <comment>Localidad de destino del viaje</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Viaje" />
         </set>
         <set name="empleados" table="empleado" inverse="true" lazy="true" fetch="select">
             <key>

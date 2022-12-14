@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.MovStockDet" table="mov_stock_det" catalog="estancia" optimistic-lock="version">
+        <comment>Detalle del movimiento de inventario</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="movStock" class="entidades.MovStock" fetch="select">
+            <column name="idMov" not-null="true">
+                <comment>Id. del movimiento de inventario relacionado</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="producto" class="entidades.Producto" fetch="select">
+            <column name="idProducto" not-null="true">
+                <comment>Id. del garr&#243;n</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="unidad" class="entidades.Unidad" fetch="select">
+            <column name="idUnidad" not-null="true">
+                <comment>Unidad</comment>
+            </column>
+        </many-to-one>
+        <property name="cantidad" type="big_decimal">
+            <column name="cantidad" precision="20" not-null="true">
+                <comment>Cantidad de unidades: Kilos/Unidades</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

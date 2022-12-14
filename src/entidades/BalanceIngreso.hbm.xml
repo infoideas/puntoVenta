@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 3 ene. 2022 16:12:27 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.BalanceIngreso" table="balance_ingreso" catalog="estancia" optimistic-lock="version">
+        <comment>Productos y media reses ingresados en la semana o per&#237;odo del balance</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="balance" class="entidades.Balance" fetch="select">
+            <column name="idBalance" not-null="true" />
+        </many-to-one>
+        <many-to-one name="producto" class="entidades.Producto" fetch="select">
+            <column name="idProducto" not-null="true">
+                <comment>Producto relacionado</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="proveedor" class="entidades.Proveedor" fetch="select">
+            <column name="idProveedor">
+                <comment>Proveedor del producto</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="unidad" class="entidades.Unidad" fetch="select">
+            <column name="idUnidad" not-null="true">
+                <comment>Unidad de medida</comment>
+            </column>
+        </many-to-one>
+        <property name="cantidad" type="big_decimal">
+            <column name="cantidad" precision="20" not-null="true">
+                <comment>Cantidad de producto ingresado</comment>
+            </column>
+        </property>
+        <property name="precioUnitario" type="big_decimal">
+            <column name="precio_unitario" precision="20" not-null="true">
+                <comment>Precio promedio por unidad</comment>
+            </column>
+        </property>
+        <property name="precioTotal" type="big_decimal">
+            <column name="precio_total" precision="20" not-null="true">
+                <comment>Precio total</comment>
+            </column>
+        </property>
+        <property name="fecha" type="timestamp">
+            <column name="fecha" length="19" not-null="true">
+                <comment>Fecha</comment>
+            </column>
+        </property>        
+    </class>
+</hibernate-mapping>

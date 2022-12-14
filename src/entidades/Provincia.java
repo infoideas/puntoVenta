@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 26 ene. 2022 14:40:07 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -13,11 +13,17 @@ public class Provincia  implements java.io.Serializable {
 
      private Integer id;
      private String nombre;
-     private Set<PersonaDireccion> personaDireccions = new HashSet<PersonaDireccion>(0);
+     private Set<DireccionUsuarioCliente> direccionUsuarioClientes = new HashSet<DireccionUsuarioCliente>(0);
+     private Set<Deposito> depositos = new HashSet<Deposito>(0);
      private Set<LocalCarniceria> localCarnicerias = new HashSet<LocalCarniceria>(0);
+     private Set<Repartidor> repartidors = new HashSet<Repartidor>(0);
+     private Set<Productor> productors = new HashSet<Productor>(0);
+     private Set<Cliente> clientes = new HashSet<Cliente>(0);
+     private Set<Comisionista> comisionistas = new HashSet<Comisionista>(0);
      private Set<Empleado> empleados = new HashSet<Empleado>(0);
      private Set<Empresa> empresas = new HashSet<Empresa>(0);
      private Set<Localidad> localidads = new HashSet<Localidad>(0);
+     private Set<Proveedor> proveedors = new HashSet<Proveedor>(0);
 
     public Provincia() {
     }
@@ -26,13 +32,19 @@ public class Provincia  implements java.io.Serializable {
     public Provincia(String nombre) {
         this.nombre = nombre;
     }
-    public Provincia(String nombre, Set<PersonaDireccion> personaDireccions, Set<LocalCarniceria> localCarnicerias, Set<Empleado> empleados, Set<Empresa> empresas, Set<Localidad> localidads) {
+    public Provincia(String nombre, Set<DireccionUsuarioCliente> direccionUsuarioClientes, Set<Deposito> depositos, Set<LocalCarniceria> localCarnicerias, Set<Repartidor> repartidors, Set<Productor> productors, Set<Cliente> clientes, Set<Comisionista> comisionistas, Set<Empleado> empleados, Set<Empresa> empresas, Set<Localidad> localidads, Set<Proveedor> proveedors) {
        this.nombre = nombre;
-       this.personaDireccions = personaDireccions;
+       this.direccionUsuarioClientes = direccionUsuarioClientes;
+       this.depositos = depositos;
        this.localCarnicerias = localCarnicerias;
+       this.repartidors = repartidors;
+       this.productors = productors;
+       this.clientes = clientes;
+       this.comisionistas = comisionistas;
        this.empleados = empleados;
        this.empresas = empresas;
        this.localidads = localidads;
+       this.proveedors = proveedors;
     }
    
     public Integer getId() {
@@ -49,12 +61,19 @@ public class Provincia  implements java.io.Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public Set<PersonaDireccion> getPersonaDireccions() {
-        return this.personaDireccions;
+    public Set<DireccionUsuarioCliente> getDireccionUsuarioClientes() {
+        return this.direccionUsuarioClientes;
     }
     
-    public void setPersonaDireccions(Set<PersonaDireccion> personaDireccions) {
-        this.personaDireccions = personaDireccions;
+    public void setDireccionUsuarioClientes(Set<DireccionUsuarioCliente> direccionUsuarioClientes) {
+        this.direccionUsuarioClientes = direccionUsuarioClientes;
+    }
+    public Set<Deposito> getDepositos() {
+        return this.depositos;
+    }
+    
+    public void setDepositos(Set<Deposito> depositos) {
+        this.depositos = depositos;
     }
     public Set<LocalCarniceria> getLocalCarnicerias() {
         return this.localCarnicerias;
@@ -62,6 +81,34 @@ public class Provincia  implements java.io.Serializable {
     
     public void setLocalCarnicerias(Set<LocalCarniceria> localCarnicerias) {
         this.localCarnicerias = localCarnicerias;
+    }
+    public Set<Repartidor> getRepartidors() {
+        return this.repartidors;
+    }
+    
+    public void setRepartidors(Set<Repartidor> repartidors) {
+        this.repartidors = repartidors;
+    }
+    public Set<Productor> getProductors() {
+        return this.productors;
+    }
+    
+    public void setProductors(Set<Productor> productors) {
+        this.productors = productors;
+    }
+    public Set<Cliente> getClientes() {
+        return this.clientes;
+    }
+    
+    public void setClientes(Set<Cliente> clientes) {
+        this.clientes = clientes;
+    }
+    public Set<Comisionista> getComisionistas() {
+        return this.comisionistas;
+    }
+    
+    public void setComisionistas(Set<Comisionista> comisionistas) {
+        this.comisionistas = comisionistas;
     }
     public Set<Empleado> getEmpleados() {
         return this.empleados;
@@ -83,6 +130,13 @@ public class Provincia  implements java.io.Serializable {
     
     public void setLocalidads(Set<Localidad> localidads) {
         this.localidads = localidads;
+    }
+    public Set<Proveedor> getProveedors() {
+        return this.proveedors;
+    }
+    
+    public void setProveedors(Set<Proveedor> proveedors) {
+        this.proveedors = proveedors;
     }
 
 

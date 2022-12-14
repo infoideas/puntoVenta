@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 31 oct. 2021 16:10:03 by Hibernate Tools 4.3.1
 
 
 
@@ -9,23 +9,31 @@ package entidades;
 public class CausaDevolucion  implements java.io.Serializable {
 
 
-     private int id;
+     private Integer id;
+     private Empresa empresa;
      private String nombre;
 
     public CausaDevolucion() {
     }
 
-    public CausaDevolucion(int id, String nombre) {
-       this.id = id;
+    public CausaDevolucion(Empresa empresa, String nombre) {
+       this.empresa = empresa;
        this.nombre = nombre;
     }
    
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+    public Empresa getEmpresa() {
+        return this.empresa;
+    }
+    
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
     }
     public String getNombre() {
         return this.nombre;

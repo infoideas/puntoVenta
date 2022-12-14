@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16 jun. 2022 20:10:38 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.InventarioTropa" table="inventario_tropa" catalog="estancia" optimistic-lock="version" lazy="false">
+        <comment>Inventario de garrones de administraci&#243;n</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="tropa" class="entidades.Tropa" fetch="select">
+            <column name="idTropa" not-null="true">
+                <comment>Id de la tropa relacionada</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="tropaDetGarron" class="entidades.TropaDetGarron" fetch="select">
+            <column name="idGarron" not-null="true">
+                <comment>Id. del garr&#243;n en la tropa</comment>
+            </column>
+        </many-to-one>
+        <property name="tipo" type="string">
+            <column name="tipo" length="2" not-null="true">
+                <comment>Tipo= Garr&#243;n izquierdo : GI / Garr&#243;n derecho : GD/ Pierna: PI / Delantero: DE/Rueda: RU</comment>
+            </column>
+        </property>
+        <property name="kilos" type="big_decimal">
+            <column name="kilos" precision="20" not-null="true" />
+        </property>
+        <property name="estado" type="char">
+            <column name="estado" length="1" not-null="true">
+                <comment>Estado= Disponible: D /Entregado : E /Fraccionada: F</comment>
+            </column>
+        </property>
+        <set name="remitoVentaDets" table="remito_venta_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idGarronInv">
+                    <comment>Id del garr&#243;n entregado del inventario disponible de la tropa</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.RemitoVentaDet" />
+        </set>
+        <set name="entregaDets" table="entrega_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idGarronInv" not-null="true">
+                    <comment>Id del garr&#243;n entregado del inventario disponible de la tropa</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.EntregaDet" />
+        </set>
+    </class>
+</hibernate-mapping>

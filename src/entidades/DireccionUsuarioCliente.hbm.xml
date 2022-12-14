@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 8 oct. 2022 10:23:08 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.DireccionUsuarioCliente" table="direccion_usuario_cliente" catalog="estancia" optimistic-lock="version" lazy="false">
+        <comment>Direcciones del usuario cliente. Usada para pedidos</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="localidad" class="entidades.Localidad" fetch="select">
+            <column name="idLocalidad">
+                <comment>Id de la localidad</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="provincia" class="entidades.Provincia" fetch="select">
+            <column name="idProvincia" not-null="true" />
+        </many-to-one>
+        <many-to-one name="usuarioCliente" class="entidades.UsuarioCliente" fetch="select">
+            <column name="idUsuario" not-null="true">
+                <comment>Id. del usuario cliente</comment>
+            </column>
+        </many-to-one>
+        <property name="ciudad" type="string">
+            <column name="ciudad" length="100" not-null="true">
+                <comment>Descripci&#243;n de la localidad o ciudad</comment>
+            </column>
+        </property>
+        <property name="cp" type="string">
+            <column name="cp" length="30" />
+        </property>
+        <property name="direccion" type="string">
+            <column name="direccion" length="100" not-null="true" />
+        </property>
+        <property name="telefono" type="string">
+            <column name="telefono" length="100" />
+        </property>
+    </class>
+</hibernate-mapping>

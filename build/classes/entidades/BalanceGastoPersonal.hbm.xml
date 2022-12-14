@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 21 ene. 2022 15:27:08 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.BalanceGastoPersonal" table="balance_gasto_personal" catalog="estancia" optimistic-lock="version">
+        <comment>Gastos de personal del per&#237;odo del balance</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="balance" class="entidades.Balance" fetch="select">
+            <column name="idBalance" not-null="true" />
+        </many-to-one>
+        <many-to-one name="empleado" class="entidades.Empleado" fetch="select">
+            <column name="idEmpleado">
+                <comment>Proveedor</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="tipoGasto" class="entidades.TipoGasto" fetch="select">
+            <column name="idTipoGasto" not-null="true">
+                <comment>Tipo o concepto del gasto</comment>
+            </column>
+        </many-to-one>
+        <property name="fecha" type="timestamp">
+            <column name="fecha" length="19" not-null="true">
+                <comment>Fecha del gasto</comment>
+            </column>
+        </property>
+        <property name="valor" type="big_decimal">
+            <column name="valor" precision="20" not-null="true">
+                <comment>Valor</comment>
+            </column>
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+    </class>
+</hibernate-mapping>

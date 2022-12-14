@@ -1,10 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21 sep. 2022 18:50:43 by Hibernate Tools 4.3.1 -->
+<!-- Generated 26 ene. 2022 14:40:09 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entidades.Provincia" table="provincia" catalog="gestion" optimistic-lock="version">
-        <comment>Provincia</comment>
+    <class name="entidades.Provincia" table="provincia" catalog="estancia" optimistic-lock="version" lazy="false">
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
@@ -12,17 +11,49 @@
         <property name="nombre" type="string">
             <column name="nombre" length="100" not-null="true" />
         </property>
-        <set name="personaDireccions" table="persona_direccion" inverse="true" lazy="true" fetch="select">
+        <set name="direccionUsuarioClientes" table="direccion_usuario_cliente" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="idProvincia" not-null="true" />
             </key>
-            <one-to-many class="entidades.PersonaDireccion" />
+            <one-to-many class="entidades.DireccionUsuarioCliente" />
+        </set>
+        <set name="depositos" table="deposito" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProvincia" not-null="true">
+                    <comment>Provincia de ubicaci&#243;n</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Deposito" />
         </set>
         <set name="localCarnicerias" table="local_carniceria" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="idProvincia" not-null="true" />
             </key>
             <one-to-many class="entidades.LocalCarniceria" />
+        </set>
+        <set name="repartidors" table="repartidor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProvincia" />
+            </key>
+            <one-to-many class="entidades.Repartidor" />
+        </set>
+        <set name="productors" table="productor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProvincia" />
+            </key>
+            <one-to-many class="entidades.Productor" />
+        </set>
+        <set name="clientes" table="cliente" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProvincia" />
+            </key>
+            <one-to-many class="entidades.Cliente" />
+        </set>
+        <set name="comisionistas" table="comisionista" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProvincia" />
+            </key>
+            <one-to-many class="entidades.Comisionista" />
         </set>
         <set name="empleados" table="empleado" inverse="true" lazy="true" fetch="select">
             <key>
@@ -41,6 +72,12 @@
                 <column name="idProvincia" not-null="true" />
             </key>
             <one-to-many class="entidades.Localidad" />
+        </set>
+        <set name="proveedors" table="proveedor" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProvincia" />
+            </key>
+            <one-to-many class="entidades.Proveedor" />
         </set>
     </class>
 </hibernate-mapping>

@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 4 abr. 2022 15:58:54 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -12,7 +12,7 @@ public class ListaPreciosDet  implements java.io.Serializable {
 
      private Integer id;
      private ListaPrecios listaPrecios;
-     private Producto producto;
+     private Producto producto= new Producto();
      private BigDecimal precio;
 
     public ListaPreciosDet() {

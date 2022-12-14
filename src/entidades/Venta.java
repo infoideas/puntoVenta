@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 8 oct. 2022 10:23:07 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -247,12 +247,14 @@ public class Venta  implements java.io.Serializable {
     }
 
     public String getDescTipoComprobante() {
-        return (tipoComprobante=='F' ? "Factura" : "Venta");
+        return (tipoComprobante=='F' ? "Factura" : (tipoComprobante=='C' ? "Nota de crédito" : "Venta") );
     }
 
     public String getNumComprobante() {
-        return (tipoComprobante=='F' ? puntoVenta + "-" + numFactura + "-" + tipoFactura : "");
+        return (tipoComprobante=='F' || tipoComprobante=='C' ? puntoVenta + "-" + numFactura + "-" + tipoFactura : "");
     }
+
+
 
 
 }

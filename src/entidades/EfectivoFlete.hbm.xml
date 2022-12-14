@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.EfectivoFlete" table="efectivo_flete" catalog="estancia" optimistic-lock="version"
+        lazy="false">
+        <comment>Adelantos en efectivo para los choferes de los fletes</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="chofer" class="entidades.Chofer" fetch="select">
+            <column name="idFletero" not-null="true">
+                <comment>Fletero</comment>
+            </column>
+        </many-to-one>
+        <property name="idUsuario" type="int">
+            <column name="idUsuario" not-null="true">
+                <comment>Usuario que carga el movimiento</comment>
+            </column>
+        </property>
+        <property name="fecha" type="timestamp">
+            <column name="fecha" length="19" not-null="true" />
+        </property>
+        <property name="valor" type="big_decimal">
+            <column name="valor" precision="20" not-null="true">
+                <comment>Valor entregado al fletero</comment>
+            </column>
+        </property>
+        <property name="procesado" type="char">
+            <column name="procesado" length="1" not-null="true" />
+        </property>
+        <set name="liquidacionEfectivos" table="liquidacion_efectivo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idEfectivo" not-null="true" unique="true" />
+            </key>
+            <one-to-many class="entidades.LiquidacionEfectivo" />
+        </set>
+    </class>
+</hibernate-mapping>

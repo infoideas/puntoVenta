@@ -1,5 +1,5 @@
 package entidades;
-// Generated 21 sep. 2022 18:50:42 by Hibernate Tools 4.3.1
+// Generated 8 oct. 2022 10:23:07 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -12,25 +12,24 @@ public class Rubro  implements java.io.Serializable {
 
 
      private Integer id;
-     private AreaNegocio areaNegocio;
+     private AreaNegocio areaNegocio= new AreaNegocio();
      private String nombre;
-     private Set<Producto> productos = new HashSet<Producto>(0);
      private Set<LocalRubro> localRubros = new HashSet<LocalRubro>(0);
+     private Set<Producto> productos = new HashSet<Producto>(0);
      private Set<SubRubro> subRubros = new HashSet<SubRubro>(0);
 
     public Rubro() {
     }
 
 	
-    public Rubro(AreaNegocio areaNegocio, String nombre) {
-        this.areaNegocio = areaNegocio;
+    public Rubro(String nombre) {
         this.nombre = nombre;
     }
-    public Rubro(AreaNegocio areaNegocio, String nombre, Set<Producto> productos, Set<LocalRubro> localRubros, Set<SubRubro> subRubros) {
+    public Rubro(AreaNegocio areaNegocio, String nombre, Set<LocalRubro> localRubros, Set<Producto> productos, Set<SubRubro> subRubros) {
        this.areaNegocio = areaNegocio;
        this.nombre = nombre;
-       this.productos = productos;
        this.localRubros = localRubros;
+       this.productos = productos;
        this.subRubros = subRubros;
     }
    
@@ -55,19 +54,19 @@ public class Rubro  implements java.io.Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    public Set<Producto> getProductos() {
-        return this.productos;
-    }
-    
-    public void setProductos(Set<Producto> productos) {
-        this.productos = productos;
-    }
     public Set<LocalRubro> getLocalRubros() {
         return this.localRubros;
     }
     
     public void setLocalRubros(Set<LocalRubro> localRubros) {
         this.localRubros = localRubros;
+    }
+    public Set<Producto> getProductos() {
+        return this.productos;
+    }
+    
+    public void setProductos(Set<Producto> productos) {
+        this.productos = productos;
     }
     public Set<SubRubro> getSubRubros() {
         return this.subRubros;
@@ -81,6 +80,8 @@ public class Rubro  implements java.io.Serializable {
     public String toString(){
        return nombre;   
     }  
+
+
 
 
 }

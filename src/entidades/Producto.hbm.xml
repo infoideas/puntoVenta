@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21 sep. 2022 18:50:43 by Hibernate Tools 4.3.1 -->
+<!-- Generated 8 oct. 2022 10:23:08 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="entidades.Producto" table="producto" catalog="gestion" optimistic-lock="version" lazy="false">
-        <comment>Productos</comment>
+    <class name="entidades.Producto" table="producto" catalog="estancia" optimistic-lock="version" lazy="false">
+        <comment>Productos disponibles para venta en carnicerias</comment>
         <id name="id" type="java.lang.Integer">
             <column name="id" />
             <generator class="identity" />
@@ -12,51 +12,110 @@
         <many-to-one name="marca" class="entidades.Marca" fetch="select">
             <column name="idMarca" />
         </many-to-one>
-        <many-to-one name="rubro" class="entidades.Rubro" fetch="select">
-            <column name="idRubro" not-null="true">
-                <comment>Rubro del producto</comment>
-            </column>
+        <many-to-one name="porcentajeIva" class="entidades.PorcentajeIva" fetch="select">
+            <column name="idIva" />
         </many-to-one>
-        <many-to-one name="unidadMedida" class="entidades.UnidadMedida" fetch="select">
-            <column name="idUnidad" not-null="true">
-                <comment>Unidad de medida</comment>
-            </column>
+        <many-to-one name="rubro" class="entidades.Rubro" fetch="select">
+            <column name="idRubro" not-null="true" />
+        </many-to-one>
+        <many-to-one name="unidad" class="entidades.Unidad" fetch="select">
+            <column name="idUnidad" not-null="true" />
         </many-to-one>
         <property name="nombre" type="string">
-            <column name="nombre" length="100" not-null="true" />
+            <column name="nombre" length="100" not-null="true">
+                <comment>Nombre del producto/corte</comment>
+            </column>
         </property>
         <property name="detalle" type="string">
             <column name="detalle" length="65535" />
         </property>
-        <property name="precioContado" type="big_decimal">
-            <column name="precio_contado" precision="20" />
+        <property name="tipo" type="char">
+            <column name="tipo" length="1" not-null="true">
+                <comment>Tipo de producto: C: Corte/E: Elaborado/A: Armado</comment>
+            </column>
         </property>
-        <property name="precioLista" type="big_decimal">
-            <column name="precio_lista" precision="20" />
-        </property>
-        <property name="idIva" type="java.lang.Short">
-            <column name="idIVa" />
+        <property name="stockMinimo" type="big_decimal">
+            <column name="stock_minimo" precision="10" />
         </property>
         <property name="estado" type="char">
             <column name="estado" length="1" not-null="true">
-                <comment>Estado: Activo: 1/Inactivo : 0</comment>
+                <comment>Estado del producto: Activo=1/Inactivo=0</comment>
             </column>
         </property>
         <property name="elaborado" type="char">
-            <column name="elaborado" length="1" not-null="true">
-                <comment>Indica si el producto es elaborado</comment>
-            </column>
+            <column name="elaborado" length="1" not-null="true" />
         </property>
-        <property name="imprimirComanda" type="char">
-            <column name="imprimir_comanda" length="1" not-null="true">
-                <comment>Determina si se imprime comanda para el producto</comment>
-            </column>
-        </property>
+        <set name="remitoVentaDets" table="remito_venta_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProducto" not-null="true" />
+            </key>
+            <one-to-many class="entidades.RemitoVentaDet" />
+        </set>
+        <set name="balanceIngresos" table="balance_ingreso" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProducto" not-null="true">
+                    <comment>Producto relacionado</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.BalanceIngreso" />
+        </set>
+        <set name="categoriaDets" table="categoria_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProducto" not-null="true" />
+            </key>
+            <one-to-many class="entidades.CategoriaDet" />
+        </set>
+        <set name="ventaEstanciaDets" table="venta_estancia_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProducto" not-null="true">
+                    <comment>Producto vendido</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.VentaEstanciaDet" />
+        </set>
+        <set name="compraDets" table="compra_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProducto" not-null="true">
+                    <comment>Producto de la compra</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.CompraDet" />
+        </set>
         <set name="listaPreciosLocalDets" table="lista_precios_local_det" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="idProducto" not-null="true" />
             </key>
             <one-to-many class="entidades.ListaPreciosLocalDet" />
+        </set>
+        <set name="movStockDets" table="mov_stock_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProducto" not-null="true">
+                    <comment>Id. del garr&#243;n</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.MovStockDet" />
+        </set>
+        <set name="categorias" table="categoria" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProducto" not-null="true">
+                    <comment>Producto relacionado. Se usa para dar ingreso en el remito</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Categoria" />
+        </set>
+        <set name="balanceInvInis" table="balance_inv_ini" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProducto" not-null="true">
+                    <comment>Producto</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.BalanceInvIni" />
+        </set>
+        <set name="balanceRemanentes" table="balance_remanente" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProducto" not-null="true" />
+            </key>
+            <one-to-many class="entidades.BalanceRemanente" />
         </set>
         <set name="listaPreciosDets" table="lista_precios_det" inverse="true" lazy="true" fetch="select">
             <key>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 15 ene. 2022 13:01:25 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.BalanceEfectivo" table="balance_efectivo" catalog="estancia" optimistic-lock="version">
+        <comment>Efectivos enviados durante la semana</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="balance" class="entidades.Balance" fetch="select">
+            <column name="idBalance" not-null="true" />
+        </many-to-one>
+        <property name="fecha" type="timestamp">
+            <column name="fecha" length="19" not-null="true">
+                <comment>Fecha del d&#237;a entregado</comment>
+            </column>
+        </property>
+        <property name="turno" type="char">
+            <column name="turno" length="1" not-null="true">
+                <comment>Turno: Ma&#241;ana: M/Tarde: T</comment>
+            </column>
+        </property>
+        <property name="valor" type="big_decimal">
+            <column name="valor" precision="20" not-null="true" />
+        </property>
+        <property name="referencia" type="string">
+            <column name="referencia" />
+        </property>
+    </class>
+</hibernate-mapping>

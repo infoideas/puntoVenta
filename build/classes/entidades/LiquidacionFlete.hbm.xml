@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.LiquidacionFlete" table="liquidacion_flete" catalog="estancia" optimistic-lock="version"
+        lazy="false">
+        <comment>Liquidaci&#243;n de fletes</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="chofer" class="entidades.Chofer" fetch="select">
+            <column name="idFletero" not-null="true">
+                <comment>Fletero al que se le liquida</comment>
+            </column>
+        </many-to-one>
+        <property name="idUsuario" type="int">
+            <column name="idUsuario" not-null="true">
+                <comment>Usuario que carga la liquidaci&#243;n</comment>
+            </column>
+        </property>
+        <property name="fecMov" type="timestamp">
+            <column name="fec_mov" length="19" not-null="true" />
+        </property>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true" />
+        </property>
+        <property name="kilometrosActuales" type="java.lang.Integer">
+            <column name="kilometrosActuales">
+                <comment>Lectura actual de kil&#243;metros del od&#243;metro de cami&#243;n</comment>
+            </column>
+        </property>
+        <property name="kilometrosAnteriores" type="java.lang.Integer">
+            <column name="kilometrosAnteriores">
+                <comment>Lectura anterior de kil&#243;metros del od&#243;metro de cami&#243;n</comment>
+            </column>
+        </property>
+        <property name="kilometrosRecorridos" type="java.lang.Integer">
+            <column name="kilometrosRecorridos">
+                <comment>Total de kil&#243;metros de todos los viajes</comment>
+            </column>
+        </property>
+        <property name="observaciones" type="string">
+            <column name="observaciones" />
+        </property>
+        <property name="totalViajesSimples" type="big_decimal">
+            <column name="totalViajesSimples" precision="20">
+                <comment>Total de viajes simples</comment>
+            </column>
+        </property>
+        <property name="porcViajesSimples" type="big_decimal">
+            <column name="porcViajesSimples" precision="20">
+                <comment>Porcentaje aplicado a viajes simples</comment>
+            </column>
+        </property>
+        <property name="valorViajesSimples" type="big_decimal">
+            <column name="valorViajesSimples" precision="20">
+                <comment>Valor para fletero sobre viajes simples</comment>
+            </column>
+        </property>
+        <property name="totalViajesDobles" type="big_decimal">
+            <column name="totalViajesDobles" precision="20">
+                <comment>Total de viajes dobles</comment>
+            </column>
+        </property>
+        <property name="porcViajesDobles" type="big_decimal">
+            <column name="porcViajesDobles" precision="20">
+                <comment>Porcentaje aplicado a viajes dobles</comment>
+            </column>
+        </property>
+        <property name="valorViajesDobles" type="big_decimal">
+            <column name="valorViajesDobles" precision="20">
+                <comment>Valor para fletero sobre viajes dobles</comment>
+            </column>
+        </property>
+        <property name="totalViajes" type="big_decimal">
+            <column name="totalViajes" precision="20">
+                <comment>Total de viajes: simples + dobles</comment>
+            </column>
+        </property>
+        <property name="valorViajes" type="big_decimal">
+            <column name="valorViajes" precision="20">
+                <comment>Valor sobre el total de viajes para el fletero</comment>
+            </column>
+        </property>
+        <property name="valorEfectivos" type="big_decimal">
+            <column name="valorEfectivos" precision="20">
+                <comment>Total de efectivos</comment>
+            </column>
+        </property>
+        <property name="valorGastos" type="big_decimal">
+            <column name="valorGastos" precision="20">
+                <comment>Total de gastos</comment>
+            </column>
+        </property>
+        <property name="vueltoCaja" type="big_decimal">
+            <column name="vueltoCaja" precision="20">
+                <comment>Valor devuelto por fletero: valor efectivos - valor gastos</comment>
+            </column>
+        </property>
+        <property name="cargasSociales" type="big_decimal">
+            <column name="cargasSociales" precision="20">
+                <comment>Adelanto de cargas sociales</comment>
+            </column>
+        </property>
+        <property name="totalPagar" type="big_decimal">
+            <column name="totalPagar" precision="20">
+                <comment>Total a pagar</comment>
+            </column>
+        </property>
+        <property name="procesada" type="char">
+            <column name="procesada" length="1" not-null="true">
+                <comment>Indica si la liquidaci&#243;n ha sido procesada</comment>
+            </column>
+        </property>
+        <set name="liquidacionViajes" table="liquidacion_viaje" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan">
+            <key>
+                <column name="idLiquidacion" not-null="true">
+                    <comment>Id de Liquidaci&#243;n de chofer</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.LiquidacionViaje" />
+        </set>
+        <set name="liquidacionGastos" table="liquidacion_gasto" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan">
+            <key>
+                <column name="idLiquidacion" not-null="true">
+                    <comment>Liquidaci&#243;n afectada</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.LiquidacionGasto" />
+        </set>
+        <set name="liquidacionEfectivos" table="liquidacion_efectivo" inverse="true" lazy="true" fetch="select"
+            cascade="all-delete-orphan">
+            <key>
+                <column name="idLiquidacion" not-null="true" />
+            </key>
+            <one-to-many class="entidades.LiquidacionEfectivo" />
+        </set>
+    </class>
+</hibernate-mapping>

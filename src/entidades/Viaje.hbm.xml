@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Viaje" table="viaje" catalog="estancia" optimistic-lock="version" lazy="false">
+        <comment>Viajes realizados por los fleteros</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="chofer" class="entidades.Chofer" fetch="select">
+            <column name="idChofer" not-null="true">
+                <comment>Chofer que carg&#243; el viaje</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="cliente" class="entidades.Cliente" fetch="select">
+            <column name="idCliente" not-null="true">
+                <comment>Cliente del viaje</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="comisionista" class="entidades.Comisionista" fetch="select">
+            <column name="idComisionista">
+                <comment>Comisionista</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="localidadByIdOrigen" class="entidades.Localidad" fetch="select">
+            <column name="idOrigen" not-null="true">
+                <comment>Localidad de origen del viaje</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="localidadByIdDestino" class="entidades.Localidad" fetch="select">
+            <column name="idDestino" not-null="true">
+                <comment>Localidad de destino del viaje</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="vehiculoFlete" class="entidades.VehiculoFlete" fetch="select">
+            <column name="idVehiculo" not-null="true">
+                <comment>Veh&#237;culo usado para el viaje</comment>
+            </column>
+        </many-to-one>
+        <property name="fecMov" type="timestamp">
+            <column name="fec_mov" length="19" not-null="true">
+                <comment>Fecha del viaje</comment>
+            </column>
+        </property>
+        <property name="fecCarga" type="timestamp">
+            <column name="fec_carga" length="19" not-null="true">
+                <comment>Fecha de carga</comment>
+            </column>
+        </property>
+        <property name="tipoProducto" type="char">
+            <column name="tipoProducto" length="1" not-null="true">
+                <comment>Tipo de producto transportado: Animales: A / Granos: G</comment>
+            </column>
+        </property>
+        <property name="unidadesTransportadas" type="string">
+            <column name="unidadesTransportadas">
+                <comment>Unidades transportadas</comment>
+            </column>
+        </property>
+        <property name="obsOrigen" type="string">
+            <column name="obsOrigen" length="100">
+                <comment>Observaci&#243;n sobre el origen del viaje</comment>
+            </column>
+        </property>
+        <property name="obsDestino" type="string">
+            <column name="obsDestino" length="100">
+                <comment>Observaci&#243;n sobre el destino del viaje</comment>
+            </column>
+        </property>
+        <property name="distancia" type="big_decimal">
+            <column name="distancia" precision="20">
+                <comment>Distancia del viaje en kil&#243;metros</comment>
+            </column>
+        </property>
+        <property name="cantidad" type="big_decimal">
+            <column name="cantidad" precision="20">
+                <comment>Cantidad de toneladas del producto transportado</comment>
+            </column>
+        </property>
+        <property name="valorNeto" type="big_decimal">
+            <column name="valorNeto" precision="20">
+                <comment>Valor neto de Iva</comment>
+            </column>
+        </property>
+        <property name="porcIva" type="big_decimal">
+            <column name="porcIva" precision="20">
+                <comment>Porcentaje de IVA</comment>
+            </column>
+        </property>
+        <property name="valorIva" type="big_decimal">
+            <column name="valorIva" precision="20">
+                <comment>Valor de IVA</comment>
+            </column>
+        </property>
+        <property name="valorTotal" type="big_decimal">
+            <column name="valorTotal" precision="20">
+                <comment>Valor total</comment>
+            </column>
+        </property>
+        <property name="tipoJaula" type="java.lang.Character">
+            <column name="tipoJaula" length="1">
+                <comment>Tipo de jaula usada en el viaje: Simple: S / Doble : D</comment>
+            </column>
+        </property>
+        <property name="procesado" type="char">
+            <column name="procesado" length="1" not-null="true">
+                <comment>Indica si el viaje fue incluido o procesado en alguna liquidaci&#243;n</comment>
+            </column>
+        </property>
+        <set name="liquidacionViajes" table="liquidacion_viaje" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idViaje" not-null="true" unique="true">
+                    <comment>Id del viaje relacionado</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.LiquidacionViaje" />
+        </set>
+        <set name="tropaViajes" table="tropa_viaje" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idViaje" not-null="true" />
+            </key>
+            <one-to-many class="entidades.TropaViaje" />
+        </set>
+    </class>
+</hibernate-mapping>

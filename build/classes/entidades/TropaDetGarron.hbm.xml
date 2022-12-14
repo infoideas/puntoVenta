@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.TropaDetGarron" table="tropa_det_garron" catalog="estancia" optimistic-lock="version"
+        lazy="false">
+        <comment>Detalle de las tropas por garr&#243;n: Conocido como romaneo</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="categoria" class="entidades.Categoria" fetch="select">
+            <column name="idCategoria" not-null="true">
+                <comment>Categori&#237;a del garr&#243;n</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="tropa" class="entidades.Tropa" fetch="select">
+            <column name="idTropa" not-null="true">
+                <comment>Id. de la tropa</comment>
+            </column>
+        </many-to-one>
+        <property name="numGarron" type="int">
+            <column name="numGarron" not-null="true">
+                <comment>C&#243;digo identificador del garr&#243;n</comment>
+            </column>
+        </property>
+        <property name="tipo" type="string">
+            <column name="tipo" length="2" not-null="true">
+                <comment>Tipo: Derecho o Izquierdo GD/GI</comment>
+            </column>
+        </property>
+        <property name="kilos" type="big_decimal">
+            <column name="kilos" precision="10" not-null="true">
+                <comment>Kilos del garr&#243;n</comment>
+            </column>
+        </property>
+        <set name="inventarioTropas" table="inventario_tropa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idGarron" not-null="true">
+                    <comment>Id. del garr&#243;n en la tropa</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.InventarioTropa" />
+        </set>
+    </class>
+</hibernate-mapping>

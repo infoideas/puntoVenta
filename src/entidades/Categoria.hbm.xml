@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/07/2021 10:15:58 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Categoria" table="categoria" catalog="estancia" optimistic-lock="version" lazy="false">
+        <comment>Categor&#237;a como considera el frigor&#237;fico</comment>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="producto" class="entidades.Producto" fetch="select">
+            <column name="idProducto" not-null="true">
+                <comment>Producto relacionado. Se usa para dar ingreso en el remito</comment>
+            </column>
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="100" not-null="true" />
+        </property>
+        <set name="tropaDets" table="tropa_det" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idCategoria" not-null="true">
+                    <comment>Categor&#237;a</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.TropaDet" />
+        </set>
+        <set name="tropas" table="tropa" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idProducto" not-null="true">
+                    <comment>Categor&#237;a del producto</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.Tropa" />
+        </set>
+        <set name="tropaDetGarrons" table="tropa_det_garron" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idCategoria" not-null="true">
+                    <comment>Categori&#237;a del garr&#243;n</comment>
+                </column>
+            </key>
+            <one-to-many class="entidades.TropaDetGarron" />
+        </set>
+        <set name="categoriaDets" table="categoria_det" inverse="true" lazy="true" fetch="select" 
+             cascade="all-delete-orphan">
+            <key>
+                <column name="idCategoria" not-null="true" />
+            </key>
+            <one-to-many class="entidades.CategoriaDet" />
+        </set>
+    </class>
+</hibernate-mapping>
